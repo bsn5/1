@@ -1,0 +1,14 @@
+Source: divevpn-gui
+Section: unknown
+Priority: optional
+Maintainer: naeper <naeper@demlabs.net>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.8
+Homepage: http://demlabs.net
+
+Package: divevpn-gui
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: DiveVPN graphical client
+ DiveVPN graphical client
+

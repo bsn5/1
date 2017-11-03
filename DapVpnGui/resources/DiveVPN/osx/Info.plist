@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSPrincipalClass</key>
+	<string>NSApplication</string>
+	<key>CFBundleIconFile</key>
+        <string>DiveVPN.icns</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleGetInfoString</key>
+	<string>Created by NC</string>
+	<key>CFBundleSignature</key>
+	<string>????</string>
+	<key>CFBundleExecutable</key>
+        <string>UNSWall</string>
+	<key>CFBundleIdentifier</key>
+        <string>com.demlabs.DiveVPN</string>
+        <key>com.apple.developer.networking.networkextension</key>
+            <array>
+                <string>packet-tunnel-provider</string>
+                <string>app-proxy-provider</string>
+                <string>content-filter-provider</string>
+            </array>
+        <key>com.apple.developer.networking.vpn.api</key>
+            <array>
+                <string>allow-vpn</string>
+            </array>
+        <key>keychain-access-groups</key>
+            <array>
+                    <string>com.apple.managed.vpn.shared</string>
+            </array>
+        <key>NSExtension</key>
+            <dict>
+                <key>NSExtensionPointIdentifier</key>
+                <string>com.apple.networkextension.app-proxy</string>
+            </dict>
+	<key>NOTE</key>
+        <string>This file is very important</string>
+        <key>NSAppTransportSecurity</key>
+            <dict>
+                <key>NSAllowsArbitraryLoads</key><true/>
+            </dict>
+</dict>
+</plist>

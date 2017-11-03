@@ -1,0 +1,17 @@
+Source: divevpn-full
+Section: unknown
+Priority: optional
+Maintainer: naeper <naeper@demlabs.net>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.8
+Homepage: http://demlabs.net
+
+Package: divevpn-full
+Architecture: any
+Depends: psmisc, ${shlibs:Depends}, ${misc:Depends}
+Replaces: divevpn-service, divevpn-gui
+Description: DiveVPN backend service
+ DiveVPN full package: DiveVPN service + DiveVPN GUI
+
+
+

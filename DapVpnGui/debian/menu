@@ -1,0 +1,2 @@
+?package(divevpn-gui):needs="X11|text|vc|wm" section="Applications/Network"\
+  title="DiveVPN" command="/opt/divevpn/bin/DiveVPN"
