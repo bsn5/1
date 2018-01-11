@@ -1,0 +1,15 @@
+set DDK=C:\Program Files (x86)\Windows Kits\10
+set DEVCON32=C:\Program Files (x86)\Windows Kits\10\Tools\x86\devcon.exe
+set DEVCON64=C:\Program Files (x86)\Windows Kits\10\Tools\x64\devcon.exe
+set DEVCON_BASENAME=Program
+set SIGNTOOL=C:\Program Files (x86)\Windows Kits\10\Tools\bin\i386\signtool.exe
+set MAKENSIS=C:\Program Files (x86)\NSIS
+set CODESIGN_PKCS12=
+set CODESIGN_PASS=
+set CODESIGN_CROSS=Z:\work_shared_buffer\tap-windows\build\MSCV-VSClass3.cer
+set CODESIGN_TIMESTAMP=http://timestamp.verisign.com/scripts/timestamp.dll
+set CODESIGN_ISTEST=
+set PRODUCT_TAP_WIN_COMPONENT_ID=tap0901
+set PRODUCT_NAME=TAP-Windows
+set PRODUCT_VERSION=9.9.2
+set OUTDIR=Z:\work_shared_buffer\tap-windows

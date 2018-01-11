@@ -135,4 +135,5 @@ unix: !mac : !android {
     INSTALLS += target data_static
 }
 
-include (../../libDapClient/libDapClient.pri)
+include (../../libdapclient/libdapclient.pri)
+include (../../libdapclient/libdapstreamclient.pri)
