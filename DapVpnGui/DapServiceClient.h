@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#define DAP_UI_SOCKET_TCP
+
 #ifdef DAP_UI_SOCKET_TCP
 #include <QTcpSocket>
 #include <QHostAddress>

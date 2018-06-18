@@ -441,12 +441,12 @@ int DapVPNService::init()
     checkInstallation();
     srvLocal = new DapUiSocketServer();
 
-#ifdef DAP_SERVICE_CONNECT_TCP
+//#ifdef DAP_SERVICE_CONNECT_TCP
     if(srvLocal->listen(QHostAddress("127.0.0.1"),22142)){
-#else
-    srvLocal->setSocketOptions(QLocalServer::WorldAccessOption);
-    if(srvLocal->listen(DAP_BRAND)){
-#endif
+//#else
+//    srvLocal->setSocketOptions(QLocalServer::WorldAccessOption);
+//    if(srvLocal->listen(DAP_BRAND)){
+//#endif
         qDebug() << "Listen for UI on local socket " << DAP_BRAND;
         connect(srvLocal,&DapUiSocketServer::newConnection, [=]{
             while(DapUiSocket * s = srvLocal->nextPendingConnection()){
@@ -502,8 +502,8 @@ void DapVPNService::procCmd(const QString &a_cmd)
             sendCmdAll(QString("version %s").arg(DAP_VERSION) );
         } else if(cmdSub[0] == "NativeServerInfo") {
             if (cmdSub.length() > 5) {
-                const BadServers badServers(cmdSub[1], cmdSub[2], cmdSub[3], cmdSub[4]);
-                m_nativeServersInfo.push_back(badServers);
+              /*  const BadServers badServers(cmdSub[1], cmdSub[2], cmdSub[3], cmdSub[4]);
+                m_nativeServersInfo.push_back(badServers);*/
             } else {
                 qWarning() <<"Wrong connect NativeServerInfo with only "<< cmdSub.length()<<" arguments (needs 6)";
             }

@@ -9,7 +9,6 @@
 #include <QStateMachine>
 #include <QState>
 #include "DapSI.h"
-#include "DapSession.h"
 
 #ifdef DAP_SERVICE_CONNECT_TCP
 #include <QTcpServer>
@@ -55,7 +54,7 @@ private:
 #endif
     quint16 srvLocalPort;
     QTimer * tmrStat;
-    QVector<BadServers> m_nativeServersInfo;
+   // QVector<BadServers> m_nativeServersInfo;
 
     bool isLogined;
     bool isIfUp;

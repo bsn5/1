@@ -19,7 +19,7 @@ ServiceCtl::ServiceCtl()
 
     connect(this,&ServiceCtl::ctlConnected, [=]{
         qInfo() << "[ServiceCtl] Connected to ctl socket,request for status";
-        sendCmd("get_status");
+        sendCmd("get_states");
     });
     connect(this,&ServiceCtl::ctlDisconnected, [=]{
         qInfo() << "[ServiceCtl] Disconnected from backend";

@@ -6,6 +6,7 @@
 #include <QTime>
 #include <QtDebug>
 
+
 void myMessageHandler(QtMsgType type, const QMessageLogContext &ctx, const QString & msg)
 {
     QString txt;

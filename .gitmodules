@@ -1,0 +1,9 @@
+[submodule "libdap"]
+	path = libdap
+	url = https://github.com/demlabsinc/libdap.git
+[submodule "libdap-qt"]
+	path = libdap-qt
+	url = https://github.com/demlabsinc/libdap-qt.git
+[submodule "libdap-qt-stream"]
+	path = libdap-qt-stream
+	url = https://github.com/demlabsinc/libdap-qt-stream.git

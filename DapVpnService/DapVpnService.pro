@@ -7,6 +7,8 @@ CONFIG += console
 DEFINES += DAP_BRAND=\\\"DiveVPN\\\"
 DEFINES += DAP_VERSION=\\\"111\\\"
 
+DEFINES += DAP_SERVICE_CONNECT_TCP
+
 !android{
     TEMPLATE = app
     SOURCES += main.cpp
@@ -135,5 +137,12 @@ unix: !mac : !android {
     INSTALLS += target data_static
 }
 
-include (../../libdapclient/libdapclient.pri)
-include (../../libdapclient/libdapstreamclient.pri)
+include (../libdap-qt/libdap-qt.pri)
+INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap-qt/
+
+include (../libdap/libdap.pri)
+INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap/
+
+#include (../../libdapclient/libdapclient.pri)
+include (../libdap-qt-stream/libdapstreamclient.pri)
+INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap-qt-stream/
