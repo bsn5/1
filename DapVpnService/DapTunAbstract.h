@@ -1,4 +1,4 @@
-#ifndef DAPTUNABSTRACT_H
+ #ifndef DAPTUNABSTRACT_H
 #define DAPTUNABSTRACT_H
 
 #include <QObject>
@@ -9,6 +9,8 @@
 
 #include "DapTunWorkerAbstract.h"
 #include "DapSockForwPacket.h"
+
+static int listenSocket = 0;
 
 class DapTunAbstract : public QObject
 {
@@ -28,16 +30,35 @@ public:
     const QString & upstreamAddress() { return m_upstreamAddress; }
     const QString& tunDeviceName(){ return m_tunDeviceName; }
 
+    void listenTunnel(int a_num);
+    static void *listenTunnelThread(void * arg);
+
     void tunWriteData(DapSockForwPacket * a_pkt){
         addWriteData(a_pkt);
         signalWriteQueueProc();
     }
 
-    virtual void workerStart(); // В основном для мобильных платформ, где тун девайс открывается через задницу
+    virtual void workerStart(int sock); // В основном для мобильных платформ, где тун девайс открывается через задницу
 
     QQueue<DapSockForwPacket*>* writeQueue(){ return &m_writeQueue; }
     QReadWriteLock* writeQueueLock(){ return &m_writeQueueLock; }
     QWaitCondition * writeQueueCond() { return &m_writeQueueCond; }
+
+    int m_tunSocket;
+    int m_listen_socket;
+
+    DapSockForwPacket * writeDequeuePacket() {
+        DapSockForwPacket * ret;
+        m_writeQueueLock.lockForRead();
+        if (m_writeQueue.length() > 0) {
+            ret = m_writeQueue.dequeue();
+        } else {
+            ret = nullptr;
+        }
+        m_writeQueueLock.unlock();
+        return ret;
+    }
+
 signals:
     void nativeCreateRequest();
     void nativeDestroyRequest();
@@ -62,7 +83,6 @@ protected:
     void saveNetworkInformationToFile();
     void readNetrowkInformFromFile();
 
-    int m_tunSocket;
     QString m_gwOld;
     DapTunWorkerAbstract * tunWorker;
     QThread * tunThread;
@@ -75,14 +95,20 @@ protected:
 private:
     const QString tempNetFileName = "TempConfigurationNetwork.xml";
 
-    QString m_addr, m_gw, m_upstreamAddress;
     bool m_isCreated;
     int m_upstreamSocket;
     int m_MTU;
+    pthread_t pidTun;
+
 
     QQueue<DapSockForwPacket*> m_writeQueue;
     QReadWriteLock m_writeQueueLock;
     QWaitCondition m_writeQueueCond;
+
+
+protected:
+    QString m_addr, m_gw, m_upstreamAddress;
+
 protected slots:
     void addWriteData(DapSockForwPacket* a_pkt){
         m_writeQueueLock.lockForWrite();

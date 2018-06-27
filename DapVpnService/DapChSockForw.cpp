@@ -276,7 +276,7 @@ void DapChSockForw::tunDestroy()
 void DapChSockForw::workerStart(int a_tunSocket)
 {
     tun->setTunSocket(a_tunSocket);
-    tun->workerStart(); // start loop
+    tun->workerStart(a_tunSocket); // start loop
 }
 
 /**

@@ -1,6 +1,7 @@
 #include <QCoreApplication>
 #include "DapVPNService.h"
 #include <QtDebug>
+#include "staticdata.h"
 
 #ifdef Q_OS_UNIX
 #include "SigUnixHandler.h"
