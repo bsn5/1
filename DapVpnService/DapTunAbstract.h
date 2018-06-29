@@ -10,8 +10,6 @@
 #include "DapTunWorkerAbstract.h"
 #include "DapSockForwPacket.h"
 
-static int listenSocket = 0;
-
 class DapTunAbstract : public QObject
 {
     Q_OBJECT
@@ -30,22 +28,18 @@ public:
     const QString & upstreamAddress() { return m_upstreamAddress; }
     const QString& tunDeviceName(){ return m_tunDeviceName; }
 
-    void listenTunnel(int a_num);
-    static void *listenTunnelThread(void * arg);
-
     void tunWriteData(DapSockForwPacket * a_pkt){
         addWriteData(a_pkt);
         signalWriteQueueProc();
     }
 
-    virtual void workerStart(int sock); // В основном для мобильных платформ, где тун девайс открывается через задницу
+    virtual void workerStart(); // В основном для мобильных платформ, где тун девайс открывается через задницу
 
     QQueue<DapSockForwPacket*>* writeQueue(){ return &m_writeQueue; }
     QReadWriteLock* writeQueueLock(){ return &m_writeQueueLock; }
     QWaitCondition * writeQueueCond() { return &m_writeQueueCond; }
 
     int m_tunSocket;
-    int m_listen_socket;
 
     DapSockForwPacket * writeDequeuePacket() {
         DapSockForwPacket * ret;
@@ -82,6 +76,7 @@ protected:
     void initWorker();
     void saveNetworkInformationToFile();
     void readNetrowkInformFromFile();
+    bool isLocalAddress(const QString &address);
 
     QString m_gwOld;
     DapTunWorkerAbstract * tunWorker;

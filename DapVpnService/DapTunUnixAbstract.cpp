@@ -8,9 +8,9 @@
 DapTunUnixAbstract::DapTunUnixAbstract()
 {
     qDebug() << "[DapTunUnixAbstract::DapTunUnixAbstract]";
-    //tunWorker = (tunWorkerUnix=new DapTunWorkerUnix(this));
-    //breaker0 = tunWorkerUnix->breaker(0);
-    //breaker1 = tunWorkerUnix->breaker(1);
+    tunWorker = (tunWorkerUnix=new DapTunWorkerUnix(this));
+    breaker0 = tunWorkerUnix->breaker(0);
+    breaker1 = tunWorkerUnix->breaker(1);
     initWorker();
 }
 

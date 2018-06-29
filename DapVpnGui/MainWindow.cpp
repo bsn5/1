@@ -108,7 +108,8 @@ void MainWindow::sendUpstreamsToServer()
     ServiceCtl::me().sendCmd("addServerToList testing.divevpn.com:8003 62.210.73.95");
     ServiceCtl::me().sendCmd("addServerToList dev1.demlabs.net:8001 62.210.73.95");
     ServiceCtl::me().sendCmd("addServerToList dev2.demlabs.net:8002 62.210.73.95");
-    ServiceCtl::me().sendCmd("addServerToList localhost:8002 127.0.0.1"); //TODO: IVAN
+    ServiceCtl::me().sendCmd("addServerToList 192.168.0.104:8002 192.168.0.104"); //TODO: IVAN
+   // ServiceCtl::me().sendCmd("addServerToList 127.0.0.1:8002 127.0.0.1"); //TODO: IVAN
 #endif
 }
 
@@ -126,9 +127,8 @@ void MainWindow::onReqConnect(QString a_addrLine,QString a_ip, QString a_user, Q
         m_upstreamIp = a_ip;
         m_password = a_ps;
 
-        //ServiceCtl::me().sendCmd(QString( "connect %1 %2 %3 %4")
-        //    .arg(m_upstreamAddr).arg(m_user).arg(m_password).arg(a_ip));
-        ServiceCtl::me().sendCmd(QString( "connect localhost:8002 werqfdf@mail.ru password 127.0.0.1")); //TODO: IVAN
+        ServiceCtl::me().sendCmd(QString( "connect %1 %2 %3 %4")
+            .arg(m_upstreamAddr).arg(m_user).arg(m_password).arg(a_ip));
         sendUpstreamsToServer();
     }
     emit sigBtConnect();

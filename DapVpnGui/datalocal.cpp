@@ -92,6 +92,8 @@ void DataLocal::parseXML(const QString& a_fname)
     addServer( "USSR", "Testing", "62.210.73.95", "testing.divevpn.com:8003");
     addServer( "USSR", "Dev1",    "62.210.73.95", "dev1.demlabs.net:8001");
     addServer( "USSR", "Dev2",    "62.210.73.95", "dev2.demlabs.net:8002");
+    addServer( "USSR", "Local",    "192.168.0.104", "192.168.0.104:8002");
+   // addServer( "USSR", "Local",    "127.0.0.1", "127.0.0.1:8002");
 #endif
 
 

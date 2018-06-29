@@ -261,7 +261,7 @@ void DapChSockForw::tunCreate(const QString &a_addr, const QString &a_gw)
 void DapChSockForw::tunCreate()
 {
     tun->create(m_addr,m_gw,DapSession::getInstance()->upstreamIp(), streamer()->upstreamSocket() );
-    workerStart(streamer()->upstreamSocket());
+    tun->workerStart();
 }
 
 void DapChSockForw::tunDestroy()
@@ -276,7 +276,7 @@ void DapChSockForw::tunDestroy()
 void DapChSockForw::workerStart(int a_tunSocket)
 {
     tun->setTunSocket(a_tunSocket);
-    tun->workerStart(a_tunSocket); // start loop
+    tun->workerStart(); // start loop
 }
 
 /**

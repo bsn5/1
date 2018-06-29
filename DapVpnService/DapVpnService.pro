@@ -24,7 +24,7 @@ SOURCES +=  DapChSockForw.cpp \
     DapTunNative.cpp \
     DapVpnService.cpp \
     DapSB.cpp \
-    staticdata.cpp
+    DapTunWorkerAndroid.cpp
 
 
 
@@ -50,7 +50,7 @@ HEADERS +=     DapChSockForw.h \
     DapSockForwPacket.h \
     DapTunUnixAbstract.h \
     DapSB.h \
-    staticdata.h
+    DapTunWorkerAndroid.h
 
 unix: !win32 {
     HEADERS += DapTunWorkerUnix.h

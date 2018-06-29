@@ -9,6 +9,7 @@ public:
     DapTunAndroid();
     void tunDeviceCreate();
     void tunDeviceDestroy();
+    void onWorkerStarted();
 };
 
 #endif // DAPTUNANDROID_H
