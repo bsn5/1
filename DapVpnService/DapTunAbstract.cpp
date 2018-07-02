@@ -9,7 +9,6 @@
 
 #include "DapTunAbstract.h"
 #include "DapSockForwPacket.h"
-#include "staticdata.h"
 
 #define STREAM_SF_PACKET_OP_CODE_RAW_SEND 0xbc
 

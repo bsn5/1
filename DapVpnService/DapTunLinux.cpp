@@ -16,7 +16,6 @@
 #include <stropts.h>
 #include "DapTunLinux.h"
 #include "DapTunWorkerUnix.h"
-#include "staticdata.h"
 
 int DapTunLinux::nmcliVersionMajor=1;
 int DapTunLinux::nmcliVersionMinor=6;
