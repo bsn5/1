@@ -9,7 +9,7 @@ class DatalocalTest : public QObject {
 private:
     // see Resources->testdata.qrc->/->data.xml
     size_t COUNT_SERVERS_IN_TESTDATA_XML = 1;
-private slots:
+private Q_SLOTS:
     void testParsingXmlData() {
         auto serverLists = DataLocal::me()->servers();
 
@@ -29,6 +29,19 @@ private slots:
 
         // Not found server from data xml, test fail!
         QVERIFY(false);
+    }
+
+     void testAddServer(const QString& a_location, const QString& a_name, const QString & a_ip, const QString& a_addrLine) {
+        auto serverLists = DataLocal::me()->servers();
+        for(auto &ts: serverLists) {
+        if (ts.location == a_location &&
+                ts.name == a_name &&
+                ts.address == a_addrLine.split(":").at(0) &&
+                ts.port == a_addrLine.split(":").at(1) &&
+                ts.ip == a_ip);
+        return;
+        }
+        QVERIFY2(false, "Server not added");
     }
 };
 
