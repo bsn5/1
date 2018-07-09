@@ -16,13 +16,13 @@ class DapServerInfo
 {
 public:
     DapServerInfo(){}
-    DapServerInfo(const DapServerInfo&cp){
+    DapServerInfo(const DapServerInfo&cp) {
         address     = cp.address;
         port        = cp.port;
         name        = cp.name;
         location    = cp.location;
         ip          = cp.ip;
-    };
+    }
 
     QString address;
     QString port;

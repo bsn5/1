@@ -1,5 +1,6 @@
 TEMPLATE = subdirs
-SUBDIRS = DapVpnGui DapVpnService
+SUBDIRS = DapVpnGui DapVpnService \
+    DapVpnGui/DapVpnGuiTests
 
 android{
     SUBDIRS -= DapVpnCli
@@ -18,32 +19,9 @@ TARGET = DiveVPN
 
 RESOURCES += \
     DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
     DapVpnGui/ui/resources/common/common.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/common/common.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/common/common.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/common/common.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/common/common.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/common/common.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/common/common.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/common/common.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/common/common.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/common/common.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/common/common.qrc \
-    DapVpnGui/ui/resources/DiveVPN/main.qrc \
-    DapVpnGui/ui/resources/common/common.qrc
+QMAKE_CFLAGS_DEBUG = \
+    -std=gnu99
+
+QMAKE_CFLAGS_RELEASE = \
+    -std=gnu99
