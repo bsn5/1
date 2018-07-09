@@ -9,7 +9,7 @@ class DatalocalTest : public QObject {
 private:
     // see Resources->testdata.qrc->/->data.xml
     size_t COUNT_SERVERS_IN_TESTDATA_XML = 1;
-private Q_SLOTS:
+private slots:
     void testParsingXmlData() {
         auto serverLists = DataLocal::me()->servers();
 
@@ -31,17 +31,18 @@ private Q_SLOTS:
         QVERIFY(false);
     }
 
-     void testAddServer(const QString& a_location, const QString& a_name, const QString & a_ip, const QString& a_addrLine) {
-        auto serverLists = DataLocal::me()->servers();
-        for(auto &ts: serverLists) {
-        if (ts.location == a_location &&
-                ts.name == a_name &&
-                ts.address == a_addrLine.split(":").at(0) &&
-                ts.port == a_addrLine.split(":").at(1) &&
-                ts.ip == a_ip);
-        return;
-        }
-        QVERIFY2(false, "Server not added");
+    void testAddServer() {
+       auto serverLists = DataLocal::me()->servers();
+       DataLocal::me()->addServer("USSR", "Testing", "62.210.73.95", "testing.divevpn.com:8003");
+       for(auto &ts: serverLists) {
+       if (ts.location == "USSR" &&
+               ts.name == "Testing" &&
+               ts.address == "testing.divevpn.com" &&
+               ts.port == "8003" &&
+               ts.ip == "62.210.73.95")
+       return;
+       }
+       QVERIFY2(false, "Server not added");
     }
 };
 
