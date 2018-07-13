@@ -165,13 +165,20 @@ void DapTunLinux::onWorkerStarted()
         QString run = QString("route add -host %2 gw %1")
             .arg(m_defaultGwOld).arg(upstreamAddress()).toLatin1().constData();
         ::system(run.toLatin1().constData() );
-    }
-    ::system("nmcli c delete DiveVPN");
 
-    QString add = addr();
-    QString gateway = gw();
-    QString gwOld = m_defaultGwOld;
-    QString stream = upstreamAddress();
+    }
+
+    if(!isLocalAddress(upstreamAddress()))
+    {
+        QString upstream = upstreamAddress();
+        // This route dont need if address is local
+        QString run = QString("route add -host %2 gw %1 metric 10")
+            .arg(m_defaultGwOld).arg(upstreamAddress()).toLatin1().constData();
+        qDebug() << "[SapStreamChSF] Execute "<<run;
+        ::system(run.toLatin1().constData());
+    }
+
+    ::system("nmcli c delete DiveVPN");
 
     QString cmdConnAdd = QString(
                 "nmcli connection add type tun con-name DiveVPN autoconnect false ifname %1 "
@@ -207,16 +214,10 @@ void DapTunLinux::onWorkerStarted()
         " +ipv4.route-metric 10")
         ).toLatin1().constData());
 
-    if(!isLocalAddress(upstreamAddress()))
-    {
-        // This route dont need if address is local
-        QString run = QString("route add -host %2 gw %1 metric 10")
-            .arg(m_defaultGwOld).arg(upstreamAddress()).toLatin1().constData();
-        qDebug() << "[SapStreamChSF] Execute "<<run;
-        ::system(run.toLatin1().constData());
-    }
-
     ::system("nmcli connection up DiveVPN");
+
+
+
 
 }
 
