@@ -112,24 +112,6 @@ void DapTunLinux::tunDeviceCreate()
 
     m_tunSocket = fd;
 
-    QFile resolvConf;
-    resolvConf.setFileName("/etc/resolv.conf");
-    resolvConf.open(QFile::ReadOnly);
-    QString resolvConfStr = resolvConf.readAll();
-    resolvConf.close();
-
-    if (resolvConfStr.split("\n")[0] == "#Sap service resolver") {
-        qWarning() << "[SapStreamChSF] #Sap service resolver error";
-    } else {
-          QSettings resolvSettigs;
-          resolvSettigs.setValue("resolver", resolvConfStr);
-          resolvSettigs.sync();
-    }
-
-    resolvConf.open(QFile::WriteOnly);
-    QTextStream ts(&resolvConf);
-    ts << "#Sap service resolver\n" << "nameserver " + m_gw << endl;
-    resolvConf.close();
 }
 
 /**
@@ -177,6 +159,25 @@ void DapTunLinux::onWorkerStarted()
         qDebug() << "[SapStreamChSF] Execute "<<run;
         ::system(run.toLatin1().constData());
     }
+
+    QFile resolvConf;
+    resolvConf.setFileName("/etc/resolv.conf");
+    resolvConf.open(QFile::ReadOnly);
+    QString resolvConfStr = resolvConf.readAll();
+    resolvConf.close();
+
+    if (resolvConfStr.split("\n")[0] == "#Sap service resolver") {
+        qWarning() << "[SapStreamChSF] #Sap service resolver error";
+    } else {
+          QSettings resolvSettigs;
+          resolvSettigs.setValue("resolver", resolvConfStr);
+          resolvSettigs.sync();
+    }
+
+    resolvConf.open(QFile::WriteOnly);
+    QTextStream ts(&resolvConf);
+    ts << "#Sap service resolver\n" << "nameserver " + m_gw << endl;
+    resolvConf.close();
 
     ::system("nmcli c delete DiveVPN");
 
