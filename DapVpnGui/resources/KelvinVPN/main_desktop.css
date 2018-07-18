@@ -1,0 +1,130 @@
+*{
+    font: 12pt bolds;
+    color: rgb(0,0,0);
+}
+
+QWidget{
+}
+
+QMainWindow{
+
+/*background: qlineargradient(spread:pad, x1:0, y1:0.245, x2:0.0101523, y2:0.789, stop:0 rgba(178, 243, 254, 255), stop:1 rgba(75, 210, 255, 255));*/
+    border-image: url(':/pics/bg@3x.png') 0 0 0 0 stretch stretch;
+    border-width: 0px;
+}
+
+QMessageBox {
+    background: rgba(75, 210, 255, 255);
+}
+
+QMessageBox QPushButton {
+    border-radius: 5px;
+    background-color: rgb(240, 252, 254);
+    color: #03A7C6;
+    width: 50px;
+    height: 30px;
+}
+
+QMessageBox QPushButton:hover{
+    background-color: #14B4DD;
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+
+QMainWindow#Login {
+}
+
+QMainWindow#Login QLineEdit,QComboBox{
+
+}
+
+
+QMainWindow#Dashboard{
+}
+
+QLabel#Logo{
+    width: 50px;
+    height: 30px;
+}
+
+
+
+QPushButton {
+}
+
+QPushButton:pressed{
+}
+
+QPushButton:disabled{
+}
+
+QPushButton:hover{
+    border-width: 2px;
+    border-color: black;
+}
+
+
+
+QLineEdit[echoMode="2"] {
+    font: 12pt bolds;
+    color: rgb(0,0,0);
+    lineedit-password-character: 9679;
+}
+
+QLineEdit[echoMode="1"] {
+    font: 12pt bolds;
+    color: rgb(0,0,0);
+    lineedit-password-character: 9679;
+}
+
+QLineEdit:read-only {
+    font: 12pt bolds;
+    color: rgb(0,0,0);
+}
+
+QHeaderView::section {
+}
+
+#lbMessage{
+    color: rgb(0,0,0);
+}
+
+#edUsername{
+    color: rgb(0,0,0);
+}
+
+#edPassword{
+    color: rgb(0,0,0);
+}
+
+#lineUsername{
+    color: rgb(0,0,0);
+}
+
+#linePassword{
+    color: rgb(0,0,0);
+}
+
+#btRegisterH:hover {
+        color: rgb(3,167,198);
+}
+
+#btRestoreH:hover {
+        color: rgb(3,167,198);
+}
+
+#btRestorePasswordV:hover {
+        color: rgb(3,167,198);
+}
+
+#cbLocationV {
+        color: rgb(0,0,0);
+}
+
+QListView::item {
+    padding-left: 24px;
+}
+
+
+

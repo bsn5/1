@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#LoginVerBig {
+	background-image: url(:/pics/bg\@3x.png);
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_31">
@@ -117,7 +122,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/logo-main@2x.png</pixmap>
+          <pixmap>:/pics/logo-main@2x.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -335,7 +340,7 @@ background-color: rgb(255, 255, 255);</string>
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/psw_icon@2x.png</pixmap>
+            <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/psw_icon@2x.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -454,7 +459,7 @@ background-color: rgb(255, 255, 255);</string>
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/user_icon@2x.png</pixmap>
+            <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/user_icon@2x.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -731,8 +736,8 @@ color: rgb(75, 210, 255);</string>
   </layout>
  </widget>
  <resources>
+  <include location="../resources/KelvinVPN/main.qrc"/>
   <include location="../resources/common/common.qrc"/>
-  <include location="../resources/DiveVPN/main.qrc"/>
  </resources>
  <connections/>
 </ui>

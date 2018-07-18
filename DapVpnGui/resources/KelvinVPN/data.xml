@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<data>
+    <servers>
+        <server>
+            <location>France</location>
+            <name>fr1 (France)</name>
+            <address>fr1.divevpn.com</address>
+            <port>80</port>
+            <ip>163.172.48.80</ip>
+        </server>
+        <server>
+            <location>Germany</location>
+            <name>de1 (Germany)</name>
+            <address>de1.divevpn.com</address>
+            <port>80</port>
+            <ip>89.163.225.17</ip>
+        </server>
+        <server>
+            <location>Netherlands</location>
+            <name>NL1(Netherlands)</name>
+            <address>nl1.divevpn.com</address>
+            <port>80</port>
+            <ip>163.172.209.122</ip>
+        </server>
+    </servers>
+</data>

@@ -20,7 +20,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">#Dashboard {
+   <string notr="true">#DashboardSmall {
 	background-image: url(:/pics/bg\@3x.png);
 }</string>
   </property>
@@ -58,7 +58,7 @@
             <string>...</string>
            </property>
            <property name="icon">
-            <iconset resource="../resources/DiveVPN/main.qrc">
+            <iconset resource="../resources/KelvinVPN/main.qrc">
              <normaloff>:/pics/help_icon_noactive@3x.png</normaloff>:/pics/help_icon_noactive@3x.png</iconset>
            </property>
            <property name="iconSize">
@@ -154,7 +154,7 @@ color: rgb(4, 167, 198);
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../resources/DiveVPN/main.qrc">
+              <iconset resource="../resources/KelvinVPN/main.qrc">
                <normaloff>:/pics/close_icon@3x.png</normaloff>:/pics/close_icon@3x.png</iconset>
              </property>
              <property name="iconSize">
@@ -204,7 +204,7 @@ color: rgb(4, 167, 198);
             <string>...</string>
            </property>
            <property name="icon">
-            <iconset resource="../resources/DiveVPN/main.qrc">
+            <iconset resource="../resources/KelvinVPN/main.qrc">
              <normaloff>:/pics/settings_icon_noactive@3x.png</normaloff>:/pics/settings_icon_noactive@3x.png</iconset>
            </property>
            <property name="iconSize">
@@ -782,7 +782,7 @@ border: none;</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/point_green@3x.png</pixmap>
+                   <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/point_green@3x.png</pixmap>
                   </property>
                   <property name="scaledContents">
                    <bool>true</bool>
@@ -917,7 +917,7 @@ font: 14px;</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/point_blue@3x.png</pixmap>
+                   <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/point_blue@3x.png</pixmap>
                   </property>
                   <property name="scaledContents">
                    <bool>true</bool>
@@ -1052,7 +1052,7 @@ font: 14px;</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/point_yellow@3x.png</pixmap>
+                   <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/point_yellow@3x.png</pixmap>
                   </property>
                   <property name="scaledContents">
                    <bool>true</bool>
@@ -1190,7 +1190,7 @@ font: 14px;</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/point_red@3x.png</pixmap>
+                   <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/point_red@3x.png</pixmap>
                   </property>
                   <property name="scaledContents">
                    <bool>true</bool>
@@ -1292,8 +1292,8 @@ font: 14px;</string>
   </layout>
  </widget>
  <resources>
+  <include location="../resources/KelvinVPN/main.qrc"/>
   <include location="../resources/common/common.qrc"/>
-  <include location="../resources/DiveVPN/main.qrc"/>
  </resources>
  <connections/>
 </ui>
