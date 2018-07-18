@@ -68,7 +68,7 @@ void DapTunWorkerUnix::loop()
                // qDebug() << "Tun socket is ready for read() ";
                 int readRet = ::read(tunSocket(), tmpBuf + tmpBufSize,DAP_IP_MTU-tmpBufSize);
 
-                qDebug() << "Read "<< readRet<<" bytes";
+                // qDebug() << "Read "<< readRet<<" bytes";
                 if (readRet < 0) {
                     emit loopError(QString("read() returned %1 (%2)").arg(readRet).arg(::strerror(errno)));
                     qCritical() << "Read returned "<< readRet;
@@ -83,10 +83,10 @@ void DapTunWorkerUnix::loop()
                 }
 
             }else if( (pktOut) && (FD_ISSET (tunSocket(), &fds_write_active))){ // Event to Tun socket
-                qDebug() << "Tun socket is ready for write() ";
+                // qDebug() << "Tun socket is ready for write() ";
                 int writeRet = ::write(tunSocket(), pktOut->data+pktOutPos,pktOut->header.op_data.data_size - pktOutPos );
 
-                qDebug() << "Wrote"<< writeRet<<" bytes";
+                // qDebug() << "Wrote"<< writeRet<<" bytes";
                 if (writeRet < 0) {
                     emit loopError(QString("write() returned %1 (%2)").arg(writeRet).arg(::strerror(errno)));
                     qCritical() << "Write returned "<< writeRet;

@@ -285,7 +285,7 @@ void DapChSockForw::workerStart(int a_tunSocket)
  */
 void DapChSockForw::onPktIn(DapChannelPacket* pkt)
 {
-    qDebug() << "onPktIn: id ="<<pkt->hdr()->id << " type = "<< pkt->hdr()->type<< " ch_data_size = "<<pkt->hdr()->size;
+    // qDebug() << "onPktIn: id ="<<pkt->hdr()->id << " type = "<< pkt->hdr()->type<< " ch_data_size = "<<pkt->hdr()->size;
     DapSockForwPacket * pktSF=(DapSockForwPacket *) pkt->data();
     //qDebug() << " onPktIn: SampSFPacket op_code ="<< pktSF->header.op_code;
     switch(pktSF->header.op_code){
