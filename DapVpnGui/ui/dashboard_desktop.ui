@@ -275,7 +275,7 @@ color: rgb(4, 167, 198);
             <number>0</number>
            </property>
            <item>
-            <widget class="QWidget" name="widget_5" native="true">
+            <widget class="QWidget" name="bgServers" native="true">
              <property name="minimumSize">
               <size>
                <width>440</width>
@@ -543,7 +543,7 @@ QPushButton:hover{
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255,255,255);
-border: none;</string>
+</string>
              </property>
              <property name="verticalScrollBarPolicy">
               <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -738,7 +738,7 @@ border: none;</string>
           </spacer>
          </item>
          <item>
-          <widget class="QWidget" name="widget" native="true">
+          <widget class="QWidget" name="bgAuth" native="true">
            <property name="minimumSize">
             <size>
              <width>265</width>
@@ -873,7 +873,7 @@ font: 14px;</string>
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="widget_2" native="true">
+          <widget class="QWidget" name="bgStream" native="true">
            <property name="minimumSize">
             <size>
              <width>265</width>
@@ -1008,7 +1008,7 @@ font: 14px;</string>
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="widget_3" native="true">
+          <widget class="QWidget" name="bgNetConf" native="true">
            <property name="minimumSize">
             <size>
              <width>265</width>
@@ -1146,7 +1146,7 @@ font: 14px;</string>
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="widget_4" native="true">
+          <widget class="QWidget" name="bgConnection" native="true">
            <property name="minimumSize">
             <size>
              <width>265</width>

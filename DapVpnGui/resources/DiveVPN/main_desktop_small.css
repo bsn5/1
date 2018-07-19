@@ -176,6 +176,14 @@ QHeaderView::section {
     color: rgb(255,255,255);
 }
 
+#graphicsView{
+        border: none;
+}
+
+#lineUpstream{
+    color: rgb(255,255,255);
+}
+
 #btRegisterH:hover {
         color: rgb(3,167,198);
 }

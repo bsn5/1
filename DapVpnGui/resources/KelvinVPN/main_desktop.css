@@ -1,9 +1,5 @@
 *{
     font: 12pt bolds;
-    color: rgb(0,0,0);
-}
-
-QWidget{
 }
 
 QMainWindow{
@@ -87,23 +83,27 @@ QHeaderView::section {
 }
 
 #lbMessage{
-    color: rgb(0,0,0);
+    color: rgb(20,180,221);
 }
 
 #edUsername{
-    color: rgb(0,0,0);
+    color: rgb(20,180,221);
 }
 
 #edPassword{
-    color: rgb(0,0,0);
+    color: rgb(20,180,221);
 }
 
 #lineUsername{
-    color: rgb(0,0,0);
+    color: rgb(20,180,221);
 }
 
 #linePassword{
-    color: rgb(0,0,0);
+    color: rgb(20,180,221);
+}
+
+#lineUpstream{
+    color: rgb(20,180,221);
 }
 
 #btRegisterH:hover {
@@ -120,6 +120,48 @@ QHeaderView::section {
 
 #cbLocationV {
         color: rgb(0,0,0);
+}
+
+#bgServers {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#graphicsView {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: rgb(20,180,221);
+}
+
+#bgAuth {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#bgStream {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#bgNetConf {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#bgConnection {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
 }
 
 QListView::item {

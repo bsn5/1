@@ -515,7 +515,7 @@ QPushButton:hover{
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255,255,255);
-border: none;</string>
+</string>
              </property>
              <property name="verticalScrollBarPolicy">
               <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -1290,8 +1290,8 @@ font: 14px;</string>
   </layout>
  </widget>
  <resources>
-  <include location="../resources/KelvinVPN/main.qrc"/>
   <include location="../resources/common/common.qrc"/>
+  <include location="../resources/KelvinVPN/main.qrc"/>
  </resources>
  <connections/>
 </ui>
