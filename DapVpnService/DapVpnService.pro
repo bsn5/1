@@ -139,11 +139,11 @@ unix: !mac : !android {
     INSTALLS += target data_static
 }
 
-include (../libdap-qt/libdap-qt.pri)
-INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap-qt/
-
 include (../libdap/libdap.pri)
 INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap/
+
+include (../libdap-qt/libdap-qt.pri)
+INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap-qt/
 
 #include (../../libdapclient/libdapclient.pri)
 include (../libdap-qt-stream/libdapstreamclient.pri)

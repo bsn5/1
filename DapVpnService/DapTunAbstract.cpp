@@ -232,7 +232,7 @@ bool DapTunAbstract::isLocalAddress(const QString& address)
         return true;
     else if(firstOctet == 172 && secondOctet >= 16 && secondOctet < 32)
         return true;
-    else if(firstOctet = 192 && secondOctet == 168)
+    else if(firstOctet == 192 && secondOctet == 168)
         return true;
     return false;
 

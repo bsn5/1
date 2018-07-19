@@ -100,7 +100,7 @@ void DapTunWorkerUnix::loop()
                 }
             } else if(FD_ISSET (select_breaker, &fds_read_active)) { // Event to stop the socket
                 char ctlCode=0;
-                int readRet = ::read(select_breaker, &ctlCode,1 );
+                ::read(select_breaker, &ctlCode,1 );
                 if( ctlCode == 0 ){ // Other variants - just waked up to write smth out
                     qInfo() << "Got the signal to stop the loop";
                     break;
