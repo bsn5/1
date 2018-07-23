@@ -14,7 +14,9 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(28,198,255);</string>
+   <string notr="true">#Login {
+	background-image: url(:/pics/bg\@3x.png) 0 0 0 0 stretch stretch;
+}</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="spacing">
@@ -57,7 +59,7 @@
           <string>...</string>
          </property>
          <property name="icon">
-          <iconset resource="../resources/DiveVPN/main.qrc">
+          <iconset resource="../resources/KelvinVPN/main.qrc">
            <normaloff>:/pics/help_icon_noactive@3x.png</normaloff>
            <activeoff>:/pics/help_icon_active@3x.png</activeoff>
            <selectedoff>:/pics/help_icon_active@3x.png</selectedoff>:/pics/help_icon_noactive@3x.png</iconset>
@@ -131,7 +133,7 @@
        <item>
         <layout class="QVBoxLayout" name="verticalLayout_31">
          <item>
-          <widget class="QLabel" name="label_12">
+          <widget class="QLabel" name="Logo">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
              <horstretch>0</horstretch>
@@ -146,7 +148,7 @@
            </property>
            <property name="maximumSize">
             <size>
-             <width>200</width>
+             <width>400</width>
              <height>200</height>
             </size>
            </property>
@@ -157,10 +159,10 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/logo_main@3x.png</pixmap>
+            <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/logo_main@3x.png</pixmap>
            </property>
            <property name="scaledContents">
-            <bool>true</bool>
+            <bool>false</bool>
            </property>
            <property name="alignment">
             <set>Qt::AlignHCenter|Qt::AlignTop</set>
@@ -204,7 +206,7 @@
           <string>...</string>
          </property>
          <property name="icon">
-          <iconset resource="../resources/DiveVPN/main.qrc">
+          <iconset resource="../resources/KelvinVPN/main.qrc">
            <normaloff>:/pics/settings_icon_noactive@3x.png</normaloff>
            <activeoff>:/pics/settings_icon_active@3x.png</activeoff>
            <selectedoff>:/pics/settings_icon_active@3x.png</selectedoff>:/pics/settings_icon_noactive@3x.png</iconset>
@@ -290,8 +292,7 @@
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">color: #0043FF;
-font: Regular;</string>
+        <string notr="true"/>
        </property>
        <property name="text">
         <string/>
@@ -381,7 +382,7 @@ font: Regular;</string>
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/user_icon@3x.png</pixmap>
+            <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/user_icon@3x.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -423,7 +424,7 @@ font: Regular;</string>
               <string notr="true">background:	rgb(0,0,0,0);
 border: none;
 font: 24px Regular;
-color: rgba(255,255,255, 0.8);
+
 </string>
              </property>
              <property name="text">
@@ -441,7 +442,7 @@ color: rgba(255,255,255, 0.8);
             </widget>
            </item>
            <item>
-            <widget class="Line" name="line_8">
+            <widget class="Line" name="lineUsername">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -461,7 +462,7 @@ color: rgba(255,255,255, 0.8);
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">color: rgba(255, 255, 255, 0.65);</string>
+              <string notr="true"/>
              </property>
              <property name="frameShadow">
               <enum>QFrame::Plain</enum>
@@ -505,7 +506,7 @@ color: rgba(255,255,255, 0.8);
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/psw_icon@3x.png</pixmap>
+            <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/psw_icon@3x.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -541,7 +542,7 @@ color: rgba(255,255,255, 0.8);
               <string notr="true">background:	rgb(0,0,0,0);
 border: none;
 font: 24px Regular;
-color: rgba(255,255,255, 0.8);
+
 </string>
              </property>
              <property name="text">
@@ -562,7 +563,7 @@ color: rgba(255,255,255, 0.8);
             </widget>
            </item>
            <item>
-            <widget class="Line" name="line_7">
+            <widget class="Line" name="linePassword">
              <property name="minimumSize">
               <size>
                <width>336</width>
@@ -576,7 +577,7 @@ color: rgba(255,255,255, 0.8);
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">color: rgba(255, 255, 255, 0.65);</string>
+              <string notr="true"/>
              </property>
              <property name="frameShadow">
               <enum>QFrame::Plain</enum>
@@ -620,7 +621,7 @@ color: rgba(255,255,255, 0.8);
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/server_icon@3x.png</pixmap>
+            <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/server_icon@3x.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -734,7 +735,7 @@ QComboBox QAbstractItemView {
             </widget>
            </item>
            <item>
-            <widget class="Line" name="line_15">
+            <widget class="Line" name="lineUpstream">
              <property name="minimumSize">
               <size>
                <width>252</width>
@@ -748,7 +749,7 @@ QComboBox QAbstractItemView {
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">color: rgba(255, 255, 255, 0.65);</string>
+              <string notr="true"/>
              </property>
              <property name="frameShadow">
               <enum>QFrame::Plain</enum>
@@ -1089,7 +1090,7 @@ QToolButton:hover{
   </layout>
  </widget>
  <resources>
-  <include location="../resources/DiveVPN/main.qrc"/>
+  <include location="../resources/KelvinVPN/main.qrc"/>
  </resources>
  <connections/>
 </ui>

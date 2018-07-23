@@ -19,6 +19,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
   <property name="styleSheet">
    <string notr="true">#Dashboard {
 	background-image: url(:/pics/bg\@3x.png);
@@ -58,7 +61,7 @@
             <string>...</string>
            </property>
            <property name="icon">
-            <iconset resource="../resources/DiveVPN/main.qrc">
+            <iconset resource="../resources/KelvinVPN/main.qrc">
              <normaloff>:/pics/help_icon_noactive@3x.png</normaloff>:/pics/help_icon_noactive@3x.png</iconset>
            </property>
            <property name="iconSize">
@@ -154,7 +157,7 @@ color: rgb(4, 167, 198);
               <string/>
              </property>
              <property name="icon">
-              <iconset resource="../resources/DiveVPN/main.qrc">
+              <iconset resource="../resources/KelvinVPN/main.qrc">
                <normaloff>:/pics/close_icon@3x.png</normaloff>:/pics/close_icon@3x.png</iconset>
              </property>
              <property name="iconSize">
@@ -204,7 +207,7 @@ color: rgb(4, 167, 198);
             <string>...</string>
            </property>
            <property name="icon">
-            <iconset resource="../resources/DiveVPN/main.qrc">
+            <iconset resource="../resources/KelvinVPN/main.qrc">
              <normaloff>:/pics/settings_icon_noactive@3x.png</normaloff>:/pics/settings_icon_noactive@3x.png</iconset>
            </property>
            <property name="iconSize">
@@ -272,7 +275,7 @@ color: rgb(4, 167, 198);
             <number>0</number>
            </property>
            <item>
-            <widget class="QWidget" name="widget_5" native="true">
+            <widget class="QWidget" name="bgServers" native="true">
              <property name="minimumSize">
               <size>
                <width>440</width>
@@ -540,7 +543,7 @@ QPushButton:hover{
              </property>
              <property name="styleSheet">
               <string notr="true">background-color: rgb(255,255,255);
-border: none;</string>
+</string>
              </property>
              <property name="verticalScrollBarPolicy">
               <enum>Qt::ScrollBarAlwaysOff</enum>
@@ -735,7 +738,7 @@ border: none;</string>
           </spacer>
          </item>
          <item>
-          <widget class="QWidget" name="widget" native="true">
+          <widget class="QWidget" name="bgAuth" native="true">
            <property name="minimumSize">
             <size>
              <width>265</width>
@@ -805,7 +808,7 @@ border: none;</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/point_green@3x.png</pixmap>
+                   <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/point_green@3x.png</pixmap>
                   </property>
                   <property name="scaledContents">
                    <bool>true</bool>
@@ -870,7 +873,7 @@ font: 14px;</string>
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="widget_2" native="true">
+          <widget class="QWidget" name="bgStream" native="true">
            <property name="minimumSize">
             <size>
              <width>265</width>
@@ -940,7 +943,7 @@ font: 14px;</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/point_blue@3x.png</pixmap>
+                   <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/point_blue@3x.png</pixmap>
                   </property>
                   <property name="scaledContents">
                    <bool>true</bool>
@@ -1005,7 +1008,7 @@ font: 14px;</string>
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="widget_3" native="true">
+          <widget class="QWidget" name="bgNetConf" native="true">
            <property name="minimumSize">
             <size>
              <width>265</width>
@@ -1075,7 +1078,7 @@ font: 14px;</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/point_yellow@3x.png</pixmap>
+                   <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/point_yellow@3x.png</pixmap>
                   </property>
                   <property name="scaledContents">
                    <bool>true</bool>
@@ -1143,7 +1146,7 @@ font: 14px;</string>
           </widget>
          </item>
          <item>
-          <widget class="QWidget" name="widget_4" native="true">
+          <widget class="QWidget" name="bgConnection" native="true">
            <property name="minimumSize">
             <size>
              <width>265</width>
@@ -1213,7 +1216,7 @@ font: 14px;</string>
                    <string/>
                   </property>
                   <property name="pixmap">
-                   <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/point_red@3x.png</pixmap>
+                   <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/point_red@3x.png</pixmap>
                   </property>
                   <property name="scaledContents">
                    <bool>true</bool>
@@ -1315,7 +1318,7 @@ font: 14px;</string>
   </layout>
  </widget>
  <resources>
-  <include location="../resources/DiveVPN/main.qrc"/>
+  <include location="../resources/KelvinVPN/main.qrc"/>
  </resources>
  <connections/>
 </ui>

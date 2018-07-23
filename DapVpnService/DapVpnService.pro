@@ -139,6 +139,7 @@ unix: !mac : !android {
     INSTALLS += target data_static
 }
 
+
 include (../libdap-qt/libdap-qt.pri)
 INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap-qt/
 

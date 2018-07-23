@@ -13,6 +13,11 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">#LoginHor {
+	background-image: url(:/pics/bg\@3x.png);
+}</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout_7">
    <item>
     <layout class="QVBoxLayout" name="verticalLayout_6">
@@ -29,7 +34,7 @@
             <string>...</string>
            </property>
            <property name="icon">
-            <iconset resource="../resources/DiveVPN/main.qrc">
+            <iconset resource="../resources/KelvinVPN/main.qrc">
              <normaloff>:/pics/help_icon_noactive@2x.png</normaloff>
              <activeoff>:/pics/help_icon_active@2x.png</activeoff>
              <selectedoff>:/pics/help_icon_active@2x.png</selectedoff>:/pics/help_icon_noactive@2x.png</iconset>
@@ -126,7 +131,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/logo-main@2x.png</pixmap>
+              <pixmap>:/pics/logo-main@2x.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>
@@ -164,7 +169,7 @@
             <string>...</string>
            </property>
            <property name="icon">
-            <iconset resource="../resources/DiveVPN/main.qrc">
+            <iconset resource="../resources/KelvinVPN/main.qrc">
              <normaloff>:/pics/settings_icon_noactive@2x.png</normaloff>
              <activeoff>:/pics/settings_icon_active@2x.png</activeoff>:/pics/settings_icon_noactive@2x.png</iconset>
            </property>
@@ -313,7 +318,7 @@ font: Regular;</string>
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/user_icon@2x.png</pixmap>
+                <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/user_icon@2x.png</pixmap>
                </property>
                <property name="scaledContents">
                 <bool>true</bool>
@@ -467,7 +472,7 @@ color: rgba(255,255,255, 0.8);</string>
                 <string/>
                </property>
                <property name="pixmap">
-                <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/psw_icon@2x.png</pixmap>
+                <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/psw_icon@2x.png</pixmap>
                </property>
                <property name="scaledContents">
                 <bool>true</bool>
@@ -607,7 +612,7 @@ color: rgba(255,255,255, 0.8);</string>
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap resource="../resources/DiveVPN/main.qrc">:/pics/server_icon@2x.png</pixmap>
+              <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/server_icon@2x.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>
@@ -1030,7 +1035,7 @@ border: #fff;
   </layout>
  </widget>
  <resources>
-  <include location="../resources/DiveVPN/main.qrc"/>
+  <include location="../resources/KelvinVPN/main.qrc"/>
  </resources>
  <connections/>
 </ui>

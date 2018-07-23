@@ -30,8 +30,6 @@ void ScreenDashboard::initUi(QWidget * a_w,ScreenRotation a_rotation)
 
     // создаём сцену
     m_scene = new QGraphicsScene();
-    QLabel *lbServerName = a_w->findChild<QLabel *>("lbServerName");
-    QLabel *lbLocationFlag = a_w->findChild<QLabel *>("lbLocationFlag");
     QGraphicsView *graphicsView = a_w->findChild<QGraphicsView*>("graphicsView");
     QCheckBox *cbServersListVisible = a_w->findChild<QCheckBox*>("cbServersListVisible");
     graphicsView->setScene(m_scene);
@@ -59,6 +57,9 @@ void ScreenDashboard::initUi(QWidget * a_w,ScreenRotation a_rotation)
         countryFlags[i.name] = DataLocal::me()->locationToIcon(i.location);
         cbUpstream->addItem(it);
     }
+
+    //QLabel *lbServerName = a_w->findChild<QLabel *>("lbServerName");
+    //QLabel *lbLocationFlag = a_w->findChild<QLabel *>("lbLocationFlag");
 
     connect(cbUpstream,&QListWidget::currentTextChanged ,[=]{
         m_currentUpstreamName = cbUpstream->currentItem()->data(0).toString();

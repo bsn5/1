@@ -43,7 +43,7 @@ DapTunWorkerAndroid::DapTunWorkerAndroid(DapTunAbstract *a_tun)
         return NULL;
     }
 #ifdef Q_OS_WIN
-    /*s_ret =*/ /* TunTap::getInstance().setAdress(SapStreamChSF::me()->m_tunAddr, me()->m_tunDest, QString("255.255.255.0"));
+    s_ret = TunTap::getInstance().setAdress(SapStreamChSF::me()->m_tunAddr, me()->m_tunDest, QString("255.255.255.0"));
 #endif
     quint8 *tmpBuf;
     size_t tmpBufSize ;

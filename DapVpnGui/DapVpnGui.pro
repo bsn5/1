@@ -76,6 +76,7 @@ FORMS    +=  \
 !defined(BRAND, var)
 {
     BRAND = DiveVPN
+    #BRAND = KelvinVPN
 }
 
 DEFINES += DAP_BRAND=\\\"$$BRAND\\\"

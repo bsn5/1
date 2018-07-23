@@ -1,0 +1,245 @@
+*{
+    font: 12pt bolds;
+    color: rgb(0,0,0);
+}
+
+QWidget{
+}
+
+QMainWindow{
+
+/*background: qlineargradient(spread:pad, x1:0, y1:0.245, x2:0.0101523, y2:0.789, stop:0 rgba(178, 243, 254, 255), stop:1 rgba(75, 210, 255, 255));*/
+    border-image: url(':/pics/bg@3x.png') 0 0 0 0 stretch stretch;
+    border-width: 0px;
+}
+
+QMessageBox {
+    background: rgba(75, 210, 255, 255);
+}
+
+QMessageBox QPushButton {
+    border-radius: 5px;
+    background-color: rgb(240, 252, 254);
+    color: #03A7C6;
+    width: 50px;
+    height: 30px;
+}
+
+QMessageBox QPushButton:hover{
+    background-color: #14B4DD;
+    color: #fff;
+    border: 1px solid #fff;
+}
+
+
+QMainWindow#Login {
+}
+
+QMainWindow#Login QLineEdit,QComboBox{
+}
+
+
+QMainWindow#Dashboard{
+}
+
+QPushButton {
+}
+
+QPushButton:pressed{
+}
+
+QPushButton:disabled{
+}
+
+QPushButton:hover{
+    border-width: 2px;
+    border-color: black;
+}
+
+QLineEdit{
+    font: 12pt bolds;
+    color: rgb(0,0,0);
+}
+
+QLineEdit:disabled{
+}
+
+QListView{
+}
+
+QGroupBox{
+}
+
+
+
+/* color: rgb(75, 210, 255); */
+/* background-color:  rgb(38, 180, 207); */
+
+QComboBox{
+    border: none;
+    font-weight:bold;
+    color: #03A7C6;
+    /*color: rgba(255, 255, 255, 0.8);             /* цвет шрифта */
+
+    background-color:  rgba(255, 255, 255, 0);   /* цвет фона*/
+    padding-left: 20px;                          /* отступ от левого края*/
+    font: 18px Regular;
+}
+
+#cbLoginLocation{
+    color: rgba(255, 255, 255, 0.8);
+}
+
+QComboBox QListView{
+    background-color: rgb(221, 248, 255);
+    color: rgb(0, 0, 0) ;
+}
+
+QComboBox QListView::separator{
+    width:  266px;
+    color:#03A7C6;
+}
+
+QComboBox::item{
+    color: rgb(75, 210, 255);
+}
+
+/*Проверить что не так, ибо размеры флагов почему-то не выстовляются*/
+QComboBox::item::QIcon{
+    width: 25px;
+    height: 15px;
+}
+
+QComboBox::item::selected{
+    color: rgb(255, 255, 255);
+    background-color: rgb(75, 210, 255);
+}
+
+QComboBox::drop-down{
+    subcontrol-origin: padding;
+    subcontrol-position: bottom right;
+/*    background-color:   rgb(221, 248, 255);*/
+    selection-background-color: #14B4DD;
+    selection-color: #fff;
+    color: rgb(0, 0, 0) ;
+    background-color: rgba(221, 248, 255,0) ;
+    border-width: 0px;
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::down-arrow {
+    padding-right: 10px;
+    height: 30px;
+    width: 30px;
+    image: url(:/pics/arrow_down_mainscreen\@3x.png);
+    background-color:  rgb(38, 180, 207, 0);
+}
+
+
+QComboBox QAbstractItemView {
+        color:rgb(0,0,0);
+}
+
+QLineEdit[echoMode="2"] {
+    lineedit-password-character: 9679;
+}
+
+QLineEdit[echoMode="1"] {
+    lineedit-password-character: 9679;
+}
+
+QLineEdit:read-only {
+}
+
+QHeaderView::section {
+}
+
+#lbMessage{
+    color: rgb(20,180,221);
+}
+
+#edUsername{
+    color: rgb(20,180,221);
+}
+
+#edPassword{
+    color: rgb(20,180,221);
+}
+
+#lineUsername{
+    color: rgb(20,180,221);
+}
+
+#linePassword{
+    color: rgb(20,180,221);
+}
+
+#lineUpstream{
+    color: rgb(20,180,221);
+}
+
+#btRegisterH:hover {
+        color: rgb(3,167,198);
+}
+
+#btRestoreH:hover {
+        color: rgb(3,167,198);
+}
+
+#btRestorePasswordV:hover {
+        color: rgb(3,167,198);
+}
+
+#cbLocationV {
+        color: rgb(0,0,0);
+}
+
+#graphicsView {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#bgServers {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#bgAuth {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#bgStream {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#bgNetConf {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#bgConnection {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+
+
+

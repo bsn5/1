@@ -72,6 +72,34 @@ QLineEdit:read-only {
 QHeaderView::section {
 }
 
+#lbMessage{
+    color: rgb(0,67,255);
+}
+
+#edUsername{
+    color: rgb(255,255,255);
+}
+
+#edPassword{
+    color: rgb(255,255,255);
+}
+
+#lineUsername{
+    color: rgb(255,255,255);
+}
+
+#linePassword{
+    color: rgb(255,255,255);
+}
+
+#graphicsView{
+        border: none;
+}
+
+#lineUpstream{
+    color: rgb(255,255,255);
+}
+
 #btRegisterH:hover {
         color: rgb(3,167,198);
 }

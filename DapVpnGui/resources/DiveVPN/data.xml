@@ -3,24 +3,17 @@
     <servers>
         <server>
             <location>France</location>
-            <name>fr1 (France)</name>
-            <address>fr1.divevpn.com</address>
-            <port>80</port>
-            <ip>163.172.48.80</ip>
+            <name>KelvinVPN FR-0 (France)</name>
+            <address>ap-fr0.kelvinvpn.demlabs.net</address>
+            <port>8002</port>
+            <ip>163.172.29.34</ip>
         </server>
         <server>
-            <location>Germany</location>
-            <name>de1 (Germany)</name>
-            <address>de1.divevpn.com</address>
+            <location>Netherland</location>
+            <name>KelvinVPN NL-0 (Netherland)</name>
+            <address>ap-nl-0.kelvinvpn.demlabs.net</address>
             <port>80</port>
-            <ip>89.163.225.17</ip>
-        </server>
-        <server>
-            <location>Netherlands</location>
-            <name>NL1(Netherlands)</name>
-            <address>nl1.divevpn.com</address>
-            <port>80</port>
-            <ip>163.172.209.122</ip>
+            <ip>163.172.209.90</ip>
         </server>
     </servers>
 </data>
