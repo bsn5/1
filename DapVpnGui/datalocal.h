@@ -8,34 +8,18 @@
 #include <QMap>
 #include <QPair>
 #include <QSettings>
-
+#include "DapServerInfo.h"
 
 #define SERVER_LIST_FILE "DiveVPNServers.xml"
 
-class DapServerInfo
-{
-public:
-    DapServerInfo(){}
-    DapServerInfo(const DapServerInfo&cp) {
-        address     = cp.address;
-        port        = cp.port;
-        name        = cp.name;
-        location    = cp.location;
-        ip          = cp.ip;
-    }
 
-    QString address;
-    QString port;
-    QString name;
-    QString location;
-    QString ip;
-};
 
 class DataLocal : public QObject
 {
     Q_OBJECT
     const QString ServerListName;
 public:
+    using picturesMap = QMap<DapServerLocation, QString>;
     static DataLocal * me(){ return _me?_me: _me = new DataLocal();}
 
     void setSetting(const QString & a_name,const QVariant &a_value){
@@ -43,11 +27,12 @@ public:
     }
     QVariant setting(const QString& a_name){ return m_settings->value(a_name);}
 
-    void addServer(const QString& a_location, const QString& a_name, const QString & a_ip, const QString& a_addrLine );
+    void addServer(DapServerLocation a_location, const QString& a_name, const QString & a_ip, const QString& a_addrLine );
+    void addServer(const DapServerInfo& dsi);
 
     QList<DapServerInfo>& servers(){return m_servers;}
     const DapServerInfo& serverTheBest(){ return m_servers.at(0) ;  }
-    const QString& locationToIcon(const QString & a_location);
+    QString locationToIconPath(DapServerLocation loc);
     const QString& sizeSuffix();
     const QString& title(){ return m_title;}
     int loginWidth(){return m_loginWidth;}
@@ -57,6 +42,8 @@ public:
     const QColor& sliderColor(){return m_sliderColor;}
 private:
     static DataLocal *_me;
+    static QMap<DapServerLocation, QString> m_pictruePath;
+
     DataLocal();
 
     QList<DapServerInfo> m_servers;
@@ -75,6 +62,7 @@ private:
     QSettings * m_settings;
 
     QString m_title;
+
     void parseXML(const QString& a_fname);
 };
 

@@ -7,6 +7,7 @@
 #include <QMap>
 #include <QSet>
 #include <QStackedWidget>
+#include <QDebug>
 
 //#include <qobject_impl.h>
 
@@ -114,7 +115,7 @@ public:
     QWidget * currentPage(){ return sw()->currentWidget(); }
     void setVars(const QString& a_objName, const QString& a_varName, const QVariant& a_varValue)
     {
-        foreach (auto rotation, rotations()) {
+        for (auto rotation : rotations()) {
             QWidget *w = getWidget(a_objName,rotation);
             if(w)
                 w->setProperty(a_varName.toLatin1().constData(),a_varValue);

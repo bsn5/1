@@ -88,8 +88,7 @@ void MainWindow::onLogout(){
 #endif
     }
     dus->setVars("graphicsView","visible",true);
-    setGraphicsEffect(NULL);
-
+    setGraphicsEffect(0);
 }
 
 
@@ -98,9 +97,7 @@ void MainWindow::sendUpstreamsToServer()
 {
     for(const DapServerInfo& i: DataLocal::me()->servers()){
         ServiceCtl::me().sendCmd(QString("addServerToList %1 %2")
-            .arg(QString("%1:%2")
-                 .arg(i.address)
-                 .arg(i.port))
+            .arg(QString("%1:%2").arg(i.address).arg(i.port))
             .arg(i.ip));
     }
 
