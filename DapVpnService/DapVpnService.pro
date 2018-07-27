@@ -2,6 +2,8 @@ QT += core network xml
 QT -= gui
 CONFIG += c++11 stl
 
+QMAKE_CFLAGS += -std=c99
+
 TARGET = DapVpnService
 CONFIG += console
 DEFINES += DAP_BRAND=\\\"DiveVPN\\\"

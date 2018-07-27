@@ -25,3 +25,5 @@ QMAKE_CFLAGS_DEBUG = \
 
 QMAKE_CFLAGS_RELEASE = \
     -std=gnu99
+
+QMAKE_CFLAGS += -std=c99

@@ -89,10 +89,9 @@ private:
                 QState * stateDashboardConnected;
                 QState * stateDashboardConnecting;
                 QState * stateDashboardDisconnecting;
-            /*
+
             QState * stateAbout;
             QState * stateSettings;
-            */
             QState * stateExiting;
             QFinalState * stateExit;
 
@@ -126,6 +125,9 @@ private:
 signals:
     void sigBtConnect();
     void sigBtDisconnect();
+    void sigStateAbout();
+    void sigStateSetting();
+
 
 private slots:
 

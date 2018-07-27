@@ -78,12 +78,13 @@ void ScreenLogin::initUi(QWidget * a_w,ScreenRotation a_rotation)
     Q_ASSERT(edUsername);
     Q_ASSERT(btLogin);
 
-    connect(edPassword, &QLineEdit::returnPressed, btLogin, &QPushButton::click);
-    connect(btLogin, &QPushButton::clicked, [=]{
-        emit reqConnect(currentUpstreamAddr(),upstreamIp(currentUpstreamAddr())
-                        , edUsername->text(),edPassword->text());
-    });
+    QToolButton *btHelp = a_w->findChild<QToolButton*>("btHepl");
+    QToolButton *btSettings = a_w->findChild<QToolButton*>("btSettings");
 
+    connect(btSettings, &QToolButton::clicked, [=]{emit reqSetting();});
+    connect(btHelp, &QToolButton::clicked, [=]{emit reqAbout();});
+    connect(edPassword, &QLineEdit::returnPressed, btLogin, &QPushButton::click);
+    connect(btLogin, &QPushButton::clicked, [=]{emit reqConnect(currentUpstreamAddr(),upstreamIp(currentUpstreamAddr()), edUsername->text(),edPassword->text()); });
     connect(cbUpstream,&QComboBox::currentTextChanged ,[=]{
         m_currentUpstreamName = cbUpstream->currentText();
         m_currentUpstreamAddr = cbUpstream->currentData().toString();

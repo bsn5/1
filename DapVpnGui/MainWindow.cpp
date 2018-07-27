@@ -497,6 +497,7 @@ MainWindow::MainWindow(QWidget *parent) :
         dus->connectTo<QToolButton>("btRestore", &QToolButton::clicked,[=]{
             QDesktopServices::openUrl(QUrl("https://divevpn.com.ua/my-account/lost-password/"));
         });
+        dus->connectTo<QToolButton>("btHelp", &QToolButton::clicked, [=]{emit sigStateAbout();});
         dus->setVars("lbStatus","text","");
         dus->setVars("btLogin","enabled",true);
         dus->show();

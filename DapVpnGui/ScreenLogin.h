@@ -16,6 +16,8 @@ public:
 signals:
     void reqConnect(QString,QString,QString,QString);
     void currentUpstreamNameChanged(QString);
+    void reqSetting();
+    void reqAbout();
 };
 
 #endif // SCREENLOGIN_H

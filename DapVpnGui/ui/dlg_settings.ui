@@ -64,8 +64,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>563</width>
-        <height>452</height>
+        <width>570</width>
+        <height>473</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -121,6 +121,26 @@
           </property>
           <property name="text">
            <string>Expired date</string>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="lineEdit_2">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>90</y>
+            <width>113</width>
+            <height>28</height>
+           </rect>
+          </property>
+         </widget>
+         <widget class="QLineEdit" name="lineEdit_3">
+          <property name="geometry">
+           <rect>
+            <x>140</x>
+            <y>140</y>
+            <width>113</width>
+            <height>28</height>
+           </rect>
           </property>
          </widget>
         </widget>
