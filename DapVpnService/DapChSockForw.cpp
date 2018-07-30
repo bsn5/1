@@ -199,9 +199,9 @@ DapChSockForw::DapChSockForw(DapStreamer * a_streamer)
     :DapChBase(nullptr, 's'), m_streamer(a_streamer)
 {
     tun = new DapTunNative();
-    connect(tun, &DapTunNative::created, this, &DapChSockForw::tunCreated  );
-    connect(tun, &DapTunNative::destroyed, this, &DapChSockForw::tunDestroyed  );
-    connect(tun, &DapTunNative::error , this, &DapChSockForw::tunError  );
+    connect(tun, &DapTunNative::created, this, &DapChSockForw::tunCreated);
+    connect(tun, &DapTunNative::destroyed, this, &DapChSockForw::tunDestroyed);
+    connect(tun, &DapTunNative::error , this, &DapChSockForw::tunError);
     connect(tun, &DapTunNative::packetOut, this, &DapChSockForw::packetOut);
     connect(tun, &DapTunNative::sendCmd, this, &DapChSockForw::sendCmdAll);
     connect(tun, &DapTunNative::nativeCreateRequest, this, &DapChSockForw::sigTunNativeCreate);

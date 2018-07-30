@@ -15,7 +15,6 @@ public slots:
     void loop() override;
 
 private:
-
     int m_breakerSet[2];
 };
 

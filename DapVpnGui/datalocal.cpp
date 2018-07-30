@@ -100,6 +100,7 @@ void DataLocal::parseXML(const QString& a_fname)
 #ifdef  QT_DEBUG
     addServer(DapServerLocation::FRANCE, "fr-dev", "ap-fr-0.divevpn.demlabs.net", "ap-fr-0.divevpn.demlabs.net:8002");
     addServer(DapServerLocation::NETHERLANDS, "nl-dev", "ap-nl-0.divevpn.demlabs.net", "ap-nl-0.divevpn.demlabs.net:8002");
+    addServer(DapServerLocation::NETHERLANDS, "local", "127.0.0.1", "127.0.0.1:8002");
 #endif
 
 

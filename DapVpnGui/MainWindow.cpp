@@ -627,7 +627,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     // State Dashboard Disconnecting
-    stateDashboardDisconnecting = new QState();
     connect(stateDashboardDisconnecting, &QState::entered,[=]{
         qInfo() << "[MainWindow] State DashboardDisconnecting";
         dus->setVars("btDisconnect","checkable",true);
@@ -668,7 +667,7 @@ MainWindow::MainWindow(QWidget *parent) :
     stateLoginConnecting->addTransition(&ServiceCtl::me(),SIGNAL(sigStateTunnelCreated()),statesDashboard );
 
     // Dashboard ---> DashboardDisconnecting
-    statesDashboard->addTransition(this,SIGNAL(sigBtDisconnect()),stateDashboardDisconnecting);
+   // statesDashboard->addTransition(this,SIGNAL(sigBtDisconnect()),stateDashboardDisconnecting);
 
     // DashboardDisconnectin ---> Begin
     stateDashboardDisconnecting->addTransition(&ServiceCtl::me(),SIGNAL(sigStateUnauthorized()),stateLoginBegin);

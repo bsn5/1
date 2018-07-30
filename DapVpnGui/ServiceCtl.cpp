@@ -77,6 +77,8 @@ void ServiceCtl::procCmd(const QString & a_cmd)
     }
     */
 
+//    if (infos[0] != "stat")
+//        qDebug() << infos;
 
     if(infos.length()>0){
         if(infos[0] == "version"){
@@ -132,7 +134,7 @@ void ServiceCtl::procCmd(const QString & a_cmd)
                 }
             }
         } else if( infos[0] == "disconnected"){
-            emit sigDisconnected();
+            emit sigStateUnauthorized();
         } else if( infos[0]  == "stat"){
             if(infos.length()>=7){
                 emit sigStatistics(infos[3],infos[4]);
