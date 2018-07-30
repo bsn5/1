@@ -442,7 +442,7 @@ int DapVPNService::init()
     srvLocal = new DapUiSocketServer();
 
 //#ifdef DAP_SERVICE_CONNECT_TCP
-    if(srvLocal->listen(QHostAddress("127.0.0.1"),22142)){
+    if(srvLocal->listen(QHostAddress("127.0.0.1"),22143)){
 //#else
 //    srvLocal->setSocketOptions(QLocalServer::WorldAccessOption);
 //    if(srvLocal->listen(DAP_BRAND)){

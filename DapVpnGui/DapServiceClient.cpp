@@ -40,7 +40,7 @@ void DapServiceClient::connectToService()
 
 
 #ifdef DAP_UI_SOCKET_TCP
-            QTimer::singleShot(500,[=]{sockCtl->connectToHost(QHostAddress("127.0.0.1"),22142);});
+            QTimer::singleShot(500,[=]{sockCtl->connectToHost(QHostAddress("127.0.0.1"),22143);});
 #else
             QTimer::singleShot(1000,[=]{
                 qDebug() << "[connectToService]";
