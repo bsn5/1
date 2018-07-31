@@ -42,12 +42,16 @@ void DapServiceNativeMacOS::checkInstallation()
         rootLeft();*/
 
         ::system(QString("/usr/bin/osascript -e 'set windowTitle to \"UNSW requires priveledge access to initialize the secure channel\"\n do shell script \"%1\" with administrator privileges'")
-                 .arg(QString("sudo cp -f /Applications/%1.app/Contents/Resources/com.ncoded.DapVpnService.plist /Library/LaunchDaemons/;"
+                 .arg(QString("sudo launchctl stop com.ncoded.DapVpnService;"
+                              "sudo launchctl unload -w /Library/LaunchDaemons/com.ncoded.DapVpnService.plist;"
+                              "sudo cp -fr /Applications/%1.app/Contents/Resources/tun.kext /Library/Extensions/;"
+                              "sudo cp -f /Applications/%1.app/Contents/Resources/net.sf.tuntaposx.tun.plist /Library/LaunchDaemons/;"
+                              "sudo cp -f /Applications/%1.app/Contents/Resources/com.ncoded.DapVpnService.plist /Library/LaunchDaemons/;"
                               "sudo chown root /Library/LaunchDaemons/com.ncoded.DapVpnService.plist;"
                               "sudo chmod 600 /Library/LaunchDaemons/com.ncoded.DapVpnService.plist;"
-                              "sudo launchctl unload -w /Library/LaunchDaemons/com.ncoded.DapVpnService.plist;"
+                              "sudo launchctl load -w /Library/LaunchDaemons/net.sf.tuntaposx.tun.plist;"
                               "sudo launchctl load -w /Library/LaunchDaemons/com.ncoded.DapVpnService.plist;"
-                              "sudo launchctl start com.ncoded.DapVpnService"
+                              "sudo launchctl start com.ncoded.DapVpnService;"
                               )
                       .arg(DAP_BRAND)).toLatin1().constData() );
     }
