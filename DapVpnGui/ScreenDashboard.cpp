@@ -15,6 +15,8 @@
 
 #include "ScreenDashboard.h"
 #include "datalocal.h"
+#include <QCheckBox>
+#include <QListWidget>
 
 /**
  * @brief DapUiScreenDashboard::initUiCommonAfter

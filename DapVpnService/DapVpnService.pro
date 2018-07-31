@@ -1,6 +1,11 @@
 QT += core network xml
 QT -= gui
-CONFIG += c++11 stl
+CONFIG += c++11 stl c11
+QMAKE_CFLAGS_DEBUG = \
+    -std=gnu99
+
+QMAKE_CFLAGS_RELEASE = \
+    -std=gnu99
 
 TARGET = DapVpnService
 CONFIG += console
@@ -75,9 +80,9 @@ android{
 darwin {
     HEADERS  += DapTunDarwin.h
     SOURCES += DapTunDarwin.cpp
-    INCLUDEPATH += /usr/local/opt/openssl/include
-    LIBS += -L/usr/local/opt/openssl/lib
-    LIBS += -lcrypto
+    #INCLUDEPATH += /usr/local/opt/openssl/include
+    #LIBS += -L/usr/local/opt/openssl/lib
+    #LIBS += -lcrypto
 }
 
 macos {
@@ -100,10 +105,10 @@ win32{
     SOURCES+= $$PWD/../../libDapClient/windows/tuntap/tuntap.cpp
 
     ### for MinGW Compiler
-    INCLUDEPATH += C:\OpenSSL-Win32\include
-    LIBS += C:\OpenSSL-Win32\lib\libcrypto.lib
-    LIBS += C:\OpenSSL-Win32\lib\openssl.lib
-    LIBS += C:\OpenSSL-Win32\lib\libssl.lib
+    #INCLUDEPATH += C:\OpenSSL-Win32\include
+    #LIBS += C:\OpenSSL-Win32\lib\libcrypto.lib
+    #LIBS += C:\OpenSSL-Win32\lib\openssl.lib
+    #LIBS += C:\OpenSSL-Win32\lib\libssl.lib
     ###
 
     LIBS += -lWS2_32

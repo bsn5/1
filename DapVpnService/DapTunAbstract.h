@@ -5,6 +5,7 @@
 #include <QThread>
 #include <QQueue>
 #include <QReadWriteLock>
+#include <pthread.h>
 
 
 #include "DapTunWorkerAbstract.h"
