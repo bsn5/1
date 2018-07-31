@@ -95,19 +95,19 @@ void MainWindow::onLogout(){
 
 void MainWindow::sendUpstreamsToServer()
 {
-    for(const DapServerInfo& i: DataLocal::me()->servers()){
-        ServiceCtl::me().sendCmd(QString("addServerToList %1 %2")
-            .arg(QString("%1:%2").arg(i.address).arg(i.port))
-            .arg(i.ip));
-    }
+//    for(const DapServerInfo& i: DataLocal::me()->servers()){
+//        ServiceCtl::me().sendCmd(QString("addServerToList %1 %2")
+//            .arg(QString("%1:%2").arg(i.address).arg(i.port))
+//            .arg(i.ip));
+//    }
 
-#ifdef  QT_DEBUG
-    ServiceCtl::me().sendCmd("addServerToList testing.divevpn.com:8003 62.210.73.95");
-    ServiceCtl::me().sendCmd("addServerToList dev1.demlabs.net:8001 62.210.73.95");
-    ServiceCtl::me().sendCmd("addServerToList dev2.demlabs.net:8002 62.210.73.95");
-    ServiceCtl::me().sendCmd("addServerToList 192.168.0.104:8002 192.168.0.104"); //TODO: IVAN
-   // ServiceCtl::me().sendCmd("addServerToList 127.0.0.1:8002 127.0.0.1"); //TODO: IVAN
-#endif
+//#ifdef  QT_DEBUG
+//    ServiceCtl::me().sendCmd("addServerToList testing.divevpn.com:8003 62.210.73.95");
+//    ServiceCtl::me().sendCmd("addServerToList dev1.demlabs.net:8001 62.210.73.95");
+//    ServiceCtl::me().sendCmd("addServerToList dev2.demlabs.net:8002 62.210.73.95");
+//    ServiceCtl::me().sendCmd("addServerToList 192.168.0.104:8002 192.168.0.104"); //TODO: IVAN
+//   // ServiceCtl::me().sendCmd("addServerToList 127.0.0.1:8002 127.0.0.1"); //TODO: IVAN
+//#endif
 }
 
 /**

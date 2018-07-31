@@ -126,6 +126,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
 
     siAuthorization->addActionFor(DapSI::True,DapSession::getInstance(),"encryptInit");
     siAuthorization->addActionFor(DapSI::False,DapSession::getInstance(),"logout");
+
     connect(siAuthorization->state(DapSI::True), &QState::entered, [=]{
         qDebug() << " ==== siAUthorization == ::True ===";
         if(stateRequestConnected->active()) {
@@ -184,8 +185,8 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
                 siStream->doActionFor(DapSI::True);
                 sendCmdAll("status stream closed");
             }
-        } else if(stateRequestDisconnected->active())
-                siAuthorization->doActionFor(DapSI::False);
+        } /*else if(stateRequestDisconnected->active())
+                siAuthorization->doActionFor(DapSI::False);*/
     });
 
 
@@ -357,7 +358,8 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     stateRequestConnected->addTransition(this,SIGNAL(sigRequestDisconnected()),stateRequestDisconnected);
 
     /// RequestConnectedFirst ==>RequestConnectedAlways
-    stateRequestConnectedFirst->addTransition(siAuthorization->state(DapSI::True),SIGNAL(entered()),stateRequestConnectedAlways );
+    // stateRequestConnectedAlways temporarily OFF
+    // stateRequestConnectedFirst->addTransition(siAuthorization->state(DapSI::True),SIGNAL(entered()),stateRequestConnectedAlways );
 
     connect(stateRequestConnected,&QState::entered,[=]{
         qDebug() << "[SM] State Request Connected";
