@@ -50,7 +50,6 @@ private:
     QQueue<DapSockForwPacket *>* m_writeQueue;
     QWaitCondition * m_writeQueueCond;
     QReadWriteLock* m_writeQueueLock;
-
 };
 
 #endif // DAPTUNWORKERABSTRACT_H

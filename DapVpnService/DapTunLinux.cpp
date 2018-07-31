@@ -106,12 +106,11 @@ void DapTunLinux::tunDeviceCreate()
     m_tunDeviceName = QString::fromLatin1(dev);
     qInfo() << "Created "<<m_tunDeviceName<<" network interface";
 
-
     /* this is the special file descriptor that the caller will use to talk
     * with the virtual interface */
-
     m_tunSocket = fd;
 
+    emit created();
 }
 
 /**

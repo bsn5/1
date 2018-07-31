@@ -23,7 +23,7 @@ void ScreenVpnAbstract::fillUpstreams(QWidget * a_w)
     for(const DapServerInfo& i: DataLocal::me()->servers()){
         QString keyStr = QString("%1:%2").arg(i.address).arg(i.port);
         QVariant dataStr = keyStr;
-        cbUpstream->addItem(QIcon(DataLocal::me()->locationToIcon(i.location)), i.name ,dataStr);
+        cbUpstream->addItem(QIcon(DataLocal::me()->locationToIconPath(i.location)), i.name ,dataStr);
 
         if (sepIndex != 0)
             cbUpstream->insertSeparator(sepIndex*2-1);

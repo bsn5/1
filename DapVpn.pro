@@ -1,5 +1,7 @@
 TEMPLATE = subdirs
-SUBDIRS = DapVpnGui DapVpnService
+
+SUBDIRS = DapVpnGui DapVpnService #\
+  #  DapVpnGui/DapVpnGuiTests
 
 android{
     SUBDIRS -= DapVpnCli

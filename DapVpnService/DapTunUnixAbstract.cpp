@@ -12,6 +12,7 @@ DapTunUnixAbstract::DapTunUnixAbstract()
     breaker0 = tunWorkerUnix->breaker(0);
     breaker1 = tunWorkerUnix->breaker(1);
     initWorker();
+
 }
 
 /**
@@ -21,19 +22,19 @@ DapTunUnixAbstract::DapTunUnixAbstract()
  */
 void DapTunUnixAbstract::workerStop()
 {
-    char buffer[1];
+    //char buffer[1];
 
     if ( ::write( breaker1, "\0", 1) <= 0){
         qCritical() <<"Can't write to the breaker's pipe!";
         return;
-    }else{
-        nanosleep(&DapTunWorkerUnix::BREAK_LATENCY, NULL);
-
+    }/*else{
+       // nanosleep(&DapTunWorkerUnix::BREAK_LATENCY, NULL);
+        qDebug() << "Write in breaker " << breaker0;
         if (::read(breaker0, buffer, 1) <= 0 || buffer[0] != '\0'){
             qCritical() <<"Can't read to the breaker's pipe!";
             return;
         }
-    }
+    }*/
 }
 
 /**

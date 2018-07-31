@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     DapServiceNativeAbstract.cpp \
     MainWindow.cpp \
     DapUiVpnStateIndicator.cpp \
-    DapUiMainWindow.cpp
+    DapUiMainWindow.cpp \
+    DapServerInfo.cpp
 
 HEADERS  += \
     datalocal.h \
@@ -47,7 +48,8 @@ HEADERS  += \
     DapServiceNativeAbstract.h \
     MainWindow.h \
     DapUiVpnStateIndicator.h \
-    DapUiMainWindow.h
+    DapUiMainWindow.h \
+    DapServerInfo.h
 
 FORMS    +=  \
              ui/dashboard_desktop_big.ui \

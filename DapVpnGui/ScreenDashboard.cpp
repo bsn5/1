@@ -51,10 +51,10 @@ void ScreenDashboard::initUi(QWidget * a_w,ScreenRotation a_rotation)
     for(const DapServerInfo& i: DataLocal::me()->servers()){
         QString keyStr = QString("%1:%2").arg(i.address).arg(i.port);
         QListWidgetItem *it = new QListWidgetItem(i.name);
-        it->setIcon(QIcon(DataLocal::me()->locationToIcon(i.location)));
+        it->setIcon(QIcon(DataLocal::me()->locationToIconPath(i.location)));
         // из-за идиотского устройства itemoв хранить данные прямо в них нельзя :(
         serverKeys[i.name] = keyStr;
-        countryFlags[i.name] = DataLocal::me()->locationToIcon(i.location);
+        countryFlags[i.name] = DataLocal::me()->locationToIconPath(i.location);
         cbUpstream->addItem(it);
     }
 

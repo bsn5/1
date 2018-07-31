@@ -49,13 +49,12 @@ void DapTunWorkerUnix::loop()
     FD_SET (tunSocket(), &fds_write);
     int select_breaker = breaker(0);
     FD_SET ( select_breaker,&fds_read);
-
     do{
         fds_read_active=fds_read;
         fds_write_active = fds_write;
 
         if (pktOut == nullptr) {  // if no non-sent data
-                    pktOut = writeDequeue();
+            pktOut = writeDequeue();
         }
         int ret = 0;
         if (pktOut)
@@ -120,7 +119,7 @@ void DapTunWorkerUnix::loop()
 
     }while(1);
 
-    qDebug() << "[SapStreamChSF] Listen thread finished";
+    qDebug() << "[SapStreamChSF] Listen thread finished!";
     ::free(tmpBuf);
 
     emit loopStopped();

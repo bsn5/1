@@ -216,7 +216,9 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     siNetConfig->addStateSignal(DapSI::False,siStream->state(DapSI::False),SIGNAL(entered()) );
     siNetConfig->addStateSignal(DapSI::False,siAuthorization->state(DapSI::False),SIGNAL(entered()) );
     siNetConfig->addActionFor(DapSI::True, chSockForw,"requestIP");
-    siNetConfig->addActionFor(DapSI::False, chSockForw,"netConfigClear");
+
+    // siNetConfig->addActionFor(DapSI::False, chSockForw,"netConfigClear");
+
     siNetConfig->state(DapSI::SwitchingToFalse)->addTransition(siNetConfig->state(DapSI::False));
 
     connect(siNetConfig->state(DapSI::True), &QState::entered, [=]{
@@ -261,6 +263,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     siTunnel->addStateSignal(DapSI::Error,chSockForw,SIGNAL(tunError(QString)) );
     siTunnel->addActionFor(DapSI::True,chSockForw ,"tunCreate");
     siTunnel->addActionFor(DapSI::False,chSockForw ,"tunDestroy");
+
     connect(siTunnel->state(DapSI::True), &QState::entered, [=]{
         sendCmdAll("status tunnel_created true");
     });
@@ -336,13 +339,16 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
                 qDebug() << "Process of disconnecting is on " <<si->name()<< " state, everything looks good (only if its not holded here or/and repeating this line again and again and nothing except this";
                 break;
             }
+            //qInfo() << "Name:" << si->current();
             if (si->current() == DapSI::True){ // we found nobody in TrueToFalse state and get to get you on this
                 qInfo() <<"Beginning the disconnect chain";
                 si->doActionFor(DapSI::False);
-                sendCmdAll("request disconnecting");
-                break;
+                //sendCmdAll("request disconnecting");
+                //break;
             }
+            // sendCmdAll("request disconnecting");
        }
+         sendCmdAll("disconnected");
     });
 
     // Request for Сonnected state

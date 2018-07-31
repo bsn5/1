@@ -40,14 +40,22 @@ void DapTunAbstract::initWorker()
 
     connect(tunThread,&QThread::started, tunWorker,&DapTunWorkerAbstract::loop);
 
+    connect(tunThread,&QThread::finished, [=] {
+        qDebug() << "Tun worker is finished";
+    });
+
+    if (tunWorker == nullptr) {
+        qWarning() << "[DapTunAbstract::initWorker] tunWorker is nullptr";
+        return;
+    }
+
     connect(tunWorker,&DapTunWorkerAbstract::loopStarted,this,&DapTunAbstract::created);
 
     connect(tunWorker,&DapTunWorkerAbstract::packetOut,this,&DapTunAbstract::packetOut);
     connect(tunWorker,&DapTunWorkerAbstract::loopError,this,&DapTunAbstract::error);
 
     connect(tunWorker,&DapTunWorkerAbstract::loopStopped,this,&DapTunAbstract::onWorkerStopped);
-    connect(tunWorker,&DapTunWorkerAbstract::loopStopped,this,&DapTunAbstract::tunDeviceDestroy);
-
+  //  connect(tunWorker,&DapTunWorkerAbstract::loopStopped,this,&DapTunAbstract::tunDeviceDestroy);
 }
 
 /**
@@ -107,7 +115,7 @@ void DapTunAbstract::onWorkerStarted()
 void DapTunAbstract::onWorkerStopped()
 {
     qInfo()<<"Worker loop stopped";
-    tunWorker->moveToThread(this->thread());
+  //  tunWorker->moveToThread(this->thread());
     tunWorker->setTunSocket(-1);
     tunDeviceDestroy();
 }
