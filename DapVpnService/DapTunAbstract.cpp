@@ -41,7 +41,7 @@ void DapTunAbstract::initWorker()
     connect(tunThread,&QThread::started, tunWorker,&DapTunWorkerAbstract::loop);
 
     connect(tunThread,&QThread::finished, [=] {
-        qDebug() << "Tun worker is finished";
+        qDebug() << "Tun worker is finished!";
     });
 
     if (tunWorker == nullptr) {
@@ -94,10 +94,13 @@ void DapTunAbstract::workerStart()
  */
 void DapTunAbstract::destroy()
 {
-    if(m_tunSocket)
+    if(m_tunSocket) {
         workerStop();
-    else
+        tunThread->quit();
+        tunThread->wait();
+    } else {
         qWarning() << "Tunnel is not working";
+    }
 }
 
 

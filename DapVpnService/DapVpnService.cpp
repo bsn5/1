@@ -137,11 +137,11 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
         }
     });
     connect(siAuthorization->state(DapSI::False), &QState::entered, [=]{
-        qDebug() << "siAuthorization ==> ::False state";
-        if (stateRequestConnectedAlways->active()) {
-            siAuthorization->doActionFor(DapSI::True);
-            sendCmdAll("status authorize false");
-        }
+//        qDebug() << "siAuthorization ==> ::False state";
+//        if (stateRequestConnectedAlways->active()) {
+//            siAuthorization->doActionFor(DapSI::True);
+//            sendCmdAll("status authorize false");
+//        }
     });
 
     // Stream indicator
@@ -178,15 +178,20 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
 
     // --- Enter in ::False state
     connect(siStream->state(DapSI::False), &QState::entered, [=]{
-        if(stateRequestConnectedAlways->active()) {
+        qDebug() << "Enter in state stream false";
+/*        if(stateRequestConnectedAlways->active()) {
             qDebug() << "Reconnecting: siAuthorization->current() == "<< siAuthorization->current();
             if ((siStream->previous() != DapSI::ErrorAuth ) // not sure.. will it be ::Error or ::ErrorAuth?
                 ||(siAuthorization->current() == DapSI::True)){
                 siStream->doActionFor(DapSI::True);
                 sendCmdAll("status stream closed");
             }
-        } /*else if(stateRequestDisconnected->active())
-                siAuthorization->doActionFor(DapSI::False);*/
+        }*/ /*else if(stateRequestDisconnected->active()) */
+        if(stateRequestDisconnected->active())
+        {
+            qDebug() << "DO action for false";
+                siAuthorization->doActionFor(DapSI::False);
+        }
     });
 
 
@@ -223,6 +228,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     siNetConfig->state(DapSI::SwitchingToFalse)->addTransition(siNetConfig->state(DapSI::False));
 
     connect(siNetConfig->state(DapSI::True), &QState::entered, [=]{
+        qDebug() << "siNetConfig->state(DapSI::True)";
         if(stateRequestConnected->active()){
             if( (siTunnel->current()==DapSI::True )||(siTunnel->current()==DapSI::SwitchingToTrue) ){
                 qDebug() << "Destroy tunnel to recreate it after";
@@ -232,15 +238,18 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
                 siTunnel->doActionFor(DapSI::True);
             }
 
-        }else if(stateRequestDisconnected->active())
+        }else if(stateRequestDisconnected->active()) {
+            qDebug() << "+++ SI STREAM DO ACTION FOR FALSE";
                 siStream->doActionFor(DapSI::False);
+        }
     });
     connect(siNetConfig->state(DapSI::False), &QState::entered, [=]{
-        if(stateRequestConnected->active()){
-            siNetConfig->doActionFor(DapSI::True);
-            sendCmdAll("status net_config_received false");
-        } else if(stateRequestDisconnected->active())
-                siStream->doActionFor(DapSI::False);
+
+//        if(stateRequestConnected->active()){
+//            siNetConfig->doActionFor(DapSI::True);
+//            sendCmdAll("status net_config_received false");
+//        } else if(stateRequestDisconnected->active())
+//                siStream->doActionFor(DapSI::False);
     });
     connect(siNetConfig->state(DapSI::Error),&QState::entered,[=]{
         switch(siNetConfig->previous()){
@@ -270,11 +279,14 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     });
 
     connect(siTunnel->state(DapSI::False), &QState::entered, [=]{
+        qDebug() << "++++++ SI TUNNEL IN STATE FALSE ";
         if(stateRequestConnected->active()){
                 siTunnel->doActionFor(DapSI::True);
                 sendCmdAll("status tunnel_created false");
         }else if(stateRequestDisconnected->active())
-                siNetConfig->doActionFor(DapSI::False);
+                siStream->doActionFor(DapSI::False);
+        //siNetConfig->doActionFor(DapSI::False);
+       // siAuthorization->doActionFor(DapSI::False);
     });
     connect(siTunnel->state(DapSI::Error),&QState::entered,[=]{
         switch(siTunnel->previous()){
@@ -314,7 +326,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     statesRequest = new QState(&sm);
     stateRequestConnected = new QState(statesRequest);
     stateRequestConnectedFirst = new QState(stateRequestConnected);
-    stateRequestConnectedAlways = new QState(stateRequestConnected);
+    // stateRequestConnectedAlways = new QState(stateRequestConnected);
     stateRequestDisconnected = new QState(statesRequest);
     statesRequest->setInitialState(stateRequestDisconnected);
 
@@ -340,12 +352,13 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
                 qDebug() << "Process of disconnecting is on " <<si->name()<< " state, everything looks good (only if its not holded here or/and repeating this line again and again and nothing except this";
                 break;
             }
-            //qInfo() << "Name:" << si->current();
+            qInfo() << "Name:" << si->name();
+            // if( si->name() == "authorization" )
             if (si->current() == DapSI::True){ // we found nobody in TrueToFalse state and get to get you on this
                 qInfo() <<"Beginning the disconnect chain";
                 si->doActionFor(DapSI::False);
-                //sendCmdAll("request disconnecting");
-                //break;
+                // sendCmdAll("request disconnecting");
+                break;
             }
             // sendCmdAll("request disconnecting");
        }
@@ -401,10 +414,10 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
                             if(stateRequestConnectedFirst->active()){
                                 qDebug() << "For the first connection request we do return to the first state";
                                 emit sigRequestDisconnected();
-                            }else if(stateRequestConnectedAlways->active()){
+                            }/*else if(stateRequestConnectedAlways->active()){
                                 qDebug() << "For the reconnection situation we do the action to achieve the ::True state";
                                 QTimer::singleShot(2000,[=]{   si->doActionFor(DapSI::True); });
-                            }
+                            }*/
                         }break;
                         default: {}
                     }

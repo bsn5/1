@@ -23,7 +23,7 @@ DapTunUnixAbstract::DapTunUnixAbstract()
 void DapTunUnixAbstract::workerStop()
 {
     //char buffer[1];
-
+    qDebug() << "DapTunUnixAbstract::workerStop";
     if ( ::write( breaker1, "\0", 1) <= 0){
         qCritical() <<"Can't write to the breaker's pipe!";
         return;

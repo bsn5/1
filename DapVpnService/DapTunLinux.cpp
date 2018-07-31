@@ -27,8 +27,6 @@ int DapTunLinux::nmcliVersionBuild=0;
  */
 DapTunLinux::DapTunLinux()
 {
-
-
     if(nmcliVersion.size()==0){ // If not detected before - detect nmcli version
         QProcess cmdProcess;
         // Thats command takes the last one piece of 'nmcli -v' output
@@ -49,7 +47,6 @@ DapTunLinux::DapTunLinux()
                    .arg(nmcliVersionMinor)
                    .arg(nmcliVersionBuild);
     }
-
 }
 
 /**
@@ -113,12 +110,28 @@ void DapTunLinux::tunDeviceCreate()
     emit created();
 }
 
+
+QString DapTunLinux::currentConnectionInterface() {
+    QProcess process;
+
+    // https://askubuntu.com/questions/787547/nmcli-how-to-get-the-last-used-connection
+    process.start("bash", QStringList() << "-c" <<  "nmcli -t -f NAME,TIMESTAMP con show | sort -t: -nk2 | tail -n1 | cut -d: -f1");
+    process.waitForFinished(-1);
+
+    QString result = process.readAllStandardOutput();
+    if(result.isEmpty()) {
+        qWarning() << "Can't get current connection interface name!";
+
+    }
+    result.chop(1); // delete \n symbol
+    return result;
+}
+
 /**
  * @brief DapTunLinux::onWorkerStarted
  */
 void DapTunLinux::onWorkerStarted()
 {
-
     qDebug() << "[SapStreamChSF] tunnelCreate()";
     QProcess process;
 
@@ -126,6 +139,8 @@ void DapTunLinux::onWorkerStarted()
         qCritical()<< "[SapStreamChSF] Can't bring up network interface ";
         return;
     }
+
+    m_lastUsedConnectionName = currentConnectionInterface();
 
     process.start("bash", QStringList() << "-c" <<  "netstat -rn|grep 'UG '| head -n 1| awk '{print $2;}'");
     process.waitForFinished(-1);
@@ -215,10 +230,6 @@ void DapTunLinux::onWorkerStarted()
         ).toLatin1().constData());
 
     ::system("nmcli connection up DiveVPN");
-
-
-
-
 }
 
 /**
@@ -230,6 +241,8 @@ void DapTunLinux::tunDeviceDestroy()
            .arg(tunDeviceName() ).toLatin1().constData() );
     ::system("nmcli connection down DiveVPN");
     ::system("nmcli connection delete DiveVPN");
+    ::system(QString("nmcli connection up %1")
+             .arg(m_lastUsedConnectionName).toLatin1().constData());
     DapTunUnixAbstract::tunDeviceDestroy();
 }
 
