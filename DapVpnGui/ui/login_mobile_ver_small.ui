@@ -122,7 +122,7 @@
           <string/>
          </property>
          <property name="pixmap">
-          <pixmap>:/pics/logo-main@2x.png</pixmap>
+          <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/logo_mobile@3x.png</pixmap>
          </property>
          <property name="scaledContents">
           <bool>true</bool>
@@ -334,6 +334,8 @@ background-color: rgb(255, 255, 255);</string>
            </property>
            <property name="styleSheet">
             <string notr="true">background:	rgb(0,0,0,0);
+
+
 </string>
            </property>
            <property name="text">
@@ -413,7 +415,7 @@ background-color: rgb(255, 255, 255);</string>
           </widget>
          </item>
          <item>
-          <widget class="Line" name="line_9">
+          <widget class="Line" name="linePassword">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>
@@ -529,7 +531,7 @@ background-color: rgb(255, 255, 255);</string>
           </widget>
          </item>
          <item>
-          <widget class="Line" name="line_10">
+          <widget class="Line" name="lineUsername">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
              <horstretch>0</horstretch>

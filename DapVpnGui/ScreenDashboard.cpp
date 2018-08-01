@@ -1,4 +1,6 @@
 #include <QtDebug>
+#include <QCheckBox>
+#include <QListWidget>
 
 #ifdef DAP_PLATFORM_DESKTOP
 #include "ui_dashboard_desktop.h"
@@ -41,29 +43,42 @@ void ScreenDashboard::initUi(QWidget * a_w,ScreenRotation a_rotation)
     graphicsView->setSceneRect(0,0,m_sceneWidth-3, m_sceneHeight-3);
 
     // список серверов
+    #ifdef DAP_PLATFORM_MOBILE
+    QComboBox *cbUpstream = a_w->findChild<QComboBox*>("cbUpstream");
+    #else
     QListWidget *cbUpstream = a_w->findChild<QListWidget*>("cbUpstream");
+    #endif
     cbUpstream->setVisible(false);
-
     connect(cbServersListVisible, &QCheckBox::stateChanged, [=](int st){
         cbUpstream->setVisible(st == 2);
     });
 
     for(const DapServerInfo& i: DataLocal::me()->servers()){
         QString keyStr = QString("%1:%2").arg(i.address).arg(i.port);
-        QListWidgetItem *it = new QListWidgetItem(i.name);
-        it->setIcon(QIcon(DataLocal::me()->locationToIcon(i.location)));
         // из-за идиотского устройства itemoв хранить данные прямо в них нельзя :(
         serverKeys[i.name] = keyStr;
         countryFlags[i.name] = DataLocal::me()->locationToIcon(i.location);
+        #ifdef DAP_PLATFORM_MOBILE
+        cbUpstream->addItem(QIcon(DataLocal::me()->locationToIcon(i.location)),i.name);
+        #else
+        QListWidgetItem *it = new QListWidgetItem(i.name);
+        it->setIcon(QIcon(DataLocal::me()->locationToIcon(i.location)));
         cbUpstream->addItem(it);
+        #endif
+
     }
 
     //QLabel *lbServerName = a_w->findChild<QLabel *>("lbServerName");
     //QLabel *lbLocationFlag = a_w->findChild<QLabel *>("lbLocationFlag");
-
+    #ifdef DAP_PLATFORM_MOBILE
+    connect(cbUpstream,&QComboBox::currentTextChanged ,[=]{
+        m_currentUpstreamName = cbUpstream->currentText();
+    #else
     connect(cbUpstream,&QListWidget::currentTextChanged ,[=]{
         m_currentUpstreamName = cbUpstream->currentItem()->data(0).toString();
+        #endif
         m_currentUpstreamAddr = serverKeys[m_currentUpstreamName];
+
         //lbServerName->setText(m_currentUpstreamName);
         //lbLocationFlag->setPixmap(QPixmap(countryFlags[m_currentUpstreamName]));
         emit currentUpstreamNameChanged(m_currentUpstreamName);

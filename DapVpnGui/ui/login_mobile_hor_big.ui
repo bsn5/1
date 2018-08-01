@@ -131,7 +131,7 @@
               <string/>
              </property>
              <property name="pixmap">
-              <pixmap>:/pics/logo-main@2x.png</pixmap>
+              <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/logo_mobile@3x.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>
@@ -373,7 +373,7 @@ color: rgba(255,255,255, 0.8);</string>
               </widget>
              </item>
              <item>
-              <widget class="Line" name="line_8">
+              <widget class="Line" name="lineUsername">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                  <horstretch>0</horstretch>
@@ -521,7 +521,7 @@ color: rgba(255,255,255, 0.8);</string>
               </widget>
              </item>
              <item>
-              <widget class="Line" name="line_7">
+              <widget class="Line" name="linePassword">
                <property name="minimumSize">
                 <size>
                  <width>252</width>
@@ -662,7 +662,7 @@ color: rgba(255,255,255, 0.8);</string>
               </widget>
              </item>
              <item>
-              <widget class="Line" name="line_15">
+              <widget class="Line" name="lineUpstream">
                <property name="minimumSize">
                 <size>
                  <width>252</width>

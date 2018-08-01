@@ -172,6 +172,51 @@ QHeaderView::section {
         color: rgb(0,0,0);
 }
 
+#lineUsername{
+color: rgba(255, 255, 255, 0.65);
+}
+
+#linePassword{
+color: rgba(255, 255, 255, 0.65);
+}
+
+#lineUpstream{
+color: rgba(255, 255, 255, 0.65);
+}
+
+#edUsername{
+color: rgba(255,255,255, 0.8);
+}
+
+#edPassword{
+color: rgba(255,255,255, 0.8);
+}
+
+#btRegister{
+        color: #fff;
+}
+
+#btRegister:hover{
+        color: #1892ac;
+}
+
+#btRestore{
+        color: #fff;
+}
+
+#btRestore:hover{
+        color: #1892ac;
+}
+
+#bgUsername{
+        background-color: rgb(240, 252, 254);
+}
+
+#bgStatistics
+{
+        background-color: rgb(240, 252, 254);
+}
+
 
 
 
