@@ -178,7 +178,6 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
 
     // --- Enter in ::False state
     connect(siStream->state(DapSI::False), &QState::entered, [=]{
-        qDebug() << "Enter in state stream false";
 /*        if(stateRequestConnectedAlways->active()) {
             qDebug() << "Reconnecting: siAuthorization->current() == "<< siAuthorization->current();
             if ((siStream->previous() != DapSI::ErrorAuth ) // not sure.. will it be ::Error or ::ErrorAuth?
@@ -187,10 +186,8 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
                 sendCmdAll("status stream closed");
             }
         }*/ /*else if(stateRequestDisconnected->active()) */
-        if(stateRequestDisconnected->active())
-        {
-            qDebug() << "DO action for false";
-                siAuthorization->doActionFor(DapSI::False);
+        if(stateRequestDisconnected->active()) {
+            siAuthorization->doActionFor(DapSI::False);
         }
     });
 
@@ -279,7 +276,6 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     });
 
     connect(siTunnel->state(DapSI::False), &QState::entered, [=]{
-        qDebug() << "++++++ SI TUNNEL IN STATE FALSE ";
         if(stateRequestConnected->active()){
                 siTunnel->doActionFor(DapSI::True);
                 sendCmdAll("status tunnel_created false");
@@ -352,7 +348,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
                 qDebug() << "Process of disconnecting is on " <<si->name()<< " state, everything looks good (only if its not holded here or/and repeating this line again and again and nothing except this";
                 break;
             }
-            qInfo() << "Name:" << si->name();
+            // qInfo() << "Name:" << si->name();
             // if( si->name() == "authorization" )
             if (si->current() == DapSI::True){ // we found nobody in TrueToFalse state and get to get you on this
                 qInfo() <<"Beginning the disconnect chain";
