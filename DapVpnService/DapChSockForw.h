@@ -69,6 +69,7 @@ signals:
     void netConfigReceived(QString,QString); //ok
     void netConfigRequested();
     void netConfigReceivedSame();
+    void netConfigCleared();
     void tunCreated(); //ok
     void tunDestroyed(); //ok
     void tunError(const QString&); //ok
@@ -81,6 +82,7 @@ public slots:
     void packetOut(DapSockForwPacket *pkt); //ok
 
     void requestIP(); //ok
+    void netConfigClear();
 
     void tunCreate(); // create with all predefined before values
     void tunDestroy();

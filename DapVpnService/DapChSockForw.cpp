@@ -244,6 +244,16 @@ void DapChSockForw::requestIP()
 }
 
 /**
+ * @brief DapChSockForw::netConfigClear
+ */
+void DapChSockForw::netConfigClear()
+{
+    m_addr.clear();
+    m_gw.clear();
+    emit netConfigCleared();
+}
+
+/**
  * @brief DapChSockForw::tunCreate
  * @param a_addr
  * @param a_gw
@@ -313,8 +323,8 @@ void DapChSockForw::onPktIn(DapChannelPacket* pkt)
             }
         } break;
         case STREAM_SF_PACKET_OP_CODE_RAW_L3_ADDR_REPLY:{
-            m_addr= QHostAddress(ntohl (*((quint32*) pktSF->data))).toString() ;
-            m_gw =QHostAddress(ntohl ( ((quint32*) pktSF->data)[1])).toString() ;
+            m_addr = QHostAddress(ntohl (*((quint32*) pktSF->data))).toString() ;
+            m_gw = QHostAddress(ntohl ( ((quint32*) pktSF->data)[1])).toString() ;
             emit netConfigReceived(m_addr,m_gw);
         }break;
         case STREAM_SF_PACKET_OP_CODE_RAW_RECV:{

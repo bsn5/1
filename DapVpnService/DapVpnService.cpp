@@ -185,9 +185,9 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
                 sendCmdAll("status stream closed");
             }
         }*/ /*else if(stateRequestDisconnected->active()) */
-        if(stateRequestDisconnected->active()) {
-            siAuthorization->doActionFor(DapSI::False);
-        }
+//        if(stateRequestDisconnected->active()) {
+//            siNetConfig->doActionFor(DapSI::False);
+//        }
     });
 
 
@@ -216,10 +216,11 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     siNetConfig->addStateSignal(DapSI::True,chSockForw,SIGNAL(netConfigReceivedSame()) );
     siNetConfig->addStateSignal(DapSI::SwitchingToTrue,chSockForw,SIGNAL(netConfigRequested()));
     siNetConfig->addStateSignal(DapSI::False,siStream->state(DapSI::False),SIGNAL(entered()) );
-    siNetConfig->addStateSignal(DapSI::False,siAuthorization->state(DapSI::False),SIGNAL(entered()) );
-    siNetConfig->addActionFor(DapSI::True, chSockForw,"requestIP");
+    //siNetConfig->addStateSignal(DapSI::False,siAuthorization->state(DapSI::False),SIGNAL(entered()));
+    siNetConfig->addStateSignal(DapSI::False,chSockForw, SIGNAL(netConfigCleared()));
 
-    // siNetConfig->addActionFor(DapSI::False, chSockForw,"netConfigClear");
+    siNetConfig->addActionFor(DapSI::True, chSockForw,"requestIP");
+    siNetConfig->addActionFor(DapSI::False, chSockForw,"netConfigClear");
 
     siNetConfig->state(DapSI::SwitchingToFalse)->addTransition(siNetConfig->state(DapSI::False));
 
@@ -235,17 +236,17 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
             }
 
         }else if(stateRequestDisconnected->active()) {
-            qDebug() << "+++ SI STREAM DO ACTION FOR FALSE";
                 siStream->doActionFor(DapSI::False);
         }
     });
     connect(siNetConfig->state(DapSI::False), &QState::entered, [=]{
-
 //        if(stateRequestConnected->active()){
 //            siNetConfig->doActionFor(DapSI::True);
 //            sendCmdAll("status net_config_received false");
 //        } else if(stateRequestDisconnected->active())
 //                siStream->doActionFor(DapSI::False);
+        if(stateRequestDisconnected->active())
+            siAuthorization->doActionFor(DapSI::False);
     });
     connect(siNetConfig->state(DapSI::Error),&QState::entered,[=]{
         switch(siNetConfig->previous()){

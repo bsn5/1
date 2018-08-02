@@ -77,8 +77,8 @@ void ServiceCtl::procCmd(const QString & a_cmd)
     }
     */
 
-    if (infos[0] != "stat")
-        qDebug() << infos;
+/*    if (infos[0] != "stat")
+        qDebug() << infos*/;
 
     if(infos.length()>0){
         if(infos[0] == "version"){
