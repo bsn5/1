@@ -156,6 +156,11 @@ QLineEdit:read-only {
 QHeaderView::section {
 }
 
+QLabel#Logo{
+    width: 50px;
+    height: 30px;
+}
+
 #btRegisterH:hover {
         color: rgb(3,167,198);
 }
@@ -170,6 +175,64 @@ QHeaderView::section {
 
 #cbLocationV {
         color: rgb(0,0,0);
+}
+
+#bgServers {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#graphicsView {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: rgb(20,180,221);
+}
+
+#bgAuth {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#bgStream {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#bgUsername {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+    background-color: rgb(255,255,255);
+}
+
+#bgNetConf {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#bgConnection {
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+}
+
+#bgStatistics{
+    border-style:inset;
+    border-width: 1px;
+    border-radius: 10px;
+    color: rgb(20,180,221);
+    background-color: rgb(255, 255, 255);
 }
 
 

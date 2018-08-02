@@ -200,6 +200,16 @@ QHeaderView::section {
         color: rgb(0,0,0);
 }
 
+#bgUsername {
+    background-color: rgb(240, 252, 254);
+    border: none;
+}
+
+#bgStatistics{
+    background-color: rgb(255, 255, 255);
+}
+
+
 
 
 

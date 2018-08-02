@@ -153,7 +153,7 @@
             <string/>
            </property>
            <property name="pixmap">
-            <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/logo_main@3x.png</pixmap>
+            <pixmap resource="../resources/KelvinVPN/main.qrc">:/pics/logo_mobile@3x.png</pixmap>
            </property>
            <property name="scaledContents">
             <bool>true</bool>
@@ -410,7 +410,7 @@ font: Regular;</string>
               <string notr="true">background:	rgb(0,0,0,0);
 border: none;
 font: 24px Regular;
-color: rgba(255,255,255, 0.8);
+
 </string>
              </property>
              <property name="text">
@@ -428,7 +428,7 @@ color: rgba(255,255,255, 0.8);
             </widget>
            </item>
            <item>
-            <widget class="Line" name="line_8">
+            <widget class="Line" name="lineUsername">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
                <horstretch>0</horstretch>
@@ -448,7 +448,7 @@ color: rgba(255,255,255, 0.8);
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">color: rgba(255, 255, 255, 0.65);</string>
+              <string notr="true"/>
              </property>
              <property name="frameShadow">
               <enum>QFrame::Plain</enum>
@@ -528,7 +528,7 @@ color: rgba(255,255,255, 0.8);
               <string notr="true">background:	rgb(0,0,0,0);
 border: none;
 font: 24px Regular;
-color: rgba(255,255,255, 0.8);
+
 </string>
              </property>
              <property name="text">
@@ -549,7 +549,7 @@ color: rgba(255,255,255, 0.8);
             </widget>
            </item>
            <item>
-            <widget class="Line" name="line_7">
+            <widget class="Line" name="linePassword">
              <property name="minimumSize">
               <size>
                <width>336</width>
@@ -563,7 +563,7 @@ color: rgba(255,255,255, 0.8);
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">color: rgba(255, 255, 255, 0.65);</string>
+              <string notr="true"/>
              </property>
              <property name="frameShadow">
               <enum>QFrame::Plain</enum>
@@ -721,7 +721,7 @@ QComboBox QAbstractItemView {
             </widget>
            </item>
            <item>
-            <widget class="Line" name="line_15">
+            <widget class="Line" name="lineUpstream">
              <property name="minimumSize">
               <size>
                <width>252</width>
@@ -735,7 +735,7 @@ QComboBox QAbstractItemView {
               </size>
              </property>
              <property name="styleSheet">
-              <string notr="true">color: rgba(255, 255, 255, 0.65);</string>
+              <string notr="true"/>
              </property>
              <property name="frameShadow">
               <enum>QFrame::Plain</enum>
