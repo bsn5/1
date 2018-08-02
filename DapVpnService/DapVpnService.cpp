@@ -95,19 +95,17 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     connect(chSockForw, &DapChSockForw::sendCmdAll, this, &DapVPNService::sendCmdAll);
 
     tmrStat= new QTimer(this);
-    tmrStat->setInterval(250);
+    tmrStat->setInterval(500);
     connect(tmrStat, &QTimer::timeout,[=]{
         qint64 el=QDateTime::currentMSecsSinceEpoch()- dtStreamOpened.toMSecsSinceEpoch();
-
         sendCmdAll(QString("stat %1 %2 %3 %4 %5:%6:%7 %8")
-                   .arg(m_tunReadBytes)
-                   .arg(m_tunWriteBytes).
-                   arg(m_tunReadPackets).
-                   arg(m_tunWritePackets)
+                   .arg(m_tunReadBytes / 1024) // to Kb
+                   .arg(m_tunWriteBytes / 1024)
+                   .arg(m_tunReadPackets)
+                   .arg(m_tunWritePackets)
                    .arg(el/3600000ll)
                    .arg( (el%3600000ll)/60000ll)
-                   .arg( (el%60000ll )/1000ll).arg(dtStreamOpened.toMSecsSinceEpoch()) )
-                ;
+                   .arg( (el%60000ll )/1000ll).arg(dtStreamOpened.toMSecsSinceEpoch()) );
     });
 
     sm.setChildMode(QState::ParallelStates);
@@ -137,6 +135,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
         }
     });
     connect(siAuthorization->state(DapSI::False), &QState::entered, [=]{
+        sendCmdAll("disconnected");
 //        qDebug() << "siAuthorization ==> ::False state";
 //        if (stateRequestConnectedAlways->active()) {
 //            siAuthorization->doActionFor(DapSI::True);
@@ -358,7 +357,6 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
             }
             // sendCmdAll("request disconnecting");
        }
-         sendCmdAll("disconnected");
     });
 
     // Request for Сonnected state

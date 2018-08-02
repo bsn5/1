@@ -19,7 +19,10 @@ public:
     DapTunWorkerAbstract( DapTunAbstract * a_tun );
 signals:
     void packetOut( DapSockForwPacket * );
-    void readBytes( quint64 );
+
+    void bytesWrite(quint64);
+    void bytesRead(quint64);
+
     void readPackets();
 
     void loopStarted();

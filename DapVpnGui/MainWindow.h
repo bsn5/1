@@ -11,7 +11,6 @@
 #include <QHistoryState>
 #include <QFinalState>
 
-#include "msgforuser.h"
 #include "schedules.h"
 #include "datalocal.h"
 #include "usrmsg.h"
@@ -63,7 +62,6 @@ private:
 
 
     UsrMsg     user_msg;
-    MsgForuser msg_for_user = MsgForuser();
 
     QSystemTrayIcon * trayIcon;
     QMenu * trayMenu;
@@ -146,8 +144,7 @@ private slots:
     void addMessage(const QString& a_msg, MsgType a_type){ Q_UNUSED(a_msg); Q_UNUSED(a_type); }
     void onLogout();
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+    explicit MainWindow(QWidget *parent = Q_NULLPTR);
 };
 
 #endif // MAINWINDOW_H

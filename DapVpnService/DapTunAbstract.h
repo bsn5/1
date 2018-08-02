@@ -64,8 +64,10 @@ signals:
 
     void sendCmd(QString);
 
-    void packetOut( DapSockForwPacket * );
+    void packetOut(DapSockForwPacket *);
 
+    void bytesRead(quint64);
+    void bytesWrite(quint64);
 protected:
     virtual void tunDeviceCreate()=0;
     virtual void tunDeviceDestroy()=0;

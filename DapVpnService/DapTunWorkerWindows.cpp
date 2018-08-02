@@ -50,7 +50,7 @@ void DapTunWorkerWindows::loop()
             pktOut->header.op_data.data_size=(quint32)tmpBufSize;
             memcpy(pktOut->data,tmpBuf,pktOut->header.op_data.data_size);
             emit packetOut(pktOut);
-            emit readBytes((int)tmpBufSize);
+            emit bytesRead((int)tmpBufSize);
             emit readPackets();
             tmpBufSize=0;
         }

@@ -17,7 +17,6 @@ SOURCES += main.cpp\
     ScreenDashboard.cpp \
     schedule.cpp \
     pair.cpp \
-    msgforuser.cpp \
     schedules.cpp \
     usrmsg.cpp \
     ScreenVpnAbstract.cpp \
@@ -38,7 +37,6 @@ HEADERS  += \
     ScreenLogin.h \
     ScreenDashboard.h \
     pair.h \
-    msgforuser.h \
     schedules.h \
     usrmsg.h \
     ScreenVpnAbstract.h \

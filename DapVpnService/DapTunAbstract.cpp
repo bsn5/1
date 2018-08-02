@@ -51,8 +51,10 @@ void DapTunAbstract::initWorker()
 
     connect(tunWorker,&DapTunWorkerAbstract::loopStarted,this,&DapTunAbstract::created);
 
-    connect(tunWorker,&DapTunWorkerAbstract::packetOut,this,&DapTunAbstract::packetOut);
-    connect(tunWorker,&DapTunWorkerAbstract::loopError,this,&DapTunAbstract::error);
+    connect(tunWorker,&DapTunWorkerAbstract::packetOut,this, &DapTunAbstract::packetOut);
+    connect(tunWorker,&DapTunWorkerAbstract::bytesRead, this, &DapTunAbstract::bytesRead);
+    connect(tunWorker,&DapTunWorkerAbstract::bytesWrite, this, &DapTunAbstract::bytesWrite);
+    connect(tunWorker,&DapTunWorkerAbstract::loopError,this, &DapTunAbstract::error);
 
     connect(tunWorker,&DapTunWorkerAbstract::loopStopped,this,&DapTunAbstract::onWorkerStopped);
   //  connect(tunWorker,&DapTunWorkerAbstract::loopStopped,this,&DapTunAbstract::tunDeviceDestroy);

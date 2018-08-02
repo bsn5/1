@@ -41,7 +41,6 @@
 
 #include "datalocal.h"
 #include "schedule.h"
-#include "msgforuser.h"
 
 void MainWindow::updateUsrMsg()
 {
@@ -181,19 +180,8 @@ void MainWindow::onExit()
 
 void MainWindow::setStatusText(const QString &a_txt)
 {
-
-    if (statesDashboard->active() ) {
-        addMessage(a_txt, MsgType::Info);
-    } else {
-        // этот объект разбирает поступающие сообщения, и откидывает
-        // некоторые из них если они приходят одновременно!
-        msg_for_user.setMSG(a_txt);
-
-        dus->setVars("lbMessage","text",msg_for_user.getMSG());
-    }
-    qInfo() <<"[MW] not defined any status display lable here";
+    dus->setVars("lbMessage","text",a_txt);
 }
-
 
 void MainWindow::initTray()
 {
@@ -436,8 +424,8 @@ MainWindow::MainWindow(QWidget *parent) :
         schedules.addInp(r.toInt());
         schedules.addOut(s.toInt());
 
-        dus->setVars("lbReceived","text",tr("Received: %1").arg(r));
-        dus->setVars("lbSent","text",tr("Sent: %1").arg(s));
+        dus->setVars("lbReceived","text",tr("Received: %1Kb").arg(r));
+        dus->setVars("lbSent","text",tr("Sent: %1Kb").arg(s));
         if (dusDashboard != nullptr) {
             schedules.draw_chart(
                 dusDashboard->getScene(),
@@ -702,9 +690,4 @@ MainWindow::MainWindow(QWidget *parent) :
     initIndicatorsTransitions();
 
     sm.start();
-}
-
-
-MainWindow::~MainWindow()
-{
 }

@@ -77,6 +77,7 @@ void DapTunWorkerUnix::loop()
                 tmpBufSize += readRet;
 
                 if (tmpBufSize > (int)sizeof(struct ip)) {
+                    emit bytesWrite(tmpBufSize);
                     procDataFromTun(tmpBuf,tmpBufSize); // Pack data with SF headers and emit it out to DapStreamer
                     tmpBufSize = 0;
                 }
@@ -93,6 +94,7 @@ void DapTunWorkerUnix::loop()
                 }
                 pktOutPos += writeRet;
                 if(pktOutPos>= pktOut->header.op_data.data_size ){ // Packet is sent into the tunnel
+                    emit bytesRead(pktOutPos);
                     delete pktOut;
                     pktOut = nullptr;
                     pktOutPos = 0;
@@ -105,11 +107,10 @@ void DapTunWorkerUnix::loop()
                     break;
                 }
             }
-            else{
+            else {
                 emit loopError(QString("Select has no tun handler in the returned set"));
                 qCritical() << "[SapStreamChSF] listenTunnelThread() select has no tun handler in the returned set";
                 break;
-
             }
         }else {
             qCritical() << "[SapStreamChSF] listenTunnelThread() select() returned "<< ret;

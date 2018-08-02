@@ -36,8 +36,6 @@
 #include <sys/select.h>
 #endif
 
-
-
 #include <QProcess>
 #include <QFile>
 
@@ -204,6 +202,8 @@ DapChSockForw::DapChSockForw(DapStreamer * a_streamer)
     connect(tun, &DapTunNative::error , this, &DapChSockForw::tunError);
     connect(tun, &DapTunNative::packetOut, this, &DapChSockForw::packetOut);
     connect(tun, &DapTunNative::sendCmd, this, &DapChSockForw::sendCmdAll);
+    connect(tun, &DapTunNative::bytesRead, this, &DapChSockForw::bytesRead);
+    connect(tun, &DapTunNative::bytesWrite, this, &DapChSockForw::bytesWrite);
     connect(tun, &DapTunNative::nativeCreateRequest, this, &DapChSockForw::sigTunNativeCreate);
     connect(tun, &DapTunNative::nativeDestroyRequest, this, &DapChSockForw::sigNativeDestroy);
 }
