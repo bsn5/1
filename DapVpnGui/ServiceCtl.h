@@ -39,10 +39,6 @@ signals:
     void sigStateTunnelDestroying();
     void sigStateTunnelError();
 
-
-public slots:
-    void onReqConnect(QString a_addrLine, QString a_user, QString a_password);
-
 protected:
 
     void procCmd(const QString & a_cmd);

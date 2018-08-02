@@ -159,23 +159,3 @@ void ServiceCtl::procCmd(const QString & a_cmd)
         qWarning() << "[ServiceCtl] Empty reply from backend service";
     }
 }
-
-
-/**
- * @brief ServiceCtl::onReqConnect
- * @param a_addrLine
- * @param a_user
- * @param a_password
- */
-void ServiceCtl::onReqConnect(QString a_addrLine, QString a_user, QString a_password)
-{
-    qDebug() << "[ServiceCtl] onReqConnect()";
-    emit sigStateAuthorizing();
-    m_username = a_user;
-    m_password = a_password;
-    addrLine = a_addrLine;
-    m_addr = addrLine.split(':')[0];
-    m_port = addrLine.split(':')[1].toInt();
-    sendCmd(QString("connect %1 %2 %3")
-            .arg(addrLine).arg(m_username).arg(m_password) ) ;
-}

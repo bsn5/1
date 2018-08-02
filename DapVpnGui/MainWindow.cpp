@@ -158,7 +158,7 @@ void MainWindow::hideProgressDialog()
 
     dlgProgress->hide();
     delete dlgProgress;
-    dlgProgress = NULL;
+    dlgProgress = Q_NULLPTR;
 }
 
 
