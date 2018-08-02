@@ -597,6 +597,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(stateDashboardConnecting,&QState::entered,[=]{
         qInfo() << "[MainWindow] State Dashboard Connecting";
+        dus->setVars("btDisconnect","enabled",false);
         setStatusText("Connecting...");
     });
 
