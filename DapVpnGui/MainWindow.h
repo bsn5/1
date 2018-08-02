@@ -65,8 +65,6 @@ private:
 
     QSystemTrayIcon * trayIcon;
     QMenu * trayMenu;
-    QString m_upstreamAddr;
-    QString m_upstreamIp;
     QString m_user, m_password;
     QString m_addrGW;
     int m_socketUpstream;
@@ -129,7 +127,7 @@ private slots:
 
     void onBtMessageCloseClicked();
 
-    void onReqConnect(QString a_addrLine, QString a_ip, QString a_user, QString a_ps);
+    void onReqConnect(const DapServerInfo& dsi, QString a_user, QString a_ps);
 
     void raiseErrorDialog(const QString &text);
     void raiseNotifyDialog(const QString &text);

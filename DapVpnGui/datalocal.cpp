@@ -21,7 +21,7 @@ DataLocal::picturesMap DataLocal::m_pictruePath = {
     {DapServerLocation::USSR, ":/country/ussr.png"},
 };
 
-DataLocal *DataLocal::_me = NULL;
+DataLocal *DataLocal::_me = Q_NULLPTR;
 
 DataLocal::DataLocal()
 {
@@ -67,7 +67,13 @@ void DataLocal::parseXML(const QString& a_fname)
                                 } else if (sr->name() == "address") {
                                     item.address=sr->readElementText();
                                 } else if( sr->name() == "port") {
-                                    item.port=sr->readElementText();
+                                    bool ok;
+                                    quint16 port = quint16(sr->readElementText().toInt(&ok));
+                                    if (!ok) {
+                                        throw std::runtime_error("Can't cast port to int "
+                                                                 "from XML file");
+                                    }
+                                    item.port = port;
                                 } else if(sr->name() == "location") {
                                     item.location = DapServerInfo::stringToLaction(sr->readElementText());
                                 } else if (sr->name() == "ip") {
@@ -98,9 +104,9 @@ void DataLocal::parseXML(const QString& a_fname)
         }
     }
 #ifdef  QT_DEBUG
-    addServer(DapServerLocation::FRANCE, "fr-dev", "ap-fr-0.divevpn.demlabs.net", "ap-fr-0.divevpn.demlabs.net:8002");
-    addServer(DapServerLocation::NETHERLANDS, "nl-dev", "ap-nl-0.divevpn.demlabs.net", "ap-nl-0.divevpn.demlabs.net:8002");
-    addServer(DapServerLocation::NETHERLANDS, "local", "127.0.0.1", "127.0.0.1:8002");
+    addServer(DapServerLocation::FRANCE, "fr-dev", "ap-fr-0.divevpn.demlabs.net", 8002);
+    addServer(DapServerLocation::NETHERLANDS, "nl-dev", "ap-nl-0.divevpn.demlabs.net", 8002);
+    addServer(DapServerLocation::NETHERLANDS, "local", "127.0.0.1",  8002);
 #endif
 
 
@@ -115,15 +121,16 @@ void DataLocal::addServer(const DapServerInfo& dsi) {
     m_servers.push_back(dsi);
 }
 
-void DataLocal::addServer(DapServerLocation a_location, const QString& a_name, const QString & a_ip, const QString& a_addrLine )
+void DataLocal::addServer(DapServerLocation location, const QString& name,
+                          const QString & address, quint16 port, QString ip)
 {
     DapServerInfo ss;
-    ss.name = a_name ;
-    ss.location = a_location;
-    ss.address = a_addrLine.split(":").at(0);
-    ss.port = a_addrLine.split(":").at(1);
-    ss.ip = a_ip;
-    addServer(ss);
+    ss.name = name;
+    ss.location = location;
+    ss.address = address;
+    ss.port = port;
+    ss.ip = ip;
+    addServer(std::move(ss));
 }
 
 /**

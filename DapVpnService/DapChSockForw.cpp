@@ -262,7 +262,7 @@ void DapChSockForw::tunCreate(const QString &a_addr, const QString &a_gw)
 {
     m_addr = a_addr;
     m_gw = a_gw;
-    tun->create(a_addr,a_gw,DapSession::getInstance()->upstreamIp(), streamer()->upstreamSocket() );
+    tun->create(a_addr,a_gw,DapSession::getInstance()->upstreamAddress(), streamer()->upstreamSocket() );
 }
 
 /**
@@ -270,7 +270,7 @@ void DapChSockForw::tunCreate(const QString &a_addr, const QString &a_gw)
  */
 void DapChSockForw::tunCreate()
 {
-    tun->create(m_addr,m_gw,DapSession::getInstance()->upstreamIp(), streamer()->upstreamSocket() );
+    tun->create(m_addr,m_gw,DapSession::getInstance()->upstreamAddress(), streamer()->upstreamSocket() );
     tun->workerStart();
 }
 

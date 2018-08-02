@@ -112,19 +112,16 @@ void MainWindow::sendUpstreamsToServer()
 /**
  * @brief MainWindow::btLogin
  */
-void MainWindow::onReqConnect(QString a_addrLine,QString a_ip, QString a_user, QString a_ps)
+void MainWindow::onReqConnect(const DapServerInfo& dsi, QString a_user, QString a_ps)
 {
     qDebug() << "[MW] btLogin()";
     if (stateLoginConnecting->active() ) { //
         ServiceCtl::me().sendCmd("disconnect");
     } else {
-        m_upstreamAddr = a_addrLine;
         m_user = a_user;
-        m_upstreamIp = a_ip;
-        m_password = a_ps;
 
-        ServiceCtl::me().sendCmd(QString( "connect %1 %2 %3 %4")
-            .arg(m_upstreamAddr).arg(m_user).arg(m_password).arg(a_ip));
+        ServiceCtl::me().sendCmd(QString("connect %1 %2 %3 %4")
+            .arg(dsi.address).arg(dsi.port).arg(m_user).arg(a_ps));
         sendUpstreamsToServer();
     }
     emit sigBtConnect();
@@ -485,13 +482,9 @@ MainWindow::MainWindow(QWidget *parent) :
         dus->setVars("lbStatus","text","");
         dus->setVars("btLogin","enabled",true);
         dus->show();
-        connect(dusLogin, &ScreenLogin::reqConnect, [=]
-            (QString a_addrLine, QString a_ip, QString a_user, QString a_ps){
-            onReqConnect(a_addrLine, a_ip, a_user, a_ps);
-        });
-
-        connect(dusLogin, &ScreenLogin::currentUpstreamNameChanged, [=](QString name){
-           m_currentUpstreamName = name;
+        connect(dusLogin, &ScreenLogin::reqConnect, [=] (DapServerInfo& dsi,
+                QString a_user, QString a_ps) {
+            onReqConnect(dsi, a_user, a_ps);
         });
 
     });

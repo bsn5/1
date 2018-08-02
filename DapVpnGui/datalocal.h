@@ -27,7 +27,8 @@ public:
     }
     QVariant setting(const QString& a_name){ return m_settings->value(a_name);}
 
-    void addServer(DapServerLocation a_location, const QString& a_name, const QString & a_ip, const QString& a_addrLine );
+    void addServer(DapServerLocation location, const QString& name,
+                   const QString & address, quint16 port, QString ip = "");
     void addServer(const DapServerInfo& dsi);
 
     QList<DapServerInfo>& servers(){return m_servers;}

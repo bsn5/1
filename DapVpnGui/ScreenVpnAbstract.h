@@ -3,9 +3,9 @@
 
 #include "DapUiScreen.h"
 #include "DapUiDialog.h"
+
 class ScreenVpnAbstract : public DapUiScreen
 {
-
 public:
     ScreenVpnAbstract(QObject * parent, QStackedWidget * a_sw);
     QString upstreamIp(const QString& a_addr){ return m_upstreamIp[a_addr]; }
@@ -17,10 +17,7 @@ protected:
     QString m_currentUpstreamName;
 private:
     DapUiDialog * dlgAbout, * dlgSettings, *dlgHelp;
-
     QHash<QString,QString> m_upstreamIp;
-
-
 };
 
 #endif // SCREENVPNABSTRACT_H

@@ -3,7 +3,7 @@
 
 #include <QHash>
 #include "ScreenVpnAbstract.h"
-
+#include "datalocal.h"
 
 class ScreenLogin : public ScreenVpnAbstract
 {
@@ -14,7 +14,7 @@ protected:
 public:
     ScreenLogin(QObject * a_parent, QStackedWidget * a_sw );
 signals:
-    void reqConnect(QString,QString,QString,QString);
+    void reqConnect(DapServerInfo&,QString,QString);
     void currentUpstreamNameChanged(QString);
 };
 

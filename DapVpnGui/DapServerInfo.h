@@ -30,7 +30,7 @@ public:
     }
 
     QString address;
-    QString port;
+    quint16 port;
     QString name;
     DapServerLocation location;
     QString ip;

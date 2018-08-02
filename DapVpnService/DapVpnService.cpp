@@ -527,18 +527,20 @@ void DapVPNService::procCmd(const QString &a_cmd)
             qDebug() << "GET: get_list_servers";
             // FIXME!!! Доделать сохранение о тоом, что прога уже запускалась...
             QSettings firstRun;
-            DapSession::getInstance()->serverListRequester("" == firstRun.value("firstRunOfDapService").toString());
+           // DapSession::getInstance()->serverListRequester("" == firstRun.value("firstRunOfDapService").toString());
         } else if(cmdSub[0] ==  "connect") {
-            if(cmdSub.length()==5){
+            if(cmdSub.length() == 5) { // address port user password
                 m_curAddrLine=cmdSub[1];
-                m_curUser=cmdSub[2];
-                m_curPassword=cmdSub[3];
-                DapSession::getInstance()->setIP(cmdSub[4]);
-                qDebug() << "Command connect to "<< m_curAddrLine<<" with "<<m_curUser<<" credentials";
-                DapSession::getInstance()->setSaUri(m_curAddrLine);
+                m_curUser=cmdSub[3];
+                m_curPassword=cmdSub[4];
+                qDebug() << "Command connect to" << m_curAddrLine
+                         << cmdSub[2] << "with"
+                         << m_curUser << "credentials";
+                DapSession::getInstance()->setDapUri(cmdSub[1], cmdSub[2]);
                 emit sigRequestConnected();
             }else
-                qWarning() <<"Wrong connect command with only "<< cmdSub.length()<<" arguments (needs 4)";
+                qWarning() <<"Wrong connect command with "
+                          << cmdSub.length() << " arguments (needs 4)";
                 qWarning() <<"cmdBuf = "<< a_cmd;
         }else if(cmdSub[0] == "disconnect"){
             qDebug() << "Command disconnect";

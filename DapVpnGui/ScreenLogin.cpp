@@ -14,8 +14,9 @@
 #include "ui_login_mobile_ver_small.h"
 #endif
 
-#include "datalocal.h"
 #include "ScreenLogin.h"
+
+Q_DECLARE_METATYPE(DapServerInfo);
 
 /**
  * @brief ScreenLogin::ScreenLogin
@@ -79,15 +80,13 @@ void ScreenLogin::initUi(QWidget * a_w,ScreenRotation a_rotation)
     Q_ASSERT(btLogin);
 
     connect(edPassword, &QLineEdit::returnPressed, btLogin, &QPushButton::click);
-    connect(btLogin, &QPushButton::clicked, [=]{
-        emit reqConnect(currentUpstreamAddr(),upstreamIp(currentUpstreamAddr())
-                        , edUsername->text(),edPassword->text());
+    connect(btLogin, &QPushButton::clicked, [=] {
+        DapServerInfo dsi = cbUpstream->currentData().value<DapServerInfo>();
+        emit reqConnect(dsi, edUsername->text(), edPassword->text());
     });
 
     connect(cbUpstream,&QComboBox::currentTextChanged ,[=]{
-        m_currentUpstreamName = cbUpstream->currentText();
-        m_currentUpstreamAddr = cbUpstream->currentData().toString();
-        emit currentUpstreamNameChanged(m_currentUpstreamName);
+        // Do nothing
     });
 
     QSettings settings;
