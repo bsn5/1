@@ -62,7 +62,7 @@ protected:
 
     DapServiceClient(const QString& a_serviceName);
 protected slots:
-    virtual void procCmd(const QString &a_cmd)=0;
+    virtual void procCmdHandler(const QString &a_cmd)=0;
 private:
     DapUiSocket * sockCtl;
     QString m_serviceName;

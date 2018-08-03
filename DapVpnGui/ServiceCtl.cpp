@@ -1,14 +1,11 @@
 #include <QtDebug>
 #include <QSettings>
 #include <QTimer>
-
 #ifdef Q_OS_ANDROID
 #include <QtAndroid>
 #include <QtAndroidExtras/QAndroidJniObject>
 #endif
-
 #include "datalocal.h"
-
 #include "ServiceCtl.h"
 
 ServiceCtl::ServiceCtl()
@@ -30,7 +27,8 @@ ServiceCtl::ServiceCtl()
 }
 
 
-void ServiceCtl::procCmd(const QString & a_cmd)
+
+void ServiceCtl::procCmdHandler(const QString & a_cmd)
 {
     QStringList infos = a_cmd.split(' ');
 
@@ -77,8 +75,8 @@ void ServiceCtl::procCmd(const QString & a_cmd)
     }
     */
 
-/*    if (infos[0] != "stat")
-        qDebug() << infos*/;
+   // if (infos[0] != "stat")
+   //     qDebug() << infos;
 
     if(infos.length()>0){
         if(infos[0] == "version"){
@@ -95,13 +93,12 @@ void ServiceCtl::procCmd(const QString & a_cmd)
         } else if ( infos[0] == "status" ) {
             qDebug() << "[ServiceCtl] status cmd received "<<a_cmd;
             tmRestart->stop(); // If get_status command passed well - we stop backcounting to the service restart
-            if( infos[1] == "authorize"){
+            if( infos[1] == "authorize") {
                 if(infos[2] == "true"){
                     QSettings settings;
                     settings.setValue("username",m_username);
                     settings.setValue("password",m_password);
                     settings.sync();
-
                     emit sigStateAuthorized();
                 }else if( infos[2] == "false"){
                     emit sigStateUnauthorized();
@@ -124,11 +121,11 @@ void ServiceCtl::procCmd(const QString & a_cmd)
                     qDebug() << "[ServiceCtl] status net_config_received false";
                     emit sigStateNetConfigFalse();
                 }
-            }else if( infos[1] == "tunnel_created"){
-                if( infos[2] == "true"){
+            }else if(infos[1] == "tunnel_created") {
+                if(infos[2] == "true") {
                     qDebug() << "[ServiceCtl] status tunnel_created true";
                     emit sigStateTunnelCreated();
-                } else{
+                } else {
                     qDebug() << "[ServiceCtl] status tunnel_created false";
                     emit sigStateTunnelDestroyed();
                 }

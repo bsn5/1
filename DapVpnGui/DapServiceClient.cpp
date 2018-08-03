@@ -16,7 +16,7 @@ DapServiceClient::DapServiceClient(const QString& a_serviceName)
     sockCtl = new DapUiSocket();
     connect(sockCtl,&DapUiSocket::readyRead,this, &DapServiceClient::onCtlReadReady);
     connect(sockCtl,static_cast<void(DapUiSocket::*)(DapUiSocketError)> (&DapUiSocket::error) ,
-            this, &DapServiceClient::onCtlSocketError );
+            this, &DapServiceClient::onCtlSocketError);
     connect(sockCtl,&DapUiSocket::connected, this, &DapServiceClient::ctlConnected);
 
     connect(sockCtl,&DapUiSocket::disconnected, this, &DapServiceClient::ctlDisconnected);
@@ -37,15 +37,13 @@ void DapServiceClient::init()
  */
 void DapServiceClient::connectToService()
 {
-
-
 #ifdef DAP_UI_SOCKET_TCP
-            QTimer::singleShot(500,[=]{sockCtl->connectToHost(QHostAddress("127.0.0.1"),22143);});
+            sockCtl->connectToHost(QHostAddress::LocalHost, 22143);
 #else
-            QTimer::singleShot(1000,[=]{
-                qDebug() << "[connectToService]";
+           // QTimer::singleShot(1000,[=]{
+            //    qDebug() << "[connectToService]";
                 sockCtl->connectToServer(DAP_BRAND);
-            });
+           // });
 #endif
 }
 
@@ -56,12 +54,10 @@ void DapServiceClient::connectToService()
  */
 void DapServiceClient::sendCmd(const QString & a_cmd)
 {
-    qDebug() << "[DapServiceClient] sock ctl send command "<<a_cmd;
+    qDebug() << "[DapServiceClient] sock ctl send command "<< a_cmd;
     if(sockCtl->isWritable())
         sockCtl->write( QString("%1%2").arg(a_cmd).arg('\n').toLatin1()  );
 }
-
-
 
 
 /**
@@ -84,7 +80,7 @@ void DapServiceClient::onCtlSocketError(DapUiSocketError socketError)
  */
 void DapServiceClient::onCtlReadReady()
 {
-    QString readStr = QString::fromLatin1( sockCtl->readAll());
+    QString readStr = QString::fromLatin1(sockCtl->readAll());
     int nInd;
 //    qDebug() << "[DapServiceClient] onCtlReadReady() readStr = "<<readStr;
 lb_read_str:
@@ -95,7 +91,7 @@ lb_read_str:
     }else{
         readStrBuffer += readStr.left(nInd);
 //        qDebug() << "Processing cmd: "<<readStrBuffer;
-        procCmd(readStrBuffer);
+        procCmdHandler(readStrBuffer);
         readStr= readStr.mid(nInd+1);
 //        qDebug() << "[DapServiceClient] proc next buf " << readStr;
         readStrBuffer.clear();

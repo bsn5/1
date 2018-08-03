@@ -10,38 +10,23 @@ class ServiceCtl : public DapServiceClient
 public:
     static ServiceCtl& me(){static ServiceCtl _me; return _me; }
 signals:
-    void sigDisconnected();
-    void sigConnected();
-
-
     void sigStatistics(QString, QString);
 
-    void sigStateAuthorizing();
     void sigStateAuthorized();
     void sigStateAuthorizeError();
     void sigStateUnauthorized();
-    void sigStateUnauthorizing();
 
     void sigStateStreamOpened();
-    void sigStateStreamOpening();
-    void sigStateStreamClosing();
-    void sigStateStreamError();
     void sigStateStreamClosed();
 
     void sigStateNetConfigTrue();
-    void sigStateNetConfigRequested();
-    void sigStateNetConfigError();
     void sigStateNetConfigFalse();
 
     void sigStateTunnelCreated();
-    void sigStateTunnelCreating();
     void sigStateTunnelDestroyed();
-    void sigStateTunnelDestroying();
-    void sigStateTunnelError();
 
 protected:
-
-    void procCmd(const QString & a_cmd);
+    void procCmdHandler(const QString & a_cmd) override;
 
     ServiceCtl();
 private:

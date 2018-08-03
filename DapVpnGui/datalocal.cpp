@@ -115,8 +115,11 @@ void DataLocal::parseXML(const QString& a_fname)
 
 void DataLocal::addServer(const DapServerInfo& dsi) {
     for(auto& s: servers()) {
-        if(s == dsi)
+        if(s == dsi) {
+            qWarning() << "[DataLocal::addServer] Server "
+                          "already exists in list";
             return;
+        }
     }
     m_servers.push_back(dsi);
 }
