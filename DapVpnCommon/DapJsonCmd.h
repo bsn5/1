@@ -2,12 +2,17 @@
 #define DAPJSONCMD_H
 
 #include <QJsonObject>
+#include <QJsonDocument>
+#include <QDebug>
 
 class DapJsonCmd
 {
 public:
     DapJsonCmd();
-    //static bool isJsonValid(); // checks mandatory fields
+
+    // checks mandatory fields
+    static bool isJsonValid(QString obj);
+    static bool isJsonValid(QJsonObject obj);
 };
 
 #endif // DAPJSONCMD_H

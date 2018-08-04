@@ -13,7 +13,7 @@
 #ifdef RUN_ALL_TESTS
 #include "TestHeaders.h"
 void run_all_tests() {
-
+    RUN_TESTS(DapJsonCmdTest);
 }
 #endif
 
