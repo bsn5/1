@@ -58,13 +58,13 @@ private slots:
 
     void load() {
         QString sJson = R"({"command": "state", "params": {"authorized":true,"two_int":2}})";
-        DapJsonCmd cmd;
-        cmd.load(sJson);
-        QCOMPARE(cmd.getCommand(), DapCommands::STATE);
-        QJsonValue auth = cmd.getParam("authorized");
+        DapJsonCmdPtr cmd = DapJsonCmd::load(sJson);
+
+        QCOMPARE(cmd->getCommand(), DapCommands::STATE);
+        QJsonValue auth = cmd->getParam("authorized");
         QVERIFY(auth.isBool());
         QCOMPARE(auth.toBool(), true);
-        QJsonValue two_int = cmd.getParam("two_int");
+        QJsonValue two_int = cmd->getParam("two_int");
         QCOMPARE(two_int.toInt(), 2);
     }
 };

@@ -8,12 +8,13 @@ QJsonValue DapJsonCmd::getParam(const QString& key) const {
     return (*m_jsObj)["params"].toObject()[key];
 }
 
-bool DapJsonCmd::load(const QString& obj) {
+DapJsonCmdPtr DapJsonCmd::load(const QString& obj) {
     QJsonDocument doc = QJsonDocument::fromJson(obj.toUtf8());
     if (doc.isEmpty())
-        return false;
-    m_jsObj = new QJsonObject(doc.object());
-    return true;
+        return nullptr;
+    DapJsonCmd *cmd = new DapJsonCmd;
+    cmd->m_jsObj = new QJsonObject(doc.object());
+    return DapJsonCmdPtr(cmd);
 }
 
 bool DapJsonCmd::isJsonValid(const QString& obj) {
