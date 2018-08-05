@@ -8,13 +8,17 @@ QJsonValue DapJsonCmd::getParam(const QString& key) const {
     return (*m_jsObj)["params"].toObject()[key];
 }
 
-DapJsonCmdPtr DapJsonCmd::load(const QString& obj) {
-    QJsonDocument doc = QJsonDocument::fromJson(obj.toUtf8());
+DapJsonCmdPtr DapJsonCmd::load(const QByteArray& ba) {
+    QJsonDocument doc = QJsonDocument::fromJson(ba);
     if (doc.isEmpty())
         return nullptr;
     DapJsonCmd *cmd = new DapJsonCmd;
     cmd->m_jsObj = new QJsonObject(doc.object());
     return DapJsonCmdPtr(cmd);
+}
+
+DapJsonCmdPtr DapJsonCmd::load(const QString& obj) {
+    return DapJsonCmd::load(obj.toLatin1());
 }
 
 bool DapJsonCmd::isJsonValid(const QString& obj) {
@@ -56,11 +60,12 @@ QJsonObject DapJsonCmd::getCommandJson(DapCommands command) {
     };
 }
 
-QJsonObject DapJsonCmd::generateCmd(DapCommands command) {
-    return DapJsonCmd::getCommandJson(command);
+QByteArray DapJsonCmd::generateCmd(DapCommands command) {
+    QJsonDocument Doc(DapJsonCmd::getCommandJson(command));
+    return Doc.toJson();
 }
 
-QJsonObject DapJsonCmd::generateCmd(DapCommands command,
+QByteArray DapJsonCmd::generateCmd(DapCommands command,
                                     std::initializer_list<QPair<QString, QJsonValue>>params) {
     QJsonObject cmdObj = DapJsonCmd::getCommandJson(command);
     QJsonObject paramsObj;
@@ -68,5 +73,8 @@ QJsonObject DapJsonCmd::generateCmd(DapCommands command,
         paramsObj[s.first] = s.second;
     }
     cmdObj.insert("params", paramsObj);
-    return cmdObj;
+
+    QJsonDocument Doc(cmdObj);
+
+    return Doc.toJson();
 }

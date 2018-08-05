@@ -33,12 +33,13 @@ private slots:
     }
 
     void generateCmd() {
-        QJsonObject result = DapJsonCmd::generateCmd(DapCommands::STATE,
+        QByteArray bResult = DapJsonCmd::generateCmd(DapCommands::STATE,
         {
             DapJsonParam("int_one", 1), DapJsonParam("auth_bool", true),
             DapJsonParam("two_double", 2.2), DapJsonParam("some_str", "some")
         });
 
+        auto result = QJsonDocument::fromJson(bResult);
         QVERIFY(result["command"].isString());
         QCOMPARE(result["command"], "state");
 

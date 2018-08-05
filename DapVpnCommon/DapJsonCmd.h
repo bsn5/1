@@ -24,6 +24,7 @@ class DapJsonCmd
 public:
     // Constructor
     static DapJsonCmdPtr load(const QString& obj);
+    static DapJsonCmdPtr load(const QByteArray& ba);
 
     DapCommands getCommand() const;
 
@@ -35,9 +36,9 @@ public:
     static bool isJsonValid(QJsonObject obj);
 
     // Generate command without arguments
-    static QJsonObject generateCmd(DapCommands command);
+    static QByteArray generateCmd(DapCommands command);
 
-    static QJsonObject generateCmd(DapCommands command,
+    static QByteArray generateCmd(DapCommands command,
                                    std::initializer_list<QPair<QString, QJsonValue>>params);
 
     static QString commandToString(DapCommands cmd);
