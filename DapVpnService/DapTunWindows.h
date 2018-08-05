@@ -10,7 +10,6 @@ protected:
     void tunDeviceCreate() override;
     void tunDeviceDestroy() override;
     void onWorkerStarted() override;
-
 };
 
 #endif // DAPTUNWINDOWS_H

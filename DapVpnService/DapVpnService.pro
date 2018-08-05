@@ -21,7 +21,6 @@ DEFINES += DAP_SERVICE_CONNECT_TCP
 
 SOURCES +=  DapChSockForw.cpp \
     SigUnixHandler.cpp \
-    CommandBuffer.cpp \
     DapTunAbstract.cpp\
     DapSI.cpp \
     DapTunWorkerAbstract.cpp \
@@ -47,7 +46,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS +=     DapChSockForw.h \
     DapVPNService.h \ 
     SigUnixHandler.h \
-    CommandBuffer.h \
     DapTunAbstract.h \
     DapSI.h \
     DapTunWorkerAbstract.h \
