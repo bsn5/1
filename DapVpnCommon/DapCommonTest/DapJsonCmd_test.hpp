@@ -55,6 +55,18 @@ private slots:
         QVERIFY(resultParams["some_str"].isString());
         QVERIFY(resultParams["some_str"].toString() == "some");
     }
+
+    void load() {
+        QString sJson = R"({"command": "state", "params": {"authorized":true,"two_int":2}})";
+        DapJsonCmd cmd;
+        cmd.load(sJson);
+        QCOMPARE(cmd.getCommand(), DapCommands::STATE);
+        QJsonValue auth = cmd.getParam("authorized");
+        QVERIFY(auth.isBool());
+        QCOMPARE(auth.toBool(), true);
+        QJsonValue two_int = cmd.getParam("two_int");
+        QCOMPARE(two_int.toInt(), 2);
+    }
 };
 
 #endif // DAPJSONCMD_TEST_HPP

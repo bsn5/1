@@ -1,8 +1,23 @@
 #include "DapJsonCmd.h"
 
-bool DapJsonCmd::isJsonValid(QString obj) {
-    QJsonParseError err;
+DapCommands DapJsonCmd::getCommand() const {
+    return DapCommands((*m_jsObj)["command"].toInt());
+}
 
+QJsonValue DapJsonCmd::getParam(const QString& key) const {
+    return (*m_jsObj)["params"].toObject()[key];
+}
+
+bool DapJsonCmd::load(const QString& obj) {
+    QJsonDocument doc = QJsonDocument::fromJson(obj.toUtf8());
+    if (doc.isEmpty())
+        return false;
+    m_jsObj = new QJsonObject(doc.object());
+    return true;
+}
+
+bool DapJsonCmd::isJsonValid(const QString& obj) {
+    QJsonParseError err;
     QJsonDocument doc = QJsonDocument::fromJson(obj.toUtf8(), &err);
     if (err.error != QJsonParseError::ParseError::NoError) {
         qWarning() << "Json is not valid. Error parse!";
@@ -17,6 +32,7 @@ bool DapJsonCmd::isJsonValid(QJsonObject obj) {
     if(obj[mandatoryField] == QJsonValue::Null) {
         return false;
     }
+    DapJsonCmd::commandToString(DapCommands(obj[mandatoryField].toInt()));
     return true;
 }
 
