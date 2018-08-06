@@ -59,7 +59,6 @@ public slots:
     void doActionFor(IndicatorState a_is);
     void addAllTransitions();
     void emitResponseWaitingSig();
-
 };
 
 #endif // DAPSI_H
