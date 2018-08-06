@@ -83,9 +83,9 @@ QByteArray DapJsonCmd::generateCmd(DapJsonCommands command,
     }
     cmdObj.insert("params", paramsObj);
 
-    QJsonDocument Doc(cmdObj);
+    QJsonDocument doc(cmdObj);
 
-    return Doc.toJson();
+    return doc.toJson();
 }
 
 DapJsonCmd::~DapJsonCmd() {
