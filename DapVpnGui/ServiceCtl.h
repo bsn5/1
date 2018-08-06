@@ -8,7 +8,7 @@
 
 class ServiceCtl;
 
-typedef void (ServiceCtl::*CommandHandler)(const QJsonObject*);
+using CommandHandler = void (*)(const QJsonObject*);
 
 class QTimer;
 class ServiceCtl : public DapServiceClient
@@ -21,26 +21,12 @@ public:
 signals:
     void sigStatistics(QString, QString);
 
-    void sigStateAuthorized();
-    void sigStateAuthorizeError();
-    void sigStateUnauthorized();
-
-    void sigStateStreamOpened();
-    void sigStateStreamClosed();
-
-    void sigStateNetConfigTrue();
-    void sigStateNetConfigFalse();
-
-    void sigStateTunnelCreated();
-    void sigStateTunnelDestroyed();
-
 protected:
     void procCmdHandler(const QByteArray &a_cmd) override;
 
     ServiceCtl();
 private:
     static commandHalders m_commandHandlers;
-    static void stateHandler(const QJsonObject* s);
 
     QString m_username, m_password;
     QString m_addrAssigned;

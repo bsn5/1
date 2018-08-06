@@ -7,30 +7,11 @@
 #endif
 #include "datalocal.h"
 #include "ServiceCtl.h"
+#include "DapStatesHandler.h"
 
 ServiceCtl::commandHalders ServiceCtl::m_commandHandlers = {
-    {DapJsonCommands::STATE, ServiceCtl::stateHandler}
+    {DapJsonCommands::STATE, DapStatesHandler::handler}
 };
-
-void ServiceCtl::stateHandler(const QJsonObject* params) {
-    // DELETE this test stuff and do StateHandler class or function list
-    qDebug() << "Call stateHandler" << *params;
-    for(auto &k : params->keys()) {
-        if (k == "authorize") {
-            if (params->value(k).toString() == "true") {
-                emit ServiceCtl::me().sigStateAuthorized();
-            } else {
-                emit ServiceCtl::me().sigStateUnauthorized();
-            }
-        } else if(k == "tunnel") {
-            if (params->value(k).toString() == "true") {
-                emit ServiceCtl::me().sigStateTunnelCreated();
-            } else {
-                emit ServiceCtl::me().sigStateUnauthorized();
-            }
-        }
-    }
-}
 
 ServiceCtl::ServiceCtl()
     : DapServiceClient("DAP_SERVICE_NAME")
@@ -65,6 +46,8 @@ void ServiceCtl::procCmdHandler(const QByteArray &a_cmd)
     }
     // cal handler function
     (*iter)(djc->getParams());
+
+    // TODO part for android see code below
 
     /*
     // ошибки и сообщения пользователю, нужно встроить... сделаю.

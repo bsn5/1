@@ -38,7 +38,7 @@
 #include "MainWindow.h"
 
 #include "ServiceCtl.h"
-
+#include "DapStatesHandler.h"
 #include "datalocal.h"
 #include "schedule.h"
 
@@ -258,23 +258,23 @@ void MainWindow::initIndicatorsTransitions()
     siAuthorization->state(DapUiVpnStateIndicator::False)
             ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateAuthorizing()),siAuthorization->state(DapUiVpnStateIndicator::FalseToTrue));
     siAuthorization->state(DapUiVpnStateIndicator::False)
-            ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateAuthorized()),siAuthorization->state(DapUiVpnStateIndicator::True));
+            ->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateAuthorized()),siAuthorization->state(DapUiVpnStateIndicator::True));
 
     // Authorization ::FalseToTrue state
     siAuthorization->state(DapUiVpnStateIndicator::FalseToTrue)
             ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateAuthorizeError()),siAuthorization->state(DapUiVpnStateIndicator::False));
     siAuthorization->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateAuthorized()),siAuthorization->state(DapUiVpnStateIndicator::True));
+            ->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateAuthorized()),siAuthorization->state(DapUiVpnStateIndicator::True));
     siAuthorization->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateUnauthorized()),siAuthorization->state(DapUiVpnStateIndicator::False));
+            ->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateUnauthorized()),siAuthorization->state(DapUiVpnStateIndicator::False));
 
     // Authorization ::TrueToFalse state
     siAuthorization->state(DapUiVpnStateIndicator::TrueToFalse)
             ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateAuthorizing()),siAuthorization->state(DapUiVpnStateIndicator::FalseToTrue));
     siAuthorization->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateAuthorized()),siAuthorization->state(DapUiVpnStateIndicator::True));
+            ->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateAuthorized()),siAuthorization->state(DapUiVpnStateIndicator::True));
     siAuthorization->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateUnauthorized()),siAuthorization->state(DapUiVpnStateIndicator::False));
+            ->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateUnauthorized()),siAuthorization->state(DapUiVpnStateIndicator::False));
 
     // Authorization ::True state
     siAuthorization->state(DapUiVpnStateIndicator::True)
@@ -284,7 +284,7 @@ void MainWindow::initIndicatorsTransitions()
     siAuthorization->state(DapUiVpnStateIndicator::True)
             ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateAuthorizeError()),siAuthorization->state(DapUiVpnStateIndicator::False));
     siAuthorization->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateUnauthorized()),siAuthorization->state(DapUiVpnStateIndicator::False));
+            ->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateUnauthorized()),siAuthorization->state(DapUiVpnStateIndicator::False));
 
     //----Stream Opened-----
 
@@ -361,13 +361,13 @@ void MainWindow::initIndicatorsTransitions()
     siTunnel->state(DapUiVpnStateIndicator::False)
             ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateTunnelCreating()),siTunnel->state(DapUiVpnStateIndicator::FalseToTrue));
     siTunnel->state(DapUiVpnStateIndicator::False)
-            ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateTunnelCreated()),siTunnel->state(DapUiVpnStateIndicator::True));
+            ->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateTunnelCreated()),siTunnel->state(DapUiVpnStateIndicator::True));
 
     // Tunnel ::FalseToTrue state
     siTunnel->state(DapUiVpnStateIndicator::FalseToTrue)
             ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateTunnelError()),siTunnel->state(DapUiVpnStateIndicator::False));
     siTunnel->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateTunnelCreated()),siTunnel->state(DapUiVpnStateIndicator::True));
+            ->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateTunnelCreated()),siTunnel->state(DapUiVpnStateIndicator::True));
     siTunnel->state(DapUiVpnStateIndicator::FalseToTrue)
             ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateTunnelDestroyed()),siTunnel->state(DapUiVpnStateIndicator::False));
     siTunnel->state(DapUiVpnStateIndicator::FalseToTrue)
@@ -375,7 +375,7 @@ void MainWindow::initIndicatorsTransitions()
 
     // Tunnel ::TrueToFalse state
     siTunnel->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateTunnelCreated()),siTunnel->state(DapUiVpnStateIndicator::True));
+            ->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateTunnelCreated()),siTunnel->state(DapUiVpnStateIndicator::True));
     siTunnel->state(DapUiVpnStateIndicator::TrueToFalse)
             ->addTransition(&ServiceCtl::me(),SIGNAL(sigStateTunnelDestroyed()),siTunnel->state(DapUiVpnStateIndicator::False));
     siTunnel->state(DapUiVpnStateIndicator::TrueToFalse)
@@ -633,26 +633,26 @@ MainWindow::MainWindow(QWidget *parent) :
     stateLoginBegin->addTransition(this,SIGNAL(sigBtConnect()),stateLoginConnecting );
 
     // LoginBegin ---> Dashboard
-    stateLoginBegin->addTransition(&ServiceCtl::me(),SIGNAL(sigStateAuthorized()),statesDashboard );
+    stateLoginBegin->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateAuthorized()),statesDashboard );
     stateLoginBegin->addTransition(&ServiceCtl::me(),SIGNAL(sigStateStreamOpened()),statesDashboard );
     stateLoginBegin->addTransition(&ServiceCtl::me(),SIGNAL(sigStateNetConfigTrue()),statesDashboard );
-    stateLoginBegin->addTransition(&ServiceCtl::me(),SIGNAL(sigStateTunnelCreated()),statesDashboard );
+    stateLoginBegin->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateTunnelCreated()),statesDashboard );
 
     // LoginConnecting ---> LoginBegin
     stateLoginConnecting->addTransition(this,SIGNAL(sigBtConnect()),stateLoginBegin);
     stateLoginConnecting->addTransition(&ServiceCtl::me(),SIGNAL(sigStateAuthorizeError()),stateLoginBegin);
 
     // LoginConnecting ---> Dashboard
-    stateLoginConnecting->addTransition(&ServiceCtl::me(),SIGNAL(sigStateAuthorized()),statesDashboard );
+    stateLoginConnecting->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateAuthorized()),statesDashboard );
     stateLoginConnecting->addTransition(&ServiceCtl::me(),SIGNAL(sigStateStreamOpened()),statesDashboard );
     stateLoginConnecting->addTransition(&ServiceCtl::me(),SIGNAL(sigStateNetConfigTrue()),statesDashboard );
-    stateLoginConnecting->addTransition(&ServiceCtl::me(),SIGNAL(sigStateTunnelCreated()),statesDashboard );
+    stateLoginConnecting->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateTunnelCreated()),statesDashboard );
 
     // Dashboard ---> DashboardDisconnecting
    // statesDashboard->addTransition(this,SIGNAL(sigBtDisconnect()),stateDashboardDisconnecting);
 
     // DashboardDisconnectin ---> Begin
-    stateDashboardDisconnecting->addTransition(&ServiceCtl::me(),SIGNAL(sigStateUnauthorized()),stateLoginBegin);
+    stateDashboardDisconnecting->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateUnauthorized()),stateLoginBegin);
 
     // Login Ctl Connecting ---> Login Begin
     stateLoginCtlConnecting->addTransition(&ServiceCtl::me(),SIGNAL(ctlConnected()),stateLoginBegin);
@@ -661,24 +661,24 @@ MainWindow::MainWindow(QWidget *parent) :
     stateLoginBegin->addTransition(this,SIGNAL(sigBtConnect()),stateLoginConnecting );
 
     // Begin ---> Dashboard
-    stateLoginBegin->addTransition(&ServiceCtl::me(),SIGNAL(sigStateAuthorized()),stateDashboardConnected );
+    stateLoginBegin->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateAuthorized()),stateDashboardConnected );
     stateLoginBegin->addTransition(&ServiceCtl::me(),SIGNAL(sigStateStreamOpened()),stateDashboardConnected );
     stateLoginBegin->addTransition(&ServiceCtl::me(),SIGNAL(sigStateNetConfigTrue()),stateDashboardConnected );
-    stateLoginBegin->addTransition(&ServiceCtl::me(),SIGNAL(sigStateTunnelCreated()),stateDashboardConnected );
+    stateLoginBegin->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateTunnelCreated()),stateDashboardConnected );
 
     // DashboardConnecting --> DashboardConnected
-    stateDashboardConnecting->addTransition(&ServiceCtl::me() ,SIGNAL(sigStateTunnelCreated()),stateDashboardConnected );
+    stateDashboardConnecting->addTransition(&DapStatesHandler::me() ,SIGNAL(sigStateTunnelCreated()),stateDashboardConnected );
 
     // Dashboard ---> DashboardDisconnecting
     stateDashboardConnected->addTransition(this,SIGNAL(sigBtDisconnect()),stateDashboardDisconnecting);
     stateDashboardConnected->addTransition(&ServiceCtl::me(),SIGNAL(sigStateStreamClosed()) ,stateDashboardConnecting);
     stateDashboardConnected->addTransition(&ServiceCtl::me(),SIGNAL(sigStateTunnelDestroyed()) ,stateDashboardConnecting);
     stateDashboardConnected->addTransition(&ServiceCtl::me(),SIGNAL(sigStateNetConfigFalse()) ,stateDashboardConnecting);
-    stateDashboardConnected->addTransition(&ServiceCtl::me(),SIGNAL(sigStateUnauthorized()) , stateDashboardConnecting);
+    stateDashboardConnected->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateUnauthorized()) , stateDashboardConnecting);
 
 
     // DashboardDisconnecting ---> Begin
-    stateDashboardDisconnecting->addTransition(&ServiceCtl::me(),SIGNAL(sigStateUnauthorized()),stateLoginBegin);
+    stateDashboardDisconnecting->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateUnauthorized()),stateLoginBegin);
 
     initIndicators();
     initIndicatorsTransitions();
