@@ -35,15 +35,6 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     nam = new QNetworkAccessManager(this);
     streamer = new DapStreamer(this);
     streamer->addChProc('s', chSockForw = new  DapChSockForw(streamer) );
-/*    connect( nam, static_cast<void(QNetworkAccessManager::*)(QNetworkAccessManager::NetworkAccessibility)> ( &QNetworkAccessManager::networkAccessibleChanged)
-             ,[=](QNetworkAccessManager::NetworkAccessibility arg){
-                qDebug() << "[DapVPNService] Network accesibility changed";
-                if(arg == QNetworkAccessManager::Accessible){
-                    if (isLogined && (!isLogouting)&&(!isStreamOpen) )
-                        procCmd("stream_open");
-                }
-             });
-*/
 
     connect(streamer,static_cast<void(DapStreamer::*)(const QString&)>(&DapStreamer::error), [=](QString a_msg){
         qDebug() << "[Streamer Er]"<< a_msg;
@@ -139,13 +130,8 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
             siAuthorization->doActionFor(DapSI::False);
         }
     });
-    connect(siAuthorization->state(DapSI::False), &QState::entered, [=]{
-        sendCmdAll("disconnected");
-//        qDebug() << "siAuthorization ==> ::False state";
-//        if (stateRequestConnectedAlways->active()) {
-//            siAuthorization->doActionFor(DapSI::True);
-//            sendCmdAll("status authorize false");
-//        }
+    connect(siAuthorization->state(DapSI::False), &QState::entered, [=] {
+
     });
 
     // Stream indicator
@@ -182,17 +168,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
 
     // --- Enter in ::False state
     connect(siStream->state(DapSI::False), &QState::entered, [=]{
-/*        if(stateRequestConnectedAlways->active()) {
-            qDebug() << "Reconnecting: siAuthorization->current() == "<< siAuthorization->current();
-            if ((siStream->previous() != DapSI::ErrorAuth ) // not sure.. will it be ::Error or ::ErrorAuth?
-                ||(siAuthorization->current() == DapSI::True)){
-                siStream->doActionFor(DapSI::True);
-                sendCmdAll("status stream closed");
-            }
-        }*/ /*else if(stateRequestDisconnected->active()) */
-//        if(stateRequestDisconnected->active()) {
-//            siNetConfig->doActionFor(DapSI::False);
-//        }
+        /**/
     });
 
 
@@ -576,7 +552,7 @@ void DapVPNService::checkInstallation()
 }
 
 void DapVPNService::sendDapCmdAll(const QByteArray& cmd) {
-    qDebug() << "sendDapCmdAll() send command " << cmd;
+    // qDebug() << "sendDapCmdAll() send command " << cmd;
 
     if(cmd[cmd.length() - 1] != '\n') {
         qWarning() << "Something wrong cmd must end with a character \\n"
@@ -597,7 +573,7 @@ void DapVPNService::sendDapCmdAll(const QByteArray& cmd) {
 void DapVPNService::sendCmdAll(const QString& a_cmd) // Deprecated
 {
 
-    qDebug() << "sendCmdAll() send command "<<a_cmd;
+   // qDebug() << "sendCmdAll() send command "<<a_cmd;
     return;
     for(auto s: client) {
 //        qDebug() << "sendCmdAll() client "<<s->socketDescriptor();

@@ -81,8 +81,6 @@ void DapServiceClient::onCtlSocketError(DapUiSocketError socketError)
 void DapServiceClient::onCtlReadReady()
 {
     QByteArray readBytes = sockCtl->readAll();
-    qDebug() << "Ready read! " << readBytes;
-
     int nInd;
 //    qDebug() << "[DapServiceClient] onCtlReadReady() readStr = "<<readStr;
 lb_read_str:
