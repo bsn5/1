@@ -8,18 +8,33 @@
 #include "datalocal.h"
 #include "ServiceCtl.h"
 
-void foo(const QJsonObject* s) {
-    qDebug() << "Call foo";
-}
-
 ServiceCtl::commandHalders ServiceCtl::m_commandHandlers = {
-    {DapJsonCommands::STATE, foo},
+    {DapJsonCommands::STATE, ServiceCtl::stateHandler}
 };
+
+void ServiceCtl::stateHandler(const QJsonObject* params) {
+    // DELETE this test stuff and do StateHandler class or function list
+    qDebug() << "Call stateHandler" << *params;
+    for(auto &k : params->keys()) {
+        if (k == "authorize") {
+            if (params->value(k).toString() == "true") {
+                emit ServiceCtl::me().sigStateAuthorized();
+            } else {
+                emit ServiceCtl::me().sigStateUnauthorized();
+            }
+        } else if(k == "tunnel") {
+            if (params->value(k).toString() == "true") {
+                emit ServiceCtl::me().sigStateTunnelCreated();
+            } else {
+                emit ServiceCtl::me().sigStateUnauthorized();
+            }
+        }
+    }
+}
 
 ServiceCtl::ServiceCtl()
     : DapServiceClient("DAP_SERVICE_NAME")
 {
-
     tmRestart = new QTimer(this);
 
     connect(this,&ServiceCtl::ctlConnected, [=]{
@@ -28,36 +43,28 @@ ServiceCtl::ServiceCtl()
     });
     connect(this,&ServiceCtl::ctlDisconnected, [=]{
         qInfo() << "[ServiceCtl] Disconnected from backend";
-        tmRestart->start(6000);
+        tmRestart->start(2000);
     });
 
     connect(tmRestart,&QTimer::timeout, [=]{ restartService(); });
 }
 
-void ServiceCtl::stateHandler() {
-    qDebug() << "Call state handler";
-}
-
 void ServiceCtl::procCmdHandler(const QByteArray &a_cmd)
 {
     auto djc = DapJsonCmd::load(a_cmd);
-    if (djc != nullptr) {
-        qDebug() << "successfully LOAD!" << a_cmd;
-    } else {
-        qWarning() << "Error load object!";
+    if (djc == nullptr) {
+        qWarning() << "Error load DapJsonCmd object!";
+        return;
     }
 
-
-    switch (djc->getCommand()) {
-        case DapJsonCommands::STATE:
-        qDebug() << "PARAMS:" << *djc->getParams();
-        break;
+    auto iter = m_commandHandlers.find(djc->getCommand());
+    if (iter == m_commandHandlers.end()) {
+        qWarning() << "Not found handler for command "
+                   << djc->commandToString(djc->getCommand());
+        return;
     }
-
-    m_commandHandlers[DapJsonCommands::STATE](djc->getParams());
-//    CommandHandler c = m_commandHandlers[DapJsonCommands::STATE];
-//    (*c)(djc->getParams());
-  //  c(djc->getParams());
+    // cal handler function
+    (*iter)(djc->getParams());
 
     /*
     // ошибки и сообщения пользователю, нужно встроить... сделаю.

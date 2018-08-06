@@ -121,8 +121,8 @@ QString DapTunLinux::currentConnectionInterface() {
     QString result = process.readAllStandardOutput();
     if(result.isEmpty()) {
         qWarning() << "Can't get current connection interface name!";
-
     }
+
     result.chop(1); // delete \n symbol
     return result;
 }
@@ -241,8 +241,10 @@ void DapTunLinux::tunDeviceDestroy()
            .arg(tunDeviceName() ).toLatin1().constData() );
     ::system("nmcli connection down DiveVPN");
     ::system("nmcli connection delete DiveVPN");
-    ::system(QString("nmcli connection up %1")
+
+    ::system(QString("nmcli connection up \"%1\"")
              .arg(m_lastUsedConnectionName).toLatin1().constData());
+
     DapTunUnixAbstract::tunDeviceDestroy();
 }
 
