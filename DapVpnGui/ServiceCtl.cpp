@@ -8,6 +8,14 @@
 #include "datalocal.h"
 #include "ServiceCtl.h"
 
+void foo(const QJsonObject* s) {
+    qDebug() << "Call foo";
+}
+
+ServiceCtl::commandHalders ServiceCtl::m_commandHandlers = {
+    {DapJsonCommands::STATE, foo},
+};
+
 ServiceCtl::ServiceCtl()
     : DapServiceClient("DAP_SERVICE_NAME")
 {
@@ -26,11 +34,30 @@ ServiceCtl::ServiceCtl()
     connect(tmRestart,&QTimer::timeout, [=]{ restartService(); });
 }
 
+void ServiceCtl::stateHandler() {
+    qDebug() << "Call state handler";
+}
 
-
-void ServiceCtl::procCmdHandler(const QString & a_cmd)
+void ServiceCtl::procCmdHandler(const QByteArray &a_cmd)
 {
-    QStringList infos = a_cmd.split(' ');
+    auto djc = DapJsonCmd::load(a_cmd);
+    if (djc != nullptr) {
+        qDebug() << "successfully LOAD!" << a_cmd;
+    } else {
+        qWarning() << "Error load object!";
+    }
+
+
+    switch (djc->getCommand()) {
+        case DapJsonCommands::STATE:
+        qDebug() << "PARAMS:" << *djc->getParams();
+        break;
+    }
+
+    m_commandHandlers[DapJsonCommands::STATE](djc->getParams());
+//    CommandHandler c = m_commandHandlers[DapJsonCommands::STATE];
+//    (*c)(djc->getParams());
+  //  c(djc->getParams());
 
     /*
     // ошибки и сообщения пользователю, нужно встроить... сделаю.
@@ -75,84 +102,84 @@ void ServiceCtl::procCmdHandler(const QString & a_cmd)
     }
     */
 
-   // if (infos[0] != "stat")
-   //     qDebug() << infos;
+//    if (infos[0] != "stat")
+//        qDebug() << infos;
 
-    if(infos.length()>0){
-        if(infos[0] == "version"){
-            if( DAP_VERSION != infos[1] ) {
-                emit error(tr("Versions mismatch, expect to have %1 but in reply is %2").arg(DAP_VERSION).arg(infos[1]));
-                emit error(tr("Versions mismatch"));
-            }else
-                qInfo() << "[ServiceCtl] Version are checked, they're same";
-         }else if( infos[0] == "usr_msg") {
-            if(infos.length()>=2){
-                qDebug() <<"[ServiceCtl] UsrMsg: "<<QString::fromUtf8(  QByteArray::fromBase64(  infos[1].toLatin1()  ) ) ;
-            }else
-                qWarning() <<"[ServiceCtl] Empty usr_msg";
-        } else if ( infos[0] == "status" ) {
-            qDebug() << "[ServiceCtl] status cmd received "<<a_cmd;
-            tmRestart->stop(); // If get_status command passed well - we stop backcounting to the service restart
-            if( infos[1] == "authorize") {
-                if(infos[2] == "true"){
-                    QSettings settings;
-                    settings.setValue("username",m_username);
-                    settings.setValue("password",m_password);
-                    settings.sync();
-                    emit sigStateAuthorized();
-                }else if( infos[2] == "false"){
-                    emit sigStateUnauthorized();
-                }else if ( infos[2] == "error"){
-                    emit sigStateAuthorizeError();
-                }
-            }else if (infos[1] == "stream") {
-                if( infos[2] == "opened" ) {
-                    qDebug() << "[ServiceCtl] status stream opened";
-                    emit sigStateStreamOpened();
-                }else if (infos[2] == "closed") {
-                    qDebug() << "[ServiceCtl] status stream closed";
-                    emit sigStateStreamClosed();
-                }
-            } else if( infos[1] == "net_config_received"){
-                if( infos[2] == "true"){
-                    qDebug() << "[ServiceCtl] status net_config_received true";
-                    emit sigStateNetConfigTrue();
-                } else {
-                    qDebug() << "[ServiceCtl] status net_config_received false";
-                    emit sigStateNetConfigFalse();
-                }
-            }else if(infos[1] == "tunnel_created") {
-                if(infos[2] == "true") {
-                    qDebug() << "[ServiceCtl] status tunnel_created true";
-                    emit sigStateTunnelCreated();
-                } else {
-                    qDebug() << "[ServiceCtl] status tunnel_created false";
-                    emit sigStateTunnelDestroyed();
-                }
-            }
-        } else if( infos[0] == "disconnected"){
-            emit sigStateUnauthorized();
-        } else if( infos[0]  == "stat"){
-            if(infos.length()>=7){
-                emit sigStatistics(infos[1],infos[2]);
-            }
-        }
-#ifdef Q_OS_ANDROID
-        else if (infos[0] == "android_tunnel_create"){
-            if( infos.length()>3){
-                QtAndroid::androidActivity().callMethod<void>( "stopSapVpnServiceNative"
-                                                       ,"()V" );
-                QtAndroid::androidActivity().callMethod<void>( "startSapVpnServiceNative"
-                                                   ,"(Ljava/lang/String;Ljava/lang/String;I)V"
-                                                   ,QAndroidJniObject::fromString(infos[1]).object<jstring>()
-                                                   ,QAndroidJniObject::fromString(infos[2]).object<jstring>()
-                                                   ,infos[3].toInt());
-                qWarning() <<"[ServiceCtl] Android tunnel created with " << infos[1]<< infos[2] << infos[3];
-            }else
-                qWarning() <<"[ServiceCtl] Command \"android_tunnel_create\" with only "<<infos.length()<<" parameters";
-        }
-#endif
-    }else{
-        qWarning() << "[ServiceCtl] Empty reply from backend service";
-    }
+//    if(infos.length()>0){
+//        if(infos[0] == "version"){
+//            if( DAP_VERSION != infos[1] ) {
+//                emit error(tr("Versions mismatch, expect to have %1 but in reply is %2").arg(DAP_VERSION).arg(infos[1]));
+//                emit error(tr("Versions mismatch"));
+//            }else
+//                qInfo() << "[ServiceCtl] Version are checked, they're same";
+//         }else if( infos[0] == "usr_msg") {
+//            if(infos.length()>=2){
+//                qDebug() <<"[ServiceCtl] UsrMsg: "<<QString::fromUtf8(  QByteArray::fromBase64(  infos[1].toLatin1()  ) ) ;
+//            }else
+//                qWarning() <<"[ServiceCtl] Empty usr_msg";
+//        } else if ( infos[0] == "status" ) {
+//            qDebug() << "[ServiceCtl] status cmd received "<<a_cmd;
+//            tmRestart->stop(); // If get_status command passed well - we stop backcounting to the service restart
+//            if( infos[1] == "authorize") {
+//                if(infos[2] == "true"){
+//                    QSettings settings;
+//                    settings.setValue("username",m_username);
+//                    settings.setValue("password",m_password);
+//                    settings.sync();
+//                    emit sigStateAuthorized();
+//                }else if( infos[2] == "false"){
+//                    emit sigStateUnauthorized();
+//                }else if ( infos[2] == "error"){
+//                    emit sigStateAuthorizeError();
+//                }
+//            }else if (infos[1] == "stream") {
+//                if( infos[2] == "opened" ) {
+//                    qDebug() << "[ServiceCtl] status stream opened";
+//                    emit sigStateStreamOpened();
+//                }else if (infos[2] == "closed") {
+//                    qDebug() << "[ServiceCtl] status stream closed";
+//                    emit sigStateStreamClosed();
+//                }
+//            } else if( infos[1] == "net_config_received"){
+//                if( infos[2] == "true"){
+//                    qDebug() << "[ServiceCtl] status net_config_received true";
+//                    emit sigStateNetConfigTrue();
+//                } else {
+//                    qDebug() << "[ServiceCtl] status net_config_received false";
+//                    emit sigStateNetConfigFalse();
+//                }
+//            }else if(infos[1] == "tunnel_created") {
+//                if(infos[2] == "true") {
+//                    qDebug() << "[ServiceCtl] status tunnel_created true";
+//                    emit sigStateTunnelCreated();
+//                } else {
+//                    qDebug() << "[ServiceCtl] status tunnel_created false";
+//                    emit sigStateTunnelDestroyed();
+//                }
+//            }
+//        } else if( infos[0] == "disconnected"){
+//            emit sigStateUnauthorized();
+//        } else if( infos[0]  == "stat"){
+//            if(infos.length()>=7){
+//                emit sigStatistics(infos[1],infos[2]);
+//            }
+//        }
+//#ifdef Q_OS_ANDROID
+//        else if (infos[0] == "android_tunnel_create"){
+//            if( infos.length()>3){
+//                QtAndroid::androidActivity().callMethod<void>( "stopSapVpnServiceNative"
+//                                                       ,"()V" );
+//                QtAndroid::androidActivity().callMethod<void>( "startSapVpnServiceNative"
+//                                                   ,"(Ljava/lang/String;Ljava/lang/String;I)V"
+//                                                   ,QAndroidJniObject::fromString(infos[1]).object<jstring>()
+//                                                   ,QAndroidJniObject::fromString(infos[2]).object<jstring>()
+//                                                   ,infos[3].toInt());
+//                qWarning() <<"[ServiceCtl] Android tunnel created with " << infos[1]<< infos[2] << infos[3];
+//            }else
+//                qWarning() <<"[ServiceCtl] Command \"android_tunnel_create\" with only "<<infos.length()<<" parameters";
+//        }
+//#endif
+//    }else{
+//        qWarning() << "[ServiceCtl] Empty reply from backend service";
+//    }
 }

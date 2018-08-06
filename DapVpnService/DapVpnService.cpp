@@ -129,6 +129,12 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
         qDebug() << " ==== siAUthorization == ::True ===";
         if(stateRequestConnected->active()) {
             siStream->doActionFor(DapSI::True);
+            QByteArray baCmd = DapJsonCmd::generateCmd(DapJsonCommands::STATE, {
+                                        DapJsonParam("authorize", true),
+                                        DapJsonParam("message", "everithing ok")
+                                    });
+            sendDapCmdAll(baCmd);
+
             sendCmdAll("status authorize true");
         } else if(stateRequestDisconnected->active()) {
             siAuthorization->doActionFor(DapSI::False);
@@ -592,16 +598,32 @@ void DapVPNService::checkInstallation()
 #endif
 }
 
+void DapVPNService::sendDapCmdAll(const QByteArray& cmd) {
+    qDebug() << "sendDapCmdAll() send command " << cmd;
+
+    if(cmd[cmd.length() - 1] != '\n') {
+        qWarning() << "Something wrong cmd must end with a character \\n"
+                      " Command not sent";
+        return;
+    }
+
+    for(auto s: client) {
+        s->write(cmd + '\n'); // must be two \n symmbols for serialization
+        s->flush();
+    }
+}
+
 /**
  * @brief DapVPNService::sendCmdAll
  * @param a_cmd
  */
-void DapVPNService::sendCmdAll(const QString& a_cmd)
+void DapVPNService::sendCmdAll(const QString& a_cmd) // Deprecated
 {
-//    qDebug() << "sendCmdAll() send command "<<a_cmd;
-    for(auto s:client){
+    return;
+   // qDebug() << "sendCmdAll() send command "<<a_cmd;
+    for(auto s: client) {
 //        qDebug() << "sendCmdAll() client "<<s->socketDescriptor();
-        s->write(QString("%1%2").arg(a_cmd).arg('\n').toLatin1());
+        s->write(QString("%1%2").arg(a_cmd).arg("\n\n").toLatin1());
         s->flush();
     }
 }

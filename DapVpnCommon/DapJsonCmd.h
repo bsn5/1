@@ -13,8 +13,12 @@
 
 class DapJsonCmd;
 using DapJsonCmdPtr = std::unique_ptr<DapJsonCmd>;
-enum class DapCommands {
+enum class DapJsonCommands {
     STATE
+};
+
+enum class DapJsonParams {
+    // TODO
 };
 
 /* In future can create base class DapJson and create
@@ -26,29 +30,33 @@ public:
     static DapJsonCmdPtr load(const QString& obj);
     static DapJsonCmdPtr load(const QByteArray& ba);
 
-    DapCommands getCommand() const;
+    DapJsonCommands getCommand() const;
 
     // return QJsonValue::Null if not found
     QJsonValue getParam(const QString& key) const;
+
+    // return json object with all params
+    const QJsonObject* getParams();
 
     // Checks mandatory fields
     static bool isJsonValid(const QString& obj);
     static bool isJsonValid(QJsonObject obj);
 
     // Generate command without arguments
-    static QByteArray generateCmd(DapCommands command);
+    static QByteArray generateCmd(DapJsonCommands command);
 
-    static QByteArray generateCmd(DapCommands command,
+    static QByteArray generateCmd(DapJsonCommands command,
                                    std::initializer_list<QPair<QString, QJsonValue>>params);
 
-    static QString commandToString(DapCommands cmd);
+    static QString commandToString(DapJsonCommands cmd);
     static QJsonObject stringToJsonObject(const QString& obj);
 
-    ~DapJsonCmd() { delete m_jsObj; }
+    ~DapJsonCmd();
 private:
     DapJsonCmd() {}
-    static QJsonObject getCommandJson(DapCommands command);
+    static QJsonObject getCommandJson(DapJsonCommands command);
     QJsonObject * m_jsObj;
+    QJsonObject * m_jsParamsObj = Q_NULLPTR; // is a part of m_jsObj
 };
 
 #endif // DAPJSONCMD_H

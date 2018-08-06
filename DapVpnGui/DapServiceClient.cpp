@@ -80,22 +80,23 @@ void DapServiceClient::onCtlSocketError(DapUiSocketError socketError)
  */
 void DapServiceClient::onCtlReadReady()
 {
-    QString readStr = QString::fromLatin1(sockCtl->readAll());
+    QByteArray readBytes = sockCtl->readAll();
+    qDebug() << "Ready read! " << readBytes;
+
     int nInd;
 //    qDebug() << "[DapServiceClient] onCtlReadReady() readStr = "<<readStr;
 lb_read_str:
 
-    if((nInd=readStr.indexOf('\n'))==-1 ){
+    if((nInd=readBytes.indexOf("\n\n"))==-1 ){
         qDebug() << "[DapServiceClient] No CR symbol";
-        readStrBuffer += readStr;
+        readBuffer += readBytes;
     }else{
-        readStrBuffer += readStr.left(nInd);
-//        qDebug() << "Processing cmd: "<<readStrBuffer;
-        procCmdHandler(readStrBuffer);
-        readStr= readStr.mid(nInd+1);
-//        qDebug() << "[DapServiceClient] proc next buf " << readStr;
-        readStrBuffer.clear();
-        if(readStr.length()>0){
+        nInd++; // move idx to second \n
+        readBuffer += readBytes.left(nInd);
+        procCmdHandler(readBuffer);
+        readBytes = readBytes.mid(nInd+1);
+        readBuffer.clear();
+        if(readBytes.length()>0){
             goto lb_read_str;
         }
     }

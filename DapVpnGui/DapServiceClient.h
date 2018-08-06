@@ -62,11 +62,11 @@ protected:
 
     DapServiceClient(const QString& a_serviceName);
 protected slots:
-    virtual void procCmdHandler(const QString &a_cmd)=0;
+    virtual void procCmdHandler(const QByteArray &a_cmd) = 0;
 private:
     DapUiSocket * sockCtl;
     QString m_serviceName;
-    QString readStrBuffer;
+    QByteArray readBuffer;
 
     bool isAuthRoot;
 

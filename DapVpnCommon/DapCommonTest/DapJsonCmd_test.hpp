@@ -33,7 +33,7 @@ private slots:
     }
 
     void generateCmd() {
-        QByteArray bResult = DapJsonCmd::generateCmd(DapCommands::STATE,
+        QByteArray bResult = DapJsonCmd::generateCmd(DapJsonCommands::STATE,
         {
             DapJsonParam("int_one", 1), DapJsonParam("auth_bool", true),
             DapJsonParam("two_double", 2.2), DapJsonParam("some_str", "some")
@@ -57,16 +57,35 @@ private slots:
         QVERIFY(resultParams["some_str"].toString() == "some");
     }
 
+    void generateCmdWithoutParams() {
+        QByteArray bResult = DapJsonCmd::generateCmd(DapJsonCommands::STATE);
+        auto result = QJsonDocument::fromJson(bResult);
+        QVERIFY(result["command"].isString());
+        QCOMPARE(result["command"], "state");
+    }
+
     void load() {
         QString sJson = R"({"command": "state", "params": {"authorized":true,"two_int":2}})";
         DapJsonCmdPtr cmd = DapJsonCmd::load(sJson);
 
-        QCOMPARE(cmd->getCommand(), DapCommands::STATE);
+        QCOMPARE(cmd->getCommand(), DapJsonCommands::STATE);
         QJsonValue auth = cmd->getParam("authorized");
         QVERIFY(auth.isBool());
         QCOMPARE(auth.toBool(), true);
         QJsonValue two_int = cmd->getParam("two_int");
         QCOMPARE(two_int.toInt(), 2);
+    }
+
+    void getParams() {
+        QString sJson = R"({"command": "state", "params": {"authorized":true,"two_int":2}})";
+        DapJsonCmdPtr cmd = DapJsonCmd::load(sJson);
+        const QJsonObject * params = cmd->getParams();
+
+        QVERIFY(params->value("authorized").isBool());
+        QCOMPARE(params->value("authorized").toBool(), true);
+
+        QCOMPARE(params->value("two_int").toInt(), 2);
+        qDebug() << "Params " << params->value("authorized").toBool();
     }
 };
 
