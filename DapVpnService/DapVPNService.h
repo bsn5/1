@@ -13,6 +13,8 @@
 #ifdef DAP_SERVICE_CONNECT_TCP
 #include <QTcpServer>
 #include <QTcpSocket>
+#include "DapJsonCmd.h"
+
 typedef class QTcpSocket DapUiSocket;
 typedef QTcpSocket::SocketError DapUiSocketError;
 typedef class QTcpServer DapUiSocketServer;
@@ -117,7 +119,10 @@ signals:
 public slots:
     int init();
     void destroy();
+
     void sendCmdAll(const QString& a_cmd);
+    void sendDapCmdAll(const QByteArray& cmd);
+
     void checkInstallation();
 
     void onIndicatorStateTrue();
