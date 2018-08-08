@@ -14,7 +14,11 @@ DapServiceClient::DapServiceClient(const QString& a_serviceName)
     m_serviceName = a_serviceName;
 
     sockCtl = new DapUiSocket();
-    connect(sockCtl,&DapUiSocket::readyRead,this, &DapServiceClient::onCtlReadReady);
+
+    dapCmdParser = new DapCmdParser(sockCtl, this);
+
+    connect(dapCmdParser, &DapCmdParser::cmdReady, this, &DapServiceClient::procCmdHandler);
+
     connect(sockCtl,static_cast<void(DapUiSocket::*)(DapUiSocketError)> (&DapUiSocket::error) ,
             this, &DapServiceClient::onCtlSocketError);
     connect(sockCtl,&DapUiSocket::connected, this, &DapServiceClient::ctlConnected);
@@ -56,7 +60,7 @@ void DapServiceClient::sendCmd(const QString & a_cmd)
 {
     qDebug() << "[DapServiceClient] sock ctl send command "<< a_cmd;
     if(sockCtl->isWritable())
-        sockCtl->write( QString("%1%2").arg(a_cmd).arg('\n').toLatin1()  );
+        sockCtl->write(QString("%1%2").arg(a_cmd).arg('\n').toLatin1()  );
 }
 
 

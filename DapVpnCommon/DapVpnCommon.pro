@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       -= gui
+QT       += network
 
 TARGET = DapVpnCommon
 TEMPLATE = lib
@@ -23,11 +24,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     DapServerInfo.cpp \
-    DapJsonCmd.cpp
+    DapJsonCmd.cpp \
+    DapCmdParser.cpp
 
 HEADERS += \
     DapServerInfo.h \
-    DapJsonCmd.h
+    DapJsonCmd.h \
+    DapCmdParser.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

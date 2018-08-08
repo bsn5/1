@@ -28,7 +28,7 @@ SOURCES += main.cpp\
     MainWindow.cpp \
     DapUiVpnStateIndicator.cpp \
     DapUiMainWindow.cpp \
-    DapsSatesHandler.cpp
+    DapSatesHandler.cpp
 
 HEADERS  += \
     datalocal.h \

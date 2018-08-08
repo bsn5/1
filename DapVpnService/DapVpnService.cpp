@@ -427,7 +427,7 @@ int DapVPNService::init()
                 qDebug() << "New connect from UI";
                 client.append(s);
 
-                connect(s,&DapUiSocket::readyRead, [=] {
+                connect(s, &DapUiSocket::readyRead, [=] {
                         QString cmdBuf;
                         QString strRead(s->readAll());
                         int ic;
@@ -468,7 +468,6 @@ int DapVPNService::init()
 void DapVPNService::procCmd(const QString &a_cmd)
 {
     QStringList cmdSub=a_cmd.split(' ');
-
 
     qDebug() << "Process cmd "<<a_cmd;
     if(cmdSub.length()>0){
@@ -574,7 +573,7 @@ void DapVPNService::sendCmdAll(const QString& a_cmd) // Deprecated
 {
 
    // qDebug() << "sendCmdAll() send command "<<a_cmd;
-    return;
+    return; // DEPCRECATED
     for(auto s: client) {
 //        qDebug() << "sendCmdAll() client "<<s->socketDescriptor();
         s->write(QString("%1%2").arg(a_cmd).arg("\n\n").toLatin1());

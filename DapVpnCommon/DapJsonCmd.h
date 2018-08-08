@@ -13,8 +13,10 @@
 
 class DapJsonCmd;
 using DapJsonCmdPtr = std::unique_ptr<DapJsonCmd>;
+
 enum class DapJsonCommands {
-    STATE
+    STATE,
+    TRAFFIC_STATS
 };
 
 enum class DapJsonParams {

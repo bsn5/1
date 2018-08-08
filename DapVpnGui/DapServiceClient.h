@@ -41,6 +41,7 @@ typedef class DapServiceNativeWindows DapServiceNative;
 typedef class DapServiceNativeIOS DapServiceNative;
 #endif
 
+#include "DapCmdParser.h"
 
 class DapServiceClient : public QObject, public DapServiceNative
 {
@@ -67,7 +68,7 @@ private:
     DapUiSocket * sockCtl;
     QString m_serviceName;
     QByteArray readBuffer;
-
+    DapCmdParser * dapCmdParser;
     bool isAuthRoot;
 
 private slots:
