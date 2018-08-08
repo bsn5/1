@@ -7,9 +7,9 @@
 #endif
 #include "datalocal.h"
 #include "ServiceCtl.h"
-#include "DapStatesHandler.h"
+#include "DapCmdStatesHandler.h"
 
-ServiceCtl::commandHalders ServiceCtl::m_commandHandlers = {
+DapJsonCmdHandlersMap ServiceCtl::m_commandHandlers = {
     {DapJsonCommands::STATE, DapStatesHandler::handler}
 };
 
@@ -20,7 +20,7 @@ ServiceCtl::ServiceCtl()
 
     connect(this,&ServiceCtl::ctlConnected, [=]{
         qInfo() << "[ServiceCtl] Connected to ctl socket,request for status";
-        sendCmd("get_states");
+        sendCmd(DapJsonCmd::generateCmd(DapJsonCommands::GET_STATES));
     });
     connect(this,&ServiceCtl::ctlDisconnected, [=]{
         qInfo() << "[ServiceCtl] Disconnected from backend";

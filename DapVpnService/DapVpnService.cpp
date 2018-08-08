@@ -15,6 +15,8 @@
 #include "DapVPNService.h"
 #include "DapStreamer.h"
 #include "DapChSockForw.h"
+#include "DapCmdConnHandler.h"
+#include "DapGuiCmdHandler.h"
 
 /**
  * @brief DapVPNService::DapVPNService
@@ -42,12 +44,28 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
         sendCmdAll(QString("status stream error %1").arg( QString::fromLatin1(a_msg.toUtf8().toBase64())  ) );
     });
 
-    connect(DapSession::getInstance(), &DapSession::errorConnection,this,[=]{ qWarning() << "[DapVPNService] DapSession connection error"; });
+    connect(DapSession::getInstance(), &DapSession::errorConnection,this,[=] {
+        qWarning() << "[DapVPNService] DapSession connection error";
+    });
+
+
     connect(DapSession::getInstance(),&DapSession::encryptInitialized,this,&DapVPNService::onEncInitialized );
     connect(DapSession::getInstance(), static_cast<void(DapSession::*)(const QString&)>(&DapSession::errorAuthorization),[=](QString a_msg){
         qWarning() << "[DapVPNService] Authorization error: "<<a_msg;
         onUsrMsg(a_msg);
         sendCmdAll(  QString("status authorize error %1").arg(QString::fromLatin1(a_msg.toLatin1().toBase64())));
+    });
+
+    connect(&DapCmdConnHandler::me(), &DapCmdConnHandler::sigConnect,
+            [=](const QString& user, const QString& password) {
+        // Maybe in feature come up with something better
+        m_curUser = user;
+        m_curPassword = password;
+        emit sigRequestConnected();
+    });
+
+    connect(&DapCmdConnHandler::me(), &DapCmdConnHandler::sigDisconnect, [=] {
+        emit sigRequestDisconnected();
     });
 
     connect(chSockForw,&DapChSockForw::usrMsg,this, &DapVPNService::onUsrMsg );
@@ -416,7 +434,7 @@ int DapVPNService::init()
     srvLocal = new DapUiSocketServer();
 
 //#ifdef DAP_SERVICE_CONNECT_TCP
-    if(srvLocal->listen(QHostAddress("127.0.0.1"),22143)){
+    if(srvLocal->listen(QHostAddress("127.0.0.1"),22143)) {
 //#else
 //    srvLocal->setSocketOptions(QLocalServer::WorldAccessOption);
 //    if(srvLocal->listen(DAP_BRAND)){
@@ -425,34 +443,12 @@ int DapVPNService::init()
         connect(srvLocal,&DapUiSocketServer::newConnection, [=]{
             while(DapUiSocket * s = srvLocal->nextPendingConnection()){
                 qDebug() << "New connect from UI";
+                DapCmdParser * dapCmdParser = new DapCmdParser(s);
+                connect(dapCmdParser, &DapCmdParser::cmdReady, this, &DapVPNService::procCmd);
                 client.append(s);
-
-                connect(s, &DapUiSocket::readyRead, [=] {
-                        QString cmdBuf;
-                        QString strRead(s->readAll());
-                        int ic;
-                        while(true)
-                        {
-                            if(strRead.isEmpty())
-                                break;
-
-                            if( (ic = strRead.indexOf('\n')) == -1 )
-                            {
-                                cmdBuf.append(strRead);
-                                break;
-                            }
-                            else
-                            {
-                                if(ic > 0)
-                                    cmdBuf.append(strRead.left(ic));
-                                procCmd(cmdBuf);
-                                strRead = strRead.mid(ic+1);
-                                cmdBuf.clear();
-                            }
-                        }
-                });
                 connect(s, &DapUiSocket::disconnected,[=]{
                     qDebug() << "UI client disconnected";
+                    delete dapCmdParser;
                     client.removeAll(s);
                 });
             }
@@ -465,72 +461,81 @@ int DapVPNService::init()
     }
 }
 
-void DapVPNService::procCmd(const QString &a_cmd)
+void DapVPNService::procCmd(const QByteArray &a_cmd)
 {
-    QStringList cmdSub=a_cmd.split(' ');
+    //qDebug() << "command string: " << a_cmd;
 
-    qDebug() << "Process cmd "<<a_cmd;
-    if(cmdSub.length()>0){
-        if(cmdSub[0]=="version"){
-            sendCmdAll(QString("version %s").arg(DAP_VERSION) );
-        } else if(cmdSub[0] == "NativeServerInfo") {
-            if (cmdSub.length() > 5) {
-              /*  const BadServers badServers(cmdSub[1], cmdSub[2], cmdSub[3], cmdSub[4]);
-                m_nativeServersInfo.push_back(badServers);*/
-            } else {
-                qWarning() <<"Wrong connect NativeServerInfo with only "<< cmdSub.length()<<" arguments (needs 6)";
-            }
-        } else if(cmdSub[0] == "get_list_servers") {
-            qDebug() << "GET: get_list_servers";
-            // FIXME!!! Доделать сохранение о тоом, что прога уже запускалась...
-            QSettings firstRun;
-           // DapSession::getInstance()->serverListRequester("" == firstRun.value("firstRunOfDapService").toString());
-        } else if(cmdSub[0] ==  "connect") {
-            if(cmdSub.length() == 5) { // address port user password
-                m_curAddrLine=cmdSub[1];
-                m_curUser=cmdSub[3];
-                m_curPassword=cmdSub[4];
-                qDebug() << "Command connect to" << m_curAddrLine
-                         << cmdSub[2] << "with"
-                         << m_curUser << "credentials";
-                DapSession::getInstance()->setDapUri(cmdSub[1], cmdSub[2]);
-                emit sigRequestConnected();
-            }else
-                qWarning() <<"Wrong connect command with "
-                          << cmdSub.length() << " arguments (needs 4)";
-                qWarning() <<"cmdBuf = "<< a_cmd;
-        }else if(cmdSub[0] == "disconnect"){
-            qDebug() << "Command disconnect";
-            emit sigRequestDisconnected();
-        }else if(cmdSub[0] == "get_states"){
-            qDebug() << "Requested states";
-            for (auto si: siList) {
-                sendCmdAll(QString("state %1 %2").arg(si->name()).arg(DapSI::toString(si->current()) ));
-            }
+    DapJsonCmdPtr cmdPtr = DapJsonCmd::load(a_cmd);
+    if (cmdPtr == nullptr) {
+        qWarning() << "Error parse cmd!";
+        return;
+    }
 
-            if( stateRequestConnected->active())
-                sendCmdAll("request connected");
-            else if( stateRequestDisconnected->active())
-                sendCmdAll("request disconnected");
+    DapGuiCmdHandler::handler(std::move(cmdPtr));
 
-        } else if(cmdSub[0] == "tunnel_create"){
-            qDebug() << "Command tunnel_create with tun socket from native service";
-            if(cmdSub.length()>1){
-                 qDebug() << "Create worker with tun socket "<<cmdSub.at(1);
-                 chSockForw->workerStart( cmdSub.at(1).toInt() );
-            }
+//    QStringList cmdSub= QString(a_cmd).split(' ');
+//    qDebug() << "Process cmd "<<a_cmd;
+//    if(cmdSub.length()>0){
+//        if(cmdSub[0]=="version"){
+//            sendCmdAll(QString("version %s").arg(DAP_VERSION) );
+//        } else if(cmdSub[0] == "NativeServerInfo") {
+//            if (cmdSub.length() > 5) {
+//              /*  const BadServers badServers(cmdSub[1], cmdSub[2], cmdSub[3], cmdSub[4]);
+//                m_nativeServersInfo.push_back(badServers);*/
+//            } else {
+//                qWarning() <<"Wrong connect NativeServerInfo with only "<< cmdSub.length()<<" arguments (needs 6)";
+//            }
+//        } else if(cmdSub[0] == "get_list_servers") {
+//            qDebug() << "GET: get_list_servers";
+//            // FIXME!!! Доделать сохранение о тоом, что прога уже запускалась...
+//            QSettings firstRun;
+//           // DapSession::getInstance()->serverListRequester("" == firstRun.value("firstRunOfDapService").toString());
+//        } else if(cmdSub[0] ==  "connect") {
+//            if(cmdSub.length() == 5) { // address port user password
+//                m_curAddrLine=cmdSub[1];
+//                m_curUser=cmdSub[3];
+//                m_curPassword=cmdSub[4];
+//                qDebug() << "Command connect to" << m_curAddrLine
+//                         << cmdSub[2] << "with"
+//                         << m_curUser << "credentials";
+//                DapSession::getInstance()->setDapUri(cmdSub[1], cmdSub[2]);
+//                emit sigRequestConnected();
+//            }else
+//                qWarning() <<"Wrong connect command with "
+//                          << cmdSub.length() << " arguments (needs 4)";
+//                qWarning() <<"cmdBuf = "<< a_cmd;
+//        }else if(cmdSub[0] == "disconnect"){
+//            qDebug() << "Command disconnect";
+//            emit sigRequestDisconnected();
+//        }else if(cmdSub[0] == "get_states"){
+//            qDebug() << "Requested states";
+//            for (auto si: siList) {
+//                sendCmdAll(QString("state %1 %2").arg(si->name()).arg(DapSI::toString(si->current()) ));
+//            }
 
-        }else if(cmdSub[0] == "exit"){
-            qDebug() << "Command unroute all traffic from the network interface";
-            ::exit(0);
-        }/*else if (cmdSub.at(0).compare("forward_tcp")){
-            if(cmdSub.length()>=5)
-                chSockForw->addForwarding(cmdSub[3],cmdSub[4].toUShort(),cmdSub[2].toUShort());
-        }*/else{
-            qWarning() <<"Unrecognized command "<<cmdSub.at(0);
-        }
-    }else
-        qWarning() << "Wrong command split, should be 1 member at least in the list";
+//            if( stateRequestConnected->active())
+//                sendCmdAll("request connected");
+//            else if( stateRequestDisconnected->active())
+//                sendCmdAll("request disconnected");
+
+//        } else if(cmdSub[0] == "tunnel_create"){
+//            qDebug() << "Command tunnel_create with tun socket from native service";
+//            if(cmdSub.length()>1){
+//                 qDebug() << "Create worker with tun socket "<<cmdSub.at(1);
+//                 chSockForw->workerStart( cmdSub.at(1).toInt() );
+//            }
+
+//        }else if(cmdSub[0] == "exit"){
+//            qDebug() << "Command unroute all traffic from the network interface";
+//            ::exit(0);
+//        }/*else if (cmdSub.at(0).compare("forward_tcp")){
+//            if(cmdSub.length()>=5)
+//                chSockForw->addForwarding(cmdSub[3],cmdSub[4].toUShort(),cmdSub[2].toUShort());
+//        }*/else{
+//            qWarning() <<"Unrecognized command "<<cmdSub.at(0);
+//        }
+//    }else
+//        qWarning() << "Wrong command split, should be 1 member at least in the list";
 }
 
 void DapVPNService::checkInstallation()
@@ -608,7 +613,7 @@ void DapVPNService::onUsrMsg(const QString &a_msg)
  */
 void DapVPNService::onReadBytes(int arg)
 {
-    m_tunReadBytes+=(quint64) arg;
+    m_tunReadBytes += quint64(arg);
 }
 
 /**
@@ -617,7 +622,7 @@ void DapVPNService::onReadBytes(int arg)
  */
 void DapVPNService::onWriteBytes(int arg)
 {
-    m_tunWriteBytes+=(quint64) arg;
+    m_tunWriteBytes += quint64(arg);
 }
 
 /**

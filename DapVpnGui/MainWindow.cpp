@@ -38,7 +38,7 @@
 #include "MainWindow.h"
 
 #include "ServiceCtl.h"
-#include "DapStatesHandler.h"
+#include "DapCmdStatesHandler.h"
 #include "datalocal.h"
 #include "schedule.h"
 
@@ -76,14 +76,14 @@ void MainWindow::onLogout(){
     setGraphicsEffect(effect);
     dus->setVars("graphicsView","visible",false);
     if(QMessageBox::question(
-            this,
-            "DiveVPN: Important information",
-            "After that action the network will be unprotected, do you want to continue?"
-            ) == QMessageBox::Yes) {
+                this,
+                "DiveVPN: Important information",
+                "After that action the network will be unprotected, do you want to continue?"
+                ) == QMessageBox::Yes) {
         emit sigBtDisconnect();
 #ifdef Q_OS_ANDROID
-            QtAndroid::androidActivity().callMethod<void>( "stopDapVpnServiceNative"
-                                               ,"()V" );
+        QtAndroid::androidActivity().callMethod<void>( "stopDapVpnServiceNative"
+                                                       ,"()V" );
 #endif
     }
     dus->setVars("graphicsView","visible",true);
@@ -94,19 +94,19 @@ void MainWindow::onLogout(){
 
 void MainWindow::sendUpstreamsToServer()
 {
-//    for(const DapServerInfo& i: DataLocal::me()->servers()){
-//        ServiceCtl::me().sendCmd(QString("addServerToList %1 %2")
-//            .arg(QString("%1:%2").arg(i.address).arg(i.port))
-//            .arg(i.ip));
-//    }
+    //    for(const DapServerInfo& i: DataLocal::me()->servers()){
+    //        ServiceCtl::me().sendCmd(QString("addServerToList %1 %2")
+    //            .arg(QString("%1:%2").arg(i.address).arg(i.port))
+    //            .arg(i.ip));
+    //    }
 
-//#ifdef  QT_DEBUG
-//    ServiceCtl::me().sendCmd("addServerToList testing.divevpn.com:8003 62.210.73.95");
-//    ServiceCtl::me().sendCmd("addServerToList dev1.demlabs.net:8001 62.210.73.95");
-//    ServiceCtl::me().sendCmd("addServerToList dev2.demlabs.net:8002 62.210.73.95");
-//    ServiceCtl::me().sendCmd("addServerToList 192.168.0.104:8002 192.168.0.104"); //TODO: IVAN
-//   // ServiceCtl::me().sendCmd("addServerToList 127.0.0.1:8002 127.0.0.1"); //TODO: IVAN
-//#endif
+    //#ifdef  QT_DEBUG
+    //    ServiceCtl::me().sendCmd("addServerToList testing.divevpn.com:8003 62.210.73.95");
+    //    ServiceCtl::me().sendCmd("addServerToList dev1.demlabs.net:8001 62.210.73.95");
+    //    ServiceCtl::me().sendCmd("addServerToList dev2.demlabs.net:8002 62.210.73.95");
+    //    ServiceCtl::me().sendCmd("addServerToList 192.168.0.104:8002 192.168.0.104"); //TODO: IVAN
+    //   // ServiceCtl::me().sendCmd("addServerToList 127.0.0.1:8002 127.0.0.1"); //TODO: IVAN
+    //#endif
 }
 
 /**
@@ -116,13 +116,17 @@ void MainWindow::onReqConnect(const DapServerInfo& dsi, QString a_user, QString 
 {
     qDebug() << "[MW] btLogin()";
     if (stateLoginConnecting->active() ) { //
-        ServiceCtl::me().sendCmd("disconnect");
+        sendDisconnectionReq();
     } else {
         m_user = a_user;
-
-        ServiceCtl::me().sendCmd(QString("connect %1 %2 %3 %4")
-            .arg(dsi.address).arg(dsi.port).arg(m_user).arg(a_ps));
-        sendUpstreamsToServer();
+        ServiceCtl::me().sendCmd(DapJsonCmd::generateCmd(
+                                     DapJsonCommands::CONNECTION, {
+                                         DapJsonParam("address", dsi.address),
+                                         DapJsonParam("port", dsi.port),
+                                         DapJsonParam("user", m_user),
+                                         DapJsonParam("password", a_ps)
+                                     }));
+       // sendUpstreamsToServer();
     }
     emit sigBtConnect();
 }
@@ -168,9 +172,18 @@ void MainWindow::updateProgress(int value)
 bool stringToBool (QString str) {return str == "true";}
 
 
+void MainWindow::sendDisconnectionReq() {
+    auto cmd = DapJsonCmd::generateCmd(
+                DapJsonCommands::CONNECTION,
+    {DapJsonParam("disconnect", true)});
+
+    ServiceCtl::me().sendCmd(cmd);
+}
+
 void MainWindow::onExit()
 {
-    ServiceCtl::me().sendCmd("disconnect");
+    // sendCmd("disconnect");
+    // ServiceCtl::me().sendCmd("disconnect");
     this->close();
 }
 
@@ -184,14 +197,14 @@ void MainWindow::initTray()
 {
     trayMenu = new QMenu(this);
     actionDisconnect = trayMenu->addAction(
-        QIcon(":/pics/off_icon_active@3x.png"),
-        "Disconnect", this, SLOT(onLogout()));
+                QIcon(":/pics/off_icon_active@3x.png"),
+                "Disconnect", this, SLOT(onLogout()));
     trayMenu->addSeparator();
     actionSettings = trayMenu->addAction(
-        QIcon(":/pics/settings_icon_active@3x.png"),"Settings",[=]{});
+                QIcon(":/pics/settings_icon_active@3x.png"),"Settings",[=]{});
     trayMenu->addSeparator();
     actionExit = trayMenu->addAction(QIcon(":/pics/close_icon@3x.png"),"Exit",
-        [=]{this->onExit();} );
+                                     [=]{this->onExit();} );
 
     trayIcon = new QSystemTrayIcon();
     trayIcon->setIcon(QIcon(":/pics/logo-main@2x.png"));
@@ -199,10 +212,10 @@ void MainWindow::initTray()
     trayIcon->show();
 
     connect(trayIcon, static_cast<void (QSystemTrayIcon::*)(QSystemTrayIcon::ActivationReason)>(&QSystemTrayIcon::activated),
-        [=](QSystemTrayIcon::ActivationReason arg){
-            if (arg == QSystemTrayIcon::Context) return;
-            this->setVisible(!this->isVisible());
-        });
+            [=](QSystemTrayIcon::ActivationReason arg){
+        if (arg == QSystemTrayIcon::Context) return;
+        this->setVisible(!this->isVisible());
+    });
 }
 
 
@@ -425,14 +438,14 @@ MainWindow::MainWindow(QWidget *parent) :
         dus->setVars("lbSent","text",tr("Sent: %1Kb").arg(s));
         if (dusDashboard != nullptr) {
             schedules.draw_chart(
-                dusDashboard->getScene(),
-                dusDashboard->getSceneWidth() - 3,
-                dusDashboard->getSceneHeight() - 3);
+                        dusDashboard->getScene(),
+                        dusDashboard->getSceneWidth() - 3,
+                        dusDashboard->getSceneHeight() - 3);
             dusDashboard->getScene()->update();
         }
     });
 
-////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////
     sm.setChildMode(QState::ParallelStates);
 
     // states
@@ -539,7 +552,7 @@ MainWindow::MainWindow(QWidget *parent) :
         dus = dusDashboard= new ScreenDashboard(this, pages, m_currentUpstreamName);
 
         connect(dusDashboard, &ScreenDashboard::currentUpstreamNameChanged, [=](QString name){
-           m_currentUpstreamName = name;
+            m_currentUpstreamName = name;
 
         });
 
@@ -618,7 +631,7 @@ MainWindow::MainWindow(QWidget *parent) :
         dus->setVars("lbAuthorizedText","text",tr("User Authorized"));
         dus->setVars("cbAuthorized","checked",true);
         setStatusText("Disconnecting...");
-        ServiceCtl::me().sendCmd("disconnect");
+        sendDisconnectionReq();
     });
 
     // * ---> *CtlConnecting
@@ -649,7 +662,7 @@ MainWindow::MainWindow(QWidget *parent) :
     stateLoginConnecting->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateTunnelCreated()),statesDashboard );
 
     // Dashboard ---> DashboardDisconnecting
-   // statesDashboard->addTransition(this,SIGNAL(sigBtDisconnect()),stateDashboardDisconnecting);
+    // statesDashboard->addTransition(this,SIGNAL(sigBtDisconnect()),stateDashboardDisconnecting);
 
     // DashboardDisconnectin ---> Begin
     stateDashboardDisconnecting->addTransition(&DapStatesHandler::me(),SIGNAL(sigStateUnauthorized()),stateLoginBegin);

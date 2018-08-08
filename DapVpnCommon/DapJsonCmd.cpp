@@ -1,7 +1,16 @@
 #include "DapJsonCmd.h"
 
+QMap<DapJsonCommands, QString> DapJsonCmd::cmdStrings = {
+    {DapJsonCommands::STATE, "state"},
+    {DapJsonCommands::CONNECTION, "connect"},
+    {DapJsonCommands::TRAFFIC_STATS, "traffic stats"},
+    {DapJsonCommands::GET_STATES, "get states"}
+};
+
 DapJsonCommands DapJsonCmd::getCommand() const {
-    return DapJsonCommands((*m_jsObj)["command"].toInt());
+    return DapJsonCmd::stringToCommand(
+                (*m_jsObj)["command"].toString()
+            );
 }
 
 QJsonValue DapJsonCmd::getParam(const QString& key) const {
@@ -50,11 +59,11 @@ bool DapJsonCmd::isJsonValid(QJsonObject obj) {
     return true;
 }
 
-QString DapJsonCmd::commandToString(DapJsonCommands command) {
-    static QMap<DapJsonCommands, QString> cmdStrings = {
-        {DapJsonCommands::STATE, "state"}
-    };
+DapJsonCommands DapJsonCmd::stringToCommand(const QString& cmd) {
+    return cmdStrings.key(cmd);
+}
 
+QString DapJsonCmd::commandToString(DapJsonCommands command) {
     QString sCmd = cmdStrings.value(command);
     if (sCmd == "") {
         throw std::runtime_error("Unknown DapCommand. Add his to cmdStrings!");

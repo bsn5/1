@@ -11,13 +11,17 @@
 #define DapJsonParam(key,value) \
     QPair<QString, QJsonValue>(key, QJsonValue(value))
 
-class DapJsonCmd;
-using DapJsonCmdPtr = std::unique_ptr<DapJsonCmd>;
-
 enum class DapJsonCommands {
     STATE,
-    TRAFFIC_STATS
+    CONNECTION,
+    TRAFFIC_STATS,
+    GET_STATES
 };
+
+class DapJsonCmd;
+using DapJsonCmdPtr = std::unique_ptr<DapJsonCmd>;
+using DapJsonCmdHandler = void (*)(const QJsonObject*);
+using DapJsonCmdHandlersMap = QMap<DapJsonCommands, void (*)(const QJsonObject*)>;
 
 enum class DapJsonParams {
     // TODO
@@ -51,10 +55,14 @@ public:
                                    std::initializer_list<QPair<QString, QJsonValue>>params);
 
     static QString commandToString(DapJsonCommands cmd);
+    static DapJsonCommands stringToCommand(const QString& cmd);
+
     static QJsonObject stringToJsonObject(const QString& obj);
 
     ~DapJsonCmd();
 private:
+    static QMap<DapJsonCommands, QString> cmdStrings;
+
     DapJsonCmd() {}
     static QJsonObject getCommandJson(DapJsonCommands command);
     QJsonObject * m_jsObj;

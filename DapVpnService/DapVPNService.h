@@ -8,12 +8,16 @@
 #include <QVector>
 #include <QStateMachine>
 #include <QState>
+#include <utility>
+
 #include "DapSI.h"
+#include "DapCmdParser.h"
 
 #ifdef DAP_SERVICE_CONNECT_TCP
 #include <QTcpServer>
 #include <QTcpSocket>
 #include "DapJsonCmd.h"
+
 
 typedef class QTcpSocket DapUiSocket;
 typedef QTcpSocket::SocketError DapUiSocketError;
@@ -89,12 +93,8 @@ private:
 
 
 public:
-
     explicit DapVPNService(QObject *parent = 0);
     virtual ~DapVPNService();
-
-    void procCmd(const QString & a_cmd);
-
 protected:
     QStateMachine sm;
 
@@ -129,6 +129,7 @@ public slots:
     void onIndicatorStateFalse();
 
 private slots:
+    void procCmd(const QByteArray & a_cmd);
     void onEncInitialized();
 
     void onUsrMsg(const QString &a_msg);

@@ -8,16 +8,12 @@
 
 class ServiceCtl;
 
-using CommandHandler = void (*)(const QJsonObject*);
-
 class QTimer;
 class ServiceCtl : public DapServiceClient
 {
     Q_OBJECT
 public:
     static ServiceCtl& me(){static ServiceCtl _me; return _me; }
-    using commandHalders = QMap<DapJsonCommands, void (*)(const QJsonObject*)>;
-
 signals:
     void sigStatistics(QString, QString);
 
@@ -26,7 +22,7 @@ protected:
 
     ServiceCtl();
 private:
-    static commandHalders m_commandHandlers;
+    static DapJsonCmdHandlersMap m_commandHandlers;
 
     QString m_username, m_password;
     QString m_addrAssigned;

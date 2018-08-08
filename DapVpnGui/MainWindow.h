@@ -18,6 +18,7 @@
 #include "ScreenDashboard.h"
 #include "DapUiMainWindow.h"
 #include "DapUiVpnStateIndicator.h"
+#include "DapJsonCmd.h"
 
 class QSystemTrayIcon;
 class QCloseEvent;
@@ -59,7 +60,7 @@ private:
     void updateUpstreams();
 
     void initTray();
-
+    void sendDisconnectionReq();
 
     UsrMsg     user_msg;
 

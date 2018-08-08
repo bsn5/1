@@ -58,7 +58,7 @@ void DapServiceClient::connectToService()
  */
 void DapServiceClient::sendCmd(const QString & a_cmd)
 {
-    qDebug() << "[DapServiceClient] sock ctl send command "<< a_cmd;
+    //qDebug() << "[DapServiceClient] sock ctl send command "<< a_cmd;
     if(sockCtl->isWritable())
         sockCtl->write(QString("%1%2").arg(a_cmd).arg('\n').toLatin1()  );
 }
