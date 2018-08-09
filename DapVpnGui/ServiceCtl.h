@@ -14,9 +14,6 @@ class ServiceCtl : public DapServiceClient
     Q_OBJECT
 public:
     static ServiceCtl& me(){static ServiceCtl _me; return _me; }
-signals:
-    void sigStatistics(QString, QString);
-
 protected:
     void procCmdHandler(const QByteArray &a_cmd) override;
 

@@ -14,7 +14,7 @@
 enum class DapJsonCommands {
     STATE,
     CONNECTION,
-    TRAFFIC_STATS,
+    STATS,
     GET_STATES
 };
 
@@ -22,6 +22,9 @@ class DapJsonCmd;
 using DapJsonCmdPtr = std::unique_ptr<DapJsonCmd>;
 using DapJsonCmdHandler = void (*)(const QJsonObject*);
 using DapJsonCmdHandlersMap = QMap<DapJsonCommands, void (*)(const QJsonObject*)>;
+
+const QString g_readKbytesParam = "read_kbytes";
+const QString g_writeKbytesParam = "write_kbytes";
 
 enum class DapJsonParams {
     // TODO

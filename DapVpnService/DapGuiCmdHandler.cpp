@@ -3,7 +3,7 @@
 #include "DapSession.h"
 
 DapJsonCmdHandlersMap DapGuiCmdHandler::m_commandHandlers = {
-    {DapJsonCommands::CONNECTION, DapCmdConnHandler::handler}
+    {DapJsonCommands::CONNECTION, DapCmdConnHandler::handler},
 };
 
 

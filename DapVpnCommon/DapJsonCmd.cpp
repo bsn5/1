@@ -2,8 +2,8 @@
 
 QMap<DapJsonCommands, QString> DapJsonCmd::cmdStrings = {
     {DapJsonCommands::STATE, "state"},
-    {DapJsonCommands::CONNECTION, "connect"},
-    {DapJsonCommands::TRAFFIC_STATS, "traffic stats"},
+    {DapJsonCommands::CONNECTION, "connection"},
+    {DapJsonCommands::STATS, "stats"},
     {DapJsonCommands::GET_STATES, "get states"}
 };
 

@@ -8,9 +8,11 @@
 #include "datalocal.h"
 #include "ServiceCtl.h"
 #include "DapCmdStatesHandler.h"
+#include "DapCmdStatsHandler.h"
 
 DapJsonCmdHandlersMap ServiceCtl::m_commandHandlers = {
-    {DapJsonCommands::STATE, DapStatesHandler::handler}
+    {DapJsonCommands::STATE, DapCmdStatesHandler::handler},
+    {DapJsonCommands::STATS, DapCmdStatsHandler::handler}
 };
 
 ServiceCtl::ServiceCtl()
@@ -47,7 +49,7 @@ void ServiceCtl::procCmdHandler(const QByteArray &a_cmd)
     // cal handler function
     (*iter)(djc->getParams());
 
-    // TODO part for android see code below
+    // TODO part for android see code below (#ifdef Q_OS_ANDROID)
 
     /*
     // ошибки и сообщения пользователю, нужно встроить... сделаю.

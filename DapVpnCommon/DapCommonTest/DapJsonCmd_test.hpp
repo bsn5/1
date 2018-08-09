@@ -6,8 +6,16 @@
 
 class DapJsonCmdTest : public QObject {
     Q_OBJECT
-private:
 private slots:
+    void commandToString() {
+        QCOMPARE(DapJsonCmd::commandToString(DapJsonCommands::CONNECTION),
+                 "connection");
+    }
+
+    void stringToCommand() {
+        QCOMPARE(DapJsonCmd::stringToCommand("stats"), DapJsonCommands::STATS);
+    }
+
     void validJson() {
         QJsonObject mainObject
         {

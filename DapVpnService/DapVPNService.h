@@ -91,7 +91,6 @@ private:
     QTime tmStreamOpened;
     QDateTime dtStreamOpened;
 
-
 public:
     explicit DapVPNService(QObject *parent = 0);
     virtual ~DapVPNService();
