@@ -25,12 +25,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     DapServerInfo.cpp \
     DapJsonCmd.cpp \
-    DapCmdParser.cpp
+    DapCmdParser.cpp \
+    DapIndicatorState.cpp
 
 HEADERS += \
     DapServerInfo.h \
     DapJsonCmd.h \
-    DapCmdParser.h
+    DapCmdParser.h \
+    DapIndicatorStatee.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

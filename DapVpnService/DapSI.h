@@ -7,14 +7,13 @@
 #include <QMap>
 #include <QPair>
 #include <DapSB.h>
+#include "DapIndicatorStatee.h"
 
-class DapSI : public QObject
+class DapSI : public DapIndicatorState
 {
     Q_OBJECT
 public:
-    enum IndicatorState{True, False,SwitchingToFalse,SwitchingToTrue, Error, ErrorAuth,ErrorNetwork};
     typedef QPair<QObject*, const char*> SignalSender;
-    Q_ENUM(IndicatorState)
 
     static const QSet<IndicatorState> IS_SIGNAL_ALL;
     static const QSet<IndicatorState> IS_STATE_ALL;
@@ -50,8 +49,6 @@ public:
     const QString& name() { return m_name; }
     IndicatorState current() { return m_current; }
     IndicatorState previous() { return m_previous; }
-
-    static const QString& toString(IndicatorState i);
 
 signals:
     void currentChanged(IndicatorState);
