@@ -54,7 +54,7 @@ const DapSI::IndicatorState DapSI::IS_DEFAULT_STATE=DapSI::False;
  * @param a_name
  */
 DapSI::DapSI(QState& a_parent, const QString& a_name)
-    : QObject(nullptr), m_name(a_name), m_current(IS_DEFAULT_STATE), m_previous(IS_DEFAULT_STATE)
+    : DapIndicatorState(nullptr), m_name(a_name), m_current(IS_DEFAULT_STATE), m_previous(IS_DEFAULT_STATE)
 {
 
     m_states = new QState(&a_parent);
@@ -169,25 +169,6 @@ void DapSI::doActionFor(IndicatorState a_is)
         qWarning() <<"No action for "<<a_is<<" state";
     }else
         qWarning() <<"doActionFor " <<a_is <<" state but we're already in this state!";
-}
-
-/**
- * @brief StatesIndicator::toString
- * @param i
- * @return
- */
-const QString& DapSI::toString(IndicatorState i)
-{
-    static QMap<IndicatorState,QString> i2s{
-        {True,"true"},
-        {False,"false"},
-        {SwitchingToFalse,"true_to_false"},
-        {SwitchingToTrue,"false_to_true"},
-        {Error,"error"},
-        {ErrorAuth,"error_auth"},
-        {ErrorNetwork,"error_network"}
-    };
-    return i2s[i];
 }
 
 void DapSI::emitResponseWaitingSig()
