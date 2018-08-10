@@ -143,7 +143,8 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
         if(stateRequestConnected->active()) {
             siStream->doActionFor(DapSI::True);
             QByteArray baCmd = DapJsonCmd::generateCmd(DapJsonCommands::STATE, {
-                                                           DapJsonParam("authorize", "true"),
+                                                           DapJsonParam(g_stateName, "authorize"),
+                                                           DapJsonParam("value", "true")
                                                        });
             sendDapCmdAll(baCmd);
 
@@ -277,7 +278,8 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     connect(siTunnel->state(DapSI::True), &QState::entered, [=]{
         sendCmdAll("status tunnel_created true");
         QByteArray baCmd = DapJsonCmd::generateCmd(DapJsonCommands::STATE, {
-                                                       DapJsonParam("tunnel", "true"),
+                                                       DapJsonParam(g_stateName, "tunnel"),
+                                                       DapJsonParam("value", "true"),
                                                    });
         sendDapCmdAll(baCmd);
     });
@@ -318,7 +320,8 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
             qDebug() <<"=== "<< si->name()<<" === got state "<< DapSI::toString(a_i);
             //   sendCmdAll(QString("state %1 %2").arg(si->name()).arg(DapSI::toString(a_i) ));
             QByteArray baCmd = DapJsonCmd::generateCmd(DapJsonCommands::STATE, {
-                                                           DapJsonParam(si->name(), DapSI::toString(a_i)),
+                                                           DapJsonParam(g_stateName, si->name()),
+                                                           DapJsonParam("value", DapSI::toString(a_i))
                                                        });
             sendDapCmdAll(baCmd);
 

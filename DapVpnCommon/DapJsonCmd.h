@@ -23,6 +23,7 @@ using DapJsonCmdPtr = std::unique_ptr<DapJsonCmd>;
 using DapJsonCmdHandler = void (*)(const QJsonObject*);
 using DapJsonCmdHandlersMap = QMap<DapJsonCommands, void (*)(const QJsonObject*)>;
 
+const QString g_stateName = "state_name";
 const QString g_readKbytesParam = "read_kbytes";
 const QString g_writeKbytesParam = "write_kbytes";
 

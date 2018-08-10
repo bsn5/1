@@ -1,4 +1,4 @@
-#include "DapIndicatorStatee.h"
+#include "DapIndicatorState.h"
 #include <QMap>
 
 DapIndicatorState::DapIndicatorState(QObject *parent)

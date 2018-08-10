@@ -1,4 +1,5 @@
 #include "DapCmdStatesHandler.h"
+#include "DapJsonCmd.h"
 
 
 DapCmdStatesHandler::DapCmdStatesHandler(QObject *parent)
@@ -8,40 +9,57 @@ DapCmdStatesHandler::DapCmdStatesHandler(QObject *parent)
 }
 
 void DapCmdStatesHandler::handler(const QJsonObject * params) {
+    static QMap<QString, void(*)(IndicatorState)> stateCallbacks = {
+    {"authorization", DapCmdStatesHandler::authorizeHandler},
+    {"tunnel", DapCmdStatesHandler::tunnelHandler},
+    {"stream", DapCmdStatesHandler::streamHandler},
+    {"netconfig", DapCmdStatesHandler::netconfigHandler}
+    };
+
     qDebug() << "Call stateHandler" << *params;
-    for(auto &k : params->keys()) {
-        if (k == "authorize") {
-            DapCmdStatesHandler::authorizeHandler(params->value(k).toString());
-        } else if(k == "tunnel") {
-            DapCmdStatesHandler::tunnelHandler(params->value(k).toString());
-        }
+    if (!params->contains(g_stateName) ||
+            !params->contains("value")) {
+        qWarning() << "Not found mandatory parameter!";
+        return;
     }
+    const QString stateName = params->value(g_stateName).toString();
+    const IndicatorState state = DapIndicatorState::fromString(params->value("value").toString());
+
+    if(!stateCallbacks.contains(stateName)) {
+        qWarning() << "Not found handler for " << stateName;
+        return;
+    }
+
+    stateCallbacks[stateName](state);
 }
 
-void DapCmdStatesHandler::authorizeHandler(const QString& state) {
-    if (state == "true") {
-        emit DapCmdStatesHandler::me().sigStateAuthorized();
-    } else if (state == "false") {
-        emit DapCmdStatesHandler::me().sigStateUnauthorized();
+void DapCmdStatesHandler::authorizeHandler(IndicatorState state) {
+    switch (state) {
+        case IndicatorState::True:
+            emit DapCmdStatesHandler::me().sigStateAuthorized();
+        break;
+        case IndicatorState::False:
+            emit emit DapCmdStatesHandler::me().sigStateUnauthorized();
     }
     // TODO
 }
 
-void DapCmdStatesHandler::tunnelHandler(const QString& state) {
-    if (state == "true") {
-        emit DapCmdStatesHandler::me().sigStateTunnelCreated();
-    } else if (state == "false") {
-        emit DapCmdStatesHandler::me().sigStateUnauthorized();
+void DapCmdStatesHandler::tunnelHandler(IndicatorState state) {
+    switch (state) {
+        case IndicatorState::True:
+            emit DapCmdStatesHandler::me().sigStateTunnelCreated();
+        break;
+        case IndicatorState::False:
+            emit DapCmdStatesHandler::me().sigStateUnauthorized();
     }
-    // TODO
 }
 
-void DapCmdStatesHandler::streamHandler(const QString& state) {
+void DapCmdStatesHandler::streamHandler(IndicatorState state) {
     // TODO
     Q_UNUSED(state);
 }
 
-void DapCmdStatesHandler::netconfigHandler(const QString& state) {
+void DapCmdStatesHandler::netconfigHandler(IndicatorState state) {
     // TODO
     Q_UNUSED(state);
 }

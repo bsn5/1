@@ -7,7 +7,7 @@
 #include <QMap>
 #include <QPair>
 #include <DapSB.h>
-#include "DapIndicatorStatee.h"
+#include "DapIndicatorState.h"
 
 class DapSI : public DapIndicatorState
 {
