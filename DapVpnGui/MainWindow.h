@@ -39,9 +39,7 @@ class MainWindow : public DapUiMainWindow
 private:
     QStackedWidget * pages;
 
-    DapUiScreen * dus;
-    ScreenDashboard * dusDashboard;
-    ScreenLogin * dusLogin;
+    ScreenDashboard * dusDashboard = Q_NULLPTR;
 
     QPixmap pixSpotRed;
     QPixmap pixSpotGreen;
@@ -118,7 +116,6 @@ private:
     QAction * actionSettings;
     QAction * actionExit;
 
-    int checkLeftSeconds;
 signals:
     void sigBtConnect();
     void sigBtDisconnect();
@@ -129,17 +126,11 @@ private slots:
 
     void onReqConnect(const DapServerInfo& dsi, QString a_user, QString a_ps);
 
-    void raiseErrorDialog(const QString &text);
-    void raiseNotifyDialog(const QString &text);
-    void raiseProgressDialog(const QString &text);
     void updateUsrMsg();
-    void hideProgressDialog();
-    void updateProgress(int value);
 
     void onExit();
 
     void setStatusText(const QString & a_txt);
-    void addMessage(const QString& a_msg, MsgType a_type){ Q_UNUSED(a_msg); Q_UNUSED(a_type); }
     void onLogout();
 public:
     explicit MainWindow(QWidget *parent = Q_NULLPTR);

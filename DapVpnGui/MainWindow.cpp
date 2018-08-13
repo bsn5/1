@@ -49,15 +49,15 @@ void MainWindow::updateUsrMsg()
         dashboard_user_msg = user_msg.get_dashboard_user_MSG();
         qDebug() << "[set_user_msg_if_it_is] " << dashboard_user_msg;
 
-        dus->setVars("lbMessage","visible",true );
-        dus->setVars("spacerLabel","visible",true );
-        dus->setVars("btMessageClose","visible",true );
-        dus->setVars("lbMessage","text",dashboard_user_msg);
+        screen()->setVars("lbMessage","visible",true );
+        screen()->setVars("spacerLabel","visible",true );
+        screen()->setVars("btMessageClose","visible",true );
+        screen()->setVars("lbMessage","text",dashboard_user_msg);
     } else if (userMsgQueueIsEmpty() && user_msg.isEmpty()) {
-        dus->setVars("lbMessage","visible",false );
-        dus->setVars("spacerLabel","visible",false );
-        dus->setVars("btMessageClose","visible",false );
-        dus->setVars("lbMessage","text","");
+        screen()->setVars("lbMessage","visible",false );
+        screen()->setVars("spacerLabel","visible",false );
+        screen()->setVars("btMessageClose","visible",false );
+        screen()->setVars("lbMessage","text","");
     }
 }
 
@@ -75,7 +75,7 @@ void MainWindow::onLogout(){
     //effect->setBlurRadius(20);
     effect->setBlurRadius(40);
     setGraphicsEffect(effect);
-    dus->setVars("graphicsView","visible",false);
+    screen()->setVars("graphicsView","visible",false);
     if(QMessageBox::question(
                 this,
                 "DiveVPN: Important information",
@@ -87,7 +87,7 @@ void MainWindow::onLogout(){
                                                        ,"()V" );
 #endif
     }
-    dus->setVars("graphicsView","visible",true);
+    screen()->setVars("graphicsView","visible",true);
     setGraphicsEffect(0);
 }
 
@@ -112,47 +112,6 @@ void MainWindow::onReqConnect(const DapServerInfo& dsi, QString a_user, QString 
     emit sigBtConnect();
 }
 
-void MainWindow::raiseErrorDialog(const QString &text)
-{
-    qDebug() << "Error: '" << text << "'";
-    QMessageBox::information(this, "Error occured",text);
-}
-
-
-void MainWindow::raiseNotifyDialog(const QString &text)
-{
-    qDebug() << "Notify: '" << text << "'";
-    QMessageBox::information(this, "Error occured",text);
-}
-
-
-void MainWindow::raiseProgressDialog(const QString &text)
-{
-    qDebug() << "Progress dialog rise";
-    (void) text;
-}
-
-
-void MainWindow::hideProgressDialog()
-{
-    qDebug() << "Progress dialog hide";
-    if (!dlgProgress) return;
-
-    dlgProgress->hide();
-    delete dlgProgress;
-    dlgProgress = Q_NULLPTR;
-}
-
-
-void MainWindow::updateProgress(int value)
-{
-    Q_UNUSED(value);
-    hideProgressDialog();
-}
-
-bool stringToBool (QString str) {return str == "true";}
-
-
 void MainWindow::sendDisconnectionReq() {
     auto cmd = DapJsonCmd::generateCmd(
                 DapJsonCommands::CONNECTION,
@@ -171,7 +130,7 @@ void MainWindow::onExit()
 
 void MainWindow::setStatusText(const QString &a_txt)
 {
-    dus->setVars("lbMessage","text",a_txt);
+    screen()->setVars("lbMessage","text",a_txt);
 }
 
 void MainWindow::initTray()
@@ -206,7 +165,7 @@ void MainWindow::initTray()
 void MainWindow::initIndicators()
 {
     // Authorization state
-    siAuthorization= new  DapUiVpnStateIndicator(&sm,"cbAuthorized","lbAuthorizedText");
+    siAuthorization= new  DapUiVpnStateIndicator(&sm,"cbAuthorized","lbAuthorizationText");
     siAuthorization->setUiLabelTextState(IndicatorState::True,tr("Authorized"));
     siAuthorization->setUiLabelTextState(IndicatorState::SwitchingToTrue,tr("Authorizing"));
     siAuthorization->setUiLabelTextState(IndicatorState::SwitchingToFalse,tr("Unauthorizing"));
@@ -402,23 +361,18 @@ MainWindow::MainWindow(QWidget *parent) :
     pixSpotRed=QPixmap("qrc:/pics/point_red@3x.png");
     pixSpotGreen=QPixmap("qrc:/pics/point_green@3x.png");
 
-    dus = nullptr;
-    dusLogin = nullptr;
-    dusDashboard = nullptr;
-
     initTray();
 
-    dlgProgress = NULL;
 
-    // Вынесено во вне, чтобы внесение данных в график не зависило от того, включено ли меню дашбоард.
     connect(&DapCmdStatsHandler::me(), &DapCmdStatsHandler::sigReadWriteBytesStat, [=] (
             int r, int s) {
         schedules.addInp(r);
         schedules.addOut(s);
 
-        dus->setVars("lbReceived","text",tr("Received: %1Kb").arg(r));
-        dus->setVars("lbSent","text",tr("Sent: %1Kb").arg(s));
-        if (dusDashboard != nullptr) {
+        screen()->setVars("lbReceived","text",tr("Received: %1Kb").arg(r));
+        screen()->setVars("lbSent","text",tr("Sent: %1Kb").arg(s));
+
+        if (dusDashboard != Q_NULLPTR) {
             schedules.draw_chart(
                         dusDashboard->getScene(),
                         dusDashboard->getSceneWidth() - 3,
@@ -467,33 +421,35 @@ MainWindow::MainWindow(QWidget *parent) :
     // Login states slots
     connect(statesLogin, &QState::entered, [=]{
         qInfo() << "[MainWindow] States entered";
-        dus = dusLogin = new ScreenLogin(this, pages);
-        dus->connectTo<QToolButton>("btRegister", &QToolButton::clicked,[=]{
+        this->newScreen(new ScreenLogin(this, pages));
+        screen()->connectTo<QToolButton>("btRegister", &QToolButton::clicked,[=]{
             QDesktopServices::openUrl(QUrl("https://divevpn.com.ua/registration/"));
         });
-        dus->connectTo<QToolButton>("btRestore", &QToolButton::clicked,[=]{
+        screen()->connectTo<QToolButton>("btRestore", &QToolButton::clicked,[=]{
             QDesktopServices::openUrl(QUrl("https://divevpn.com.ua/my-account/lost-password/"));
         });
-        dus->setVars("lbStatus","text","");
-        dus->setVars("btLogin","enabled",true);
-        dus->show();
-        connect(dusLogin, &ScreenLogin::reqConnect, [=] (DapServerInfo& dsi,
-                QString a_user, QString a_ps) {
-            onReqConnect(dsi, a_user, a_ps);
-        });
+        screen()->setVars("lbStatus","text","");
+        screen()->setVars("btLogin","enabled",true);
+        screen()->show();
+
+        connectScreen<ScreenLogin>(&ScreenLogin::reqConnect, this,[=](DapServerInfo& dsi,
+                                   const QString& a_user, const QString& a_ps) {
+                onReqConnect(dsi, a_user, a_ps);
+            }
+        );
+
 
     });
     connect(statesLogin, &QState::exited, [=]{
         qInfo() << "[MainWindow]statesLogin exited";
-        delete dus;
     });
 
     connect(stateLoginCtlConnecting,&QState::entered,[=]{
         qInfo() << "[MainWindow] State LoginCtlConnecting entered";
-        dus->setVars("btLogin","enabled",false);
-        dus->setVars("cbServer","enabled",false);
-        dus->setVars("edPassword","enabled",false);
-        dus->setVars("edUsername","enabled",false);
+        screen()->setVars("btLogin","enabled",false);
+        screen()->setVars("cbServer","enabled",false);
+        screen()->setVars("edPassword","enabled",false);
+        screen()->setVars("edUsername","enabled",false);
         setStatusText(tr("Backend Reconnect..."));
         setEnabled(false);
         ServiceCtl::me().init();
@@ -501,103 +457,96 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(stateLoginCtlConnecting, &QState::exited,[=]{
         qInfo() << "[MainWindow] State LoginCtlConnecting exited";
-        dus->setVars("btLogin","enabled",true);
-        dus->setVars("cbServer","enabled",true);
-        dus->setVars("edPassword","enabled",true);
-        dus->setVars("edUsername","enabled",true);
-        dus->setVars("lbStatus","txt",tr("Connecting..."));
+        screen()->setVars("btLogin","enabled",true);
+        screen()->setVars("cbServer","enabled",true);
+        screen()->setVars("edPassword","enabled",true);
+        screen()->setVars("edUsername","enabled",true);
+        screen()->setVars("lbStatus","txt",tr("Connecting..."));
         setStatusText("");
         setEnabled(true);
     });
 
     connect(stateLoginBegin,&QState::entered, [=]{
         qInfo() << "[MainWindow] State Login Begin";
-        dus->setVars("btLogin","enabled",true);
-        dus->setVars("cbServer","enabled",true);
-        dus->setVars("edPassword","enabled",true);
-        dus->setVars("edUsername","enabled",true);
-        dus->setVars("btLogin","text",tr("Connect"));
+        screen()->setVars("btLogin","enabled",true);
+        screen()->setVars("cbServer","enabled",true);
+        screen()->setVars("edPassword","enabled",true);
+        screen()->setVars("edUsername","enabled",true);
+        screen()->setVars("btLogin","text",tr("Connect"));
         statesLogin->setInitialState(stateLoginBegin);
     });
 
     connect(stateLoginConnecting,&QState::entered, [=]{
         qInfo() << "[MainWindow] State Login Connecting";
-        dus->setVars("btLogin","text",tr("Stop"));
-        dus->setVars("cbServer","enabled",false);
-        dus->setVars("edPassword","enabled",false);
-        dus->setVars("edUsername","nabled",false);
-        dus->setVars("lbStatus","txt",tr("Connecting..."));
+        screen()->setVars("btLogin","text",tr("Stop"));
+        screen()->setVars("cbServer","enabled",false);
+        screen()->setVars("edPassword","enabled",false);
+        screen()->setVars("edUsername","nabled",false);
+        screen()->setVars("lbStatus","txt",tr("Connecting..."));
     });
 
     connect(statesDashboard, &QState::entered, [=]{
         qInfo() << "[MainWindow] State statesDashboard entered";
-        dus = dusDashboard= new ScreenDashboard(this, pages, m_currentUpstreamName);
+        this->newScreen(dusDashboard = new ScreenDashboard(this, pages, m_currentUpstreamName));
 
         connect(dusDashboard, &ScreenDashboard::currentUpstreamNameChanged, [=](QString name){
             m_currentUpstreamName = name;
 
         });
+        screen()->connectTo("btDisconnect",   SIGNAL(clicked(bool)), this, SLOT(onLogout()));
+        screen()->connectTo("btMessageClose", SIGNAL(clicked(bool)), this, SLOT(onBtMessageCloseClicked()));
 
-        dus->connectTo("btDisconnect",   SIGNAL(clicked(bool)), this, SLOT(onLogout()));
-        dus->connectTo("btMessageClose", SIGNAL(clicked(bool)), this, SLOT(onBtMessageCloseClicked()));
-
-        dusDashboard->authorzeIndicator(true);
-        dusDashboard->streamIndicator(false);
-        dusDashboard->netConfigIndicator(false);
-        dusDashboard->tunnelIndicator(false);
-
-        dus->setVars("lbStreamText","text","");
-        dus->setVars("lbIpAddrText","text","");
-        dus->setVars("lbInterfaceText","text","");
-        dus->setVars("lbRouteText","text","");
+        screen()->setVars("lbStreamText","text","");
+        screen()->setVars("lbIpAddrText","text","");
+        screen()->setVars("lbInterfaceText","text","");
+        screen()->setVars("lbRouteText","text","");
 
         setStatusText(tr("Authorized as %1").arg(m_user));
-        dus->show();
+        screen()->show();
     });
 
 
     // ============== State DashboardCtlConnecting ============
     connect(stateDashboardCtlConnecting,&QState::entered,[=]{
-        dus->setVars("btDisconnect","enabled",false);
-        dus->setVars("lbReceived","enabled",false);
-        dus->setVars("lbSent","enabled",false);
-        dus->setVars("lbTimeConnected", "enabled", false);
+        screen()->setVars("btDisconnect","enabled",false);
+        screen()->setVars("lbReceived","enabled",false);
+        screen()->setVars("lbSent","enabled",false);
+        screen()->setVars("lbTimeConnected", "enabled", false);
         setStatusText(tr("Backend Reconnect..."));
     });
 
     connect(stateDashboardCtlConnecting, &QState::exited,[=]{
-        dus->setVars("btLogin","enabled",true);
-        dus->setVars("lbReceived","enabled",true);
-        dus->setVars("lbSent","enabled",true);
-        dus->setVars("cbServer","enabled",true);
-        dus->setVars("edPassword","enabled",true);
-        dus->setVars("edUsername","enabled",true);
-        dus->setVars("lbStatus","txt",tr("Connecting..."));
+        screen()->setVars("btLogin","enabled",true);
+        screen()->setVars("lbReceived","enabled",true);
+        screen()->setVars("lbSent","enabled",true);
+        screen()->setVars("cbServer","enabled",true);
+        screen()->setVars("edPassword","enabled",true);
+        screen()->setVars("edUsername","enabled",true);
+        screen()->setVars("lbStatus","txt",tr("Connecting..."));
         setStatusText("");
     });
 
     connect(statesDashboard, &QState::exited, [=]{
         qInfo() << "[MainWindow] States Dashboard exited";
-        dusDashboard = nullptr;
-        delete dus;
+        dusDashboard = Q_NULLPTR;
     });
 
 
     connect(stateDashboardConnecting,&QState::entered,[=]{
         qInfo() << "[MainWindow] State Dashboard Connecting";
-        dus->setVars("btDisconnect","enabled",false);
+        screen()->setVars("btDisconnect","enabled",false);
         setStatusText("Connecting...");
     });
 
     connect(stateDashboardConnected,&QState::entered,[=]{
         qInfo() << "[MainWindow] State Dashboard Connected";
-        dus->setVars("lbReceived","enabled",true);
-        dus->setVars("lbSent","enabled",true);
-        dus->setVars("lbReceived","text", "Recieved: 0");
-        dus->setVars("lbSent","text", "Sent: 0");
+        screen()->setVars("lbReceived","enabled",true);
+        screen()->setVars("lbSent","enabled",true);
+        screen()->setVars("lbReceived","text", "Recieved: 0");
+        screen()->setVars("lbSent","text", "Sent: 0");
 
-        dus->setVars("btDisconnect","checkable",false);
-        dus->setVars("btDisconnect","enabled",true);
+        screen()->setVars("btDisconnect","checkable",false);
+        screen()->setVars("btDisconnect","enabled",true);
 
         setStatusText("Connected");
     });
@@ -606,12 +555,12 @@ MainWindow::MainWindow(QWidget *parent) :
     // State Dashboard Disconnecting
     connect(stateDashboardDisconnecting, &QState::entered,[=]{
         qInfo() << "[MainWindow] State DashboardDisconnecting";
-        dus->setVars("btDisconnect","checkable",true);
-        dus->setVars("btDisconnect","checked",false);
-        dus->setVars("btDisconnect","enabled",false);
-        dus->setVars("lbStatus","text","Authorized, initializing the tunnel...");
-        dus->setVars("lbAuthorizedText","text",tr("User Authorized"));
-        dus->setVars("cbAuthorized","checked",true);
+        screen()->setVars("btDisconnect","checkable",true);
+        screen()->setVars("btDisconnect","checked",false);
+        screen()->setVars("btDisconnect","enabled",false);
+        screen()->setVars("lbStatus","text","Authorized, initializing the tunnel...");
+        screen()->setVars("lbAuthorizedText","text",tr("User Authorized"));
+        screen()->setVars("cbAuthorized","checked",true);
         setStatusText("Disconnecting...");
         sendDisconnectionReq();
     });

@@ -14,7 +14,8 @@ protected:
 public:
     ScreenLogin(QObject * a_parent, QStackedWidget * a_sw );
 signals:
-    void reqConnect(DapServerInfo&,QString,QString);
+    void reqConnect(DapServerInfo&, const QString&,
+                                    const QString&);
     void currentUpstreamNameChanged(QString);
 };
 
