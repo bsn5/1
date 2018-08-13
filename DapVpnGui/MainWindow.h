@@ -11,7 +11,6 @@
 #include <QHistoryState>
 #include <QFinalState>
 
-#include "schedules.h"
 #include "datalocal.h"
 #include "usrmsg.h"
 #include "ScreenLogin.h"
@@ -39,12 +38,8 @@ class MainWindow : public DapUiMainWindow
 private:
     QStackedWidget * pages;
 
-    ScreenDashboard * dusDashboard = Q_NULLPTR;
-
     QPixmap pixSpotRed;
     QPixmap pixSpotGreen;
-
-    Schedules schedules;
 
     void initIndicators();
     void initIndicatorsTransitions();
@@ -90,22 +85,16 @@ private:
             QState * stateExiting;
             QFinalState * stateExit;
 
-        QState * statesIndicators;
-
-            DapUiVpnStateIndicator *siAuthorization;
-            DapUiVpnStateIndicator *siStream;
-            DapUiVpnStateIndicator *siNetConf;
-            DapUiVpnStateIndicator *siTunnel;
+    QState * statesIndicators;
+        DapUiVpnStateIndicator *siAuthorization;
+        DapUiVpnStateIndicator *siStream;
+        DapUiVpnStateIndicator *siNetConf;
+        DapUiVpnStateIndicator *siTunnel;
 
     QList<DapUiVpnStateIndicator *> siAll;
-    QString m_currentUpstreamName;
 
     // блокируем всплытие контекстного меню
     void contextMenuEvent(QContextMenuEvent *event) override { Q_UNUSED(event); }
-
-    int m_calcBack;
-
-    QProgressDialog * dlgProgress;
 
 #ifdef DAP_SERVICE_CONNECT_TCP
     QTcpSocket * sockCtl;

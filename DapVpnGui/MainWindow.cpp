@@ -363,24 +363,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     initTray();
 
-
-    connect(&DapCmdStatsHandler::me(), &DapCmdStatsHandler::sigReadWriteBytesStat, [=] (
-            int r, int s) {
-        schedules.addInp(r);
-        schedules.addOut(s);
-
-        screen()->setVars("lbReceived","text",tr("Received: %1Kb").arg(r));
-        screen()->setVars("lbSent","text",tr("Sent: %1Kb").arg(s));
-
-        if (dusDashboard != Q_NULLPTR) {
-            schedules.draw_chart(
-                        dusDashboard->getScene(),
-                        dusDashboard->getSceneWidth() - 3,
-                        dusDashboard->getSceneHeight() - 3);
-            dusDashboard->getScene()->update();
-        }
-    });
-
     ////////////////////////////////////////////////////////////////////////////////
     sm.setChildMode(QState::ParallelStates);
 
@@ -487,12 +469,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(statesDashboard, &QState::entered, [=]{
         qInfo() << "[MainWindow] State statesDashboard entered";
-        this->newScreen(dusDashboard = new ScreenDashboard(this, pages, m_currentUpstreamName));
+        newScreen(new ScreenDashboard(this, pages));
 
-        connect(dusDashboard, &ScreenDashboard::currentUpstreamNameChanged, [=](QString name){
-            m_currentUpstreamName = name;
-
-        });
         screen()->connectTo("btDisconnect",   SIGNAL(clicked(bool)), this, SLOT(onLogout()));
         screen()->connectTo("btMessageClose", SIGNAL(clicked(bool)), this, SLOT(onBtMessageCloseClicked()));
 
@@ -528,7 +506,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(statesDashboard, &QState::exited, [=]{
         qInfo() << "[MainWindow] States Dashboard exited";
-        dusDashboard = Q_NULLPTR;
     });
 
 

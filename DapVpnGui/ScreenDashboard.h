@@ -3,7 +3,7 @@
 
 #include <QGraphicsScene>
 #include "ScreenVpnAbstract.h"
-
+#include "schedules.h"
 
 class ScreenDashboard : public ScreenVpnAbstract
 {
@@ -12,7 +12,7 @@ class ScreenDashboard : public ScreenVpnAbstract
     QGraphicsScene *m_scene;
     int m_sceneWidth;
     int m_sceneHeight;
-
+    Schedules schedules;
 protected:
     void initUi(QWidget * a_w,ScreenRotation a_rotation);
 public:
@@ -25,7 +25,9 @@ public:
     int getSceneWidth() {return m_sceneWidth;}
     int getSceneHeight() {return m_sceneHeight;}
 
-    ScreenDashboard(QObject * a_parent, QStackedWidget * a_sw, QString upstreamName);
+    ScreenDashboard(QObject * a_parent, QStackedWidget * a_sw);
+public slots:
+    void drawShedules(int read, int write);
 signals:
     void reconnectSignal(QString adr, QString ip);
     void currentUpstreamNameChanged(QString name);

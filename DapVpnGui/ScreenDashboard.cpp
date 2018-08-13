@@ -15,6 +15,7 @@
 #include "ui_dashboard_mobile_ver_small.h"
 #endif
 
+#include "DapCmdStatsHandler.h"
 #include "ScreenDashboard.h"
 #include "datalocal.h"
 #include <QCheckBox>
@@ -111,22 +112,30 @@ void ScreenDashboard::tunnelIndicator(bool on)
     invokeMethods("lbInterface_off", "setVisible", Q_ARG(bool, !on));
 }
 
-/*
-dus->invokeMethods("lbStream", "setVisible", Q_ARG(bool, true));
-dus->invokeMethods("lbIpAddr", "setVisible", Q_ARG(bool, false));
-dus->invokeMethods("lbInterface", "setVisible", Q_ARG(bool, false));
-dus->invokeMethods("lbRoute", "setVisible", Q_ARG(bool, false));
-*/
+void ScreenDashboard::drawShedules(int read, int write) {
+    schedules.addInp(read);
+    schedules.addOut(write);
+
+    setVars("lbReceived","text",tr("Received: %1Kb").arg(read));
+    setVars("lbSent","text",tr("Sent: %1Kb").arg(write));
+
+    schedules.draw_chart(getScene(),
+                         getSceneWidth() - 3,
+                         getSceneHeight() - 3);
+    getScene()->update();
+}
 
 /**
  * @brief DapUiScreenDashboard::DapUiScreenDashboard
  * @param a_parent
  * @param a_sw
  */
-ScreenDashboard::ScreenDashboard(QObject * a_parent, QStackedWidget * a_sw, QString upstreamName)
+ScreenDashboard::ScreenDashboard(QObject * a_parent, QStackedWidget * a_sw)
     :ScreenVpnAbstract(a_parent,a_sw)
 {
-    m_currentUpstreamName = upstreamName;
+    connect(&DapCmdStatsHandler::me(), &DapCmdStatsHandler::sigReadWriteBytesStat,
+            this, &ScreenDashboard::drawShedules);
+
 #ifdef DAP_PLATFORM_MOBILE
     create<Ui::DashboardHor,Ui::DashboardHorSmall,Ui::DashboardHorBig,
             Ui::DashboardVer,Ui::DashboardVerSmall,Ui::DashboardVerBig>();
