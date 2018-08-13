@@ -56,7 +56,6 @@ private:
 
     QString dashboard_user_msg = "";
 
-    void sendUpstreamsToServer();
     void updateUpstreams();
 
     void initTray();
