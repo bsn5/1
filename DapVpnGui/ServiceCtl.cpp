@@ -32,7 +32,7 @@ ServiceCtl::ServiceCtl()
     connect(tmRestart,&QTimer::timeout, [=]{ restartService(); });
 }
 
-void ServiceCtl::procCmdHandler(const QByteArray &a_cmd)
+void ServiceCtl::procCmdController(const QByteArray &a_cmd)
 {
     auto djc = DapJsonCmd::load(a_cmd);
     if (djc == nullptr) {

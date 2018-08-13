@@ -15,7 +15,7 @@ class ServiceCtl : public DapServiceClient
 public:
     static ServiceCtl& me(){static ServiceCtl _me; return _me; }
 protected:
-    void procCmdHandler(const QByteArray &a_cmd) override;
+    void procCmdController(const QByteArray &a_cmd) override;
 
     ServiceCtl();
 private:

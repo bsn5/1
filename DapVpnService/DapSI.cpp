@@ -186,5 +186,5 @@ QState * DapSI::state(DapSI::IndicatorState a_is, DapSB::SbState a_bs)
     if(a_is == SwitchingToFalse || a_is == SwitchingToTrue)
         return sb_child_state[a_is]->state(a_bs);
 
-    return NULL;
+    return Q_NULLPTR;
 }

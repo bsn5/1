@@ -17,7 +17,7 @@ DapServiceClient::DapServiceClient(const QString& a_serviceName)
 
     dapCmdParser = new DapCmdParser(sockCtl, this);
 
-    connect(dapCmdParser, &DapCmdParser::cmdReady, this, &DapServiceClient::procCmdHandler);
+    connect(dapCmdParser, &DapCmdParser::cmdReady, this, &DapServiceClient::procCmdController);
 
     connect(sockCtl,static_cast<void(DapUiSocket::*)(DapUiSocketError)> (&DapUiSocket::error) ,
             this, &DapServiceClient::onCtlSocketError);
@@ -95,7 +95,7 @@ lb_read_str:
     }else{
         nInd++; // move idx to second \n
         readBuffer += readBytes.left(nInd);
-        procCmdHandler(readBuffer);
+        procCmdController(readBuffer);
         readBytes = readBytes.mid(nInd+1);
         readBuffer.clear();
         if(readBytes.length()>0){
