@@ -108,7 +108,6 @@ void MainWindow::onReqConnect(const DapServerInfo& dsi, QString a_user, QString 
                                          DapJsonParam("user", m_user),
                                          DapJsonParam("password", a_ps)
                                      }));
-       // sendUpstreamsToServer();
     }
     emit sigBtConnect();
 }
@@ -208,35 +207,35 @@ void MainWindow::initIndicators()
 {
     // Authorization state
     siAuthorization= new  DapUiVpnStateIndicator(&sm,"cbAuthorized","lbAuthorizedText");
-    siAuthorization->setUiLabelTextState(DapUiVpnStateIndicator::True,tr("Authorized"));
-    siAuthorization->setUiLabelTextState(DapUiVpnStateIndicator::FalseToTrue,tr("Authorizing"));
-    siAuthorization->setUiLabelTextState(DapUiVpnStateIndicator::TrueToFalse,tr("Unauthorizing"));
-    siAuthorization->setUiLabelTextState(DapUiVpnStateIndicator::False,tr("Not Authorized"));
+    siAuthorization->setUiLabelTextState(IndicatorState::True,tr("Authorized"));
+    siAuthorization->setUiLabelTextState(IndicatorState::SwitchingToTrue,tr("Authorizing"));
+    siAuthorization->setUiLabelTextState(IndicatorState::SwitchingToFalse,tr("Unauthorizing"));
+    siAuthorization->setUiLabelTextState(IndicatorState::False,tr("Not Authorized"));
     siAll.append(siAuthorization);
 
     // Stream opened state
     siStream = new  DapUiVpnStateIndicator(&sm,"cbStream","lbStreamText");
-    siStream->setUiLabelTextState(DapUiVpnStateIndicator::True,tr("Stream Opened"));
-    siStream->setUiLabelTextState(DapUiVpnStateIndicator::FalseToTrue,tr("Stream Opening"));
-    siStream->setUiLabelTextState(DapUiVpnStateIndicator::TrueToFalse,tr("Stream Closing"));
-    siStream->setUiLabelTextState(DapUiVpnStateIndicator::False,tr("Stream Closed"));
+    siStream->setUiLabelTextState(IndicatorState::True,tr("Stream Opened"));
+    siStream->setUiLabelTextState(IndicatorState::SwitchingToTrue,tr("Stream Opening"));
+    siStream->setUiLabelTextState(IndicatorState::SwitchingToFalse,tr("Stream Closing"));
+    siStream->setUiLabelTextState(IndicatorState::False,tr("Stream Closed"));
     siAll.append(siStream);
 
 
     // Network configuration state
     siNetConf= new  DapUiVpnStateIndicator(&sm,"cbNetConf","lbNetConfText");
-    siNetConf->setUiLabelTextState(DapUiVpnStateIndicator::True,tr("Network Settings Present"));
-    siNetConf->setUiLabelTextState(DapUiVpnStateIndicator::FalseToTrue,tr("Network Settings Obtain"));
-    siNetConf->setUiLabelTextState(DapUiVpnStateIndicator::TrueToFalse,tr("Network Settings Unleash"));
-    siNetConf->setUiLabelTextState(DapUiVpnStateIndicator::False,tr("No Network Settings"));
+    siNetConf->setUiLabelTextState(IndicatorState::True,tr("Network Settings Present"));
+    siNetConf->setUiLabelTextState(IndicatorState::SwitchingToTrue,tr("Network Settings Obtain"));
+    siNetConf->setUiLabelTextState(IndicatorState::SwitchingToFalse,tr("Network Settings Unleash"));
+    siNetConf->setUiLabelTextState(IndicatorState::False,tr("No Network Settings"));
     siAll.append(siNetConf);
 
     // Tunnel state
     siTunnel= new  DapUiVpnStateIndicator(&sm,"cbTunnel","lbTunnelText");
-    siTunnel->setUiLabelTextState(DapUiVpnStateIndicator::True,tr("Network Protected"));
-    siTunnel->setUiLabelTextState(DapUiVpnStateIndicator::FalseToTrue,tr("Network Protecting"));
-    siTunnel->setUiLabelTextState(DapUiVpnStateIndicator::TrueToFalse,tr("Network Unprotecting"));
-    siTunnel->setUiLabelTextState(DapUiVpnStateIndicator::False,tr("No Network Protection"));
+    siTunnel->setUiLabelTextState(IndicatorState::True,tr("Network Protected"));
+    siTunnel->setUiLabelTextState(IndicatorState::SwitchingToTrue,tr("Network Protecting"));
+    siTunnel->setUiLabelTextState(IndicatorState::SwitchingToFalse,tr("Network Unprotecting"));
+    siTunnel->setUiLabelTextState(IndicatorState::False,tr("No Network Protection"));
     siAll.append(siTunnel);
 }
 
@@ -250,140 +249,140 @@ void MainWindow::initIndicatorsTransitions()
     //----Authorization-----
 
     // Authorization ::False state
-    siAuthorization->state(DapUiVpnStateIndicator::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizing()),siAuthorization->state(DapUiVpnStateIndicator::FalseToTrue));
-    siAuthorization->state(DapUiVpnStateIndicator::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorized()),siAuthorization->state(DapUiVpnStateIndicator::True));
+    siAuthorization->state(IndicatorState::False)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizing()),siAuthorization->state(IndicatorState::SwitchingToTrue));
+    siAuthorization->state(IndicatorState::False)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorized()),siAuthorization->state(IndicatorState::True));
 
     // Authorization ::FalseToTrue state
-    siAuthorization->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizeError()),siAuthorization->state(DapUiVpnStateIndicator::False));
-    siAuthorization->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorized()),siAuthorization->state(DapUiVpnStateIndicator::True));
-    siAuthorization->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),siAuthorization->state(DapUiVpnStateIndicator::False));
+    siAuthorization->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizeError()),siAuthorization->state(IndicatorState::False));
+    siAuthorization->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorized()),siAuthorization->state(IndicatorState::True));
+    siAuthorization->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),siAuthorization->state(IndicatorState::False));
 
     // Authorization ::TrueToFalse state
-    siAuthorization->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizing()),siAuthorization->state(DapUiVpnStateIndicator::FalseToTrue));
-    siAuthorization->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorized()),siAuthorization->state(DapUiVpnStateIndicator::True));
-    siAuthorization->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),siAuthorization->state(DapUiVpnStateIndicator::False));
+    siAuthorization->state(IndicatorState::SwitchingToFalse)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizing()),siAuthorization->state(IndicatorState::SwitchingToTrue));
+    siAuthorization->state(IndicatorState::SwitchingToFalse)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorized()),siAuthorization->state(IndicatorState::True));
+    siAuthorization->state(IndicatorState::SwitchingToFalse)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),siAuthorization->state(IndicatorState::False));
 
     // Authorization ::True state
-    siAuthorization->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizing()),siAuthorization->state(DapUiVpnStateIndicator::FalseToTrue));
-    siAuthorization->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),siAuthorization->state(DapUiVpnStateIndicator::TrueToFalse));
-    siAuthorization->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizeError()),siAuthorization->state(DapUiVpnStateIndicator::False));
-    siAuthorization->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),siAuthorization->state(DapUiVpnStateIndicator::False));
+    siAuthorization->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizing()),siAuthorization->state(IndicatorState::SwitchingToTrue));
+    siAuthorization->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),siAuthorization->state(IndicatorState::SwitchingToFalse));
+    siAuthorization->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizeError()),siAuthorization->state(IndicatorState::False));
+    siAuthorization->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),siAuthorization->state(IndicatorState::False));
 
     //----Stream Opened-----
 
     // Stream ::False state
-    siStream->state(DapUiVpnStateIndicator::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpening()),siStream->state(DapUiVpnStateIndicator::FalseToTrue));
-    siStream->state(DapUiVpnStateIndicator::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpened()),siStream->state(DapUiVpnStateIndicator::True));
-    siStream->state(DapUiVpnStateIndicator::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosing()),siStream->state(DapUiVpnStateIndicator::TrueToFalse));
+    siStream->state(IndicatorState::False)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpening()),siStream->state(IndicatorState::SwitchingToTrue));
+    siStream->state(IndicatorState::False)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpened()),siStream->state(IndicatorState::True));
+    siStream->state(IndicatorState::False)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosing()),siStream->state(IndicatorState::SwitchingToFalse));
 
     // Stream ::FalseToTrue state
-    siStream->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamError()),siStream->state(DapUiVpnStateIndicator::False));
-    siStream->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpened()),siStream->state(DapUiVpnStateIndicator::True));
-    siStream->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosed()),siStream->state(DapUiVpnStateIndicator::False));
-    siStream->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosing()),siStream->state(DapUiVpnStateIndicator::TrueToFalse));
+    siStream->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamError()),siStream->state(IndicatorState::False));
+    siStream->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpened()),siStream->state(IndicatorState::True));
+    siStream->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosed()),siStream->state(IndicatorState::False));
+    siStream->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosing()),siStream->state(IndicatorState::SwitchingToFalse));
 
     // Stream ::TrueToFalse state
-    siStream->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpening()),siStream->state(DapUiVpnStateIndicator::FalseToTrue));
-    siStream->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpened()),siStream->state(DapUiVpnStateIndicator::True));
-    siStream->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosed()),siStream->state(DapUiVpnStateIndicator::False));
+    siStream->state(IndicatorState::SwitchingToFalse)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpening()),siStream->state(IndicatorState::SwitchingToTrue));
+    siStream->state(IndicatorState::SwitchingToFalse)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpened()),siStream->state(IndicatorState::True));
+    siStream->state(IndicatorState::SwitchingToFalse)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosed()),siStream->state(IndicatorState::False));
 
     // Stream ::True state
-    siStream->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpening()),siStream->state(DapUiVpnStateIndicator::FalseToTrue));
-    siStream->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosing()),siStream->state(DapUiVpnStateIndicator::TrueToFalse));
-    siStream->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamError()),siStream->state(DapUiVpnStateIndicator::False));
-    siStream->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosed()),siStream->state(DapUiVpnStateIndicator::False));
+    siStream->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpening()),siStream->state(IndicatorState::SwitchingToTrue));
+    siStream->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosing()),siStream->state(IndicatorState::SwitchingToFalse));
+    siStream->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamError()),siStream->state(IndicatorState::False));
+    siStream->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosed()),siStream->state(IndicatorState::False));
 
     //----NetConf Received-----
 
     // NetConf ::False state
-    siNetConf->state(DapUiVpnStateIndicator::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigRequesting()),siNetConf->state(DapUiVpnStateIndicator::FalseToTrue));
-    siNetConf->state(DapUiVpnStateIndicator::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigTrue()),siNetConf->state(DapUiVpnStateIndicator::True));
+    siNetConf->state(IndicatorState::False)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigRequesting()),siNetConf->state(IndicatorState::SwitchingToTrue));
+    siNetConf->state(IndicatorState::False)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigTrue()),siNetConf->state(IndicatorState::True));
 
     // NetConf ::FalseToTrue state
-    siNetConf->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigError()),siNetConf->state(DapUiVpnStateIndicator::False));
-    siNetConf->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigTrue()),siNetConf->state(DapUiVpnStateIndicator::True));
-    siNetConf->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigFalse()),siNetConf->state(DapUiVpnStateIndicator::False));
+    siNetConf->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigError()),siNetConf->state(IndicatorState::False));
+    siNetConf->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigTrue()),siNetConf->state(IndicatorState::True));
+    siNetConf->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigFalse()),siNetConf->state(IndicatorState::False));
 
     // NetConf ::TrueToFalse state
-    siNetConf->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigTrue()),siNetConf->state(DapUiVpnStateIndicator::True));
-    siNetConf->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigFalse()),siNetConf->state(DapUiVpnStateIndicator::False));
+    siNetConf->state(IndicatorState::SwitchingToFalse)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigTrue()),siNetConf->state(IndicatorState::True));
+    siNetConf->state(IndicatorState::SwitchingToFalse)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigFalse()),siNetConf->state(IndicatorState::False));
 
     // NetConf ::True state
-    siNetConf->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpening()),siNetConf->state(DapUiVpnStateIndicator::FalseToTrue));
+    siNetConf->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpening()),siNetConf->state(IndicatorState::SwitchingToTrue));
 
-    siNetConf->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigError()),siNetConf->state(DapUiVpnStateIndicator::False));
-    siNetConf->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigFalse()),siNetConf->state(DapUiVpnStateIndicator::False));
+    siNetConf->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigError()),siNetConf->state(IndicatorState::False));
+    siNetConf->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigFalse()),siNetConf->state(IndicatorState::False));
 
     //----Tunnel -----
 
     // Tunnel ::False state
-    siTunnel->state(DapUiVpnStateIndicator::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreating()),siTunnel->state(DapUiVpnStateIndicator::FalseToTrue));
-    siTunnel->state(DapUiVpnStateIndicator::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreated()),siTunnel->state(DapUiVpnStateIndicator::True));
+    siTunnel->state(IndicatorState::False)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreating()),siTunnel->state(IndicatorState::SwitchingToTrue));
+    siTunnel->state(IndicatorState::False)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreated()),siTunnel->state(IndicatorState::True));
 
     // Tunnel ::FalseToTrue state
-    siTunnel->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelError()),siTunnel->state(DapUiVpnStateIndicator::False));
-    siTunnel->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreated()),siTunnel->state(DapUiVpnStateIndicator::True));
-    siTunnel->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroyed()),siTunnel->state(DapUiVpnStateIndicator::False));
-    siTunnel->state(DapUiVpnStateIndicator::FalseToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroying()),siTunnel->state(DapUiVpnStateIndicator::TrueToFalse));
+    siTunnel->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelError()),siTunnel->state(IndicatorState::False));
+    siTunnel->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreated()),siTunnel->state(IndicatorState::True));
+    siTunnel->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroyed()),siTunnel->state(IndicatorState::False));
+    siTunnel->state(IndicatorState::SwitchingToTrue)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroying()),siTunnel->state(IndicatorState::SwitchingToFalse));
 
     // Tunnel ::TrueToFalse state
-    siTunnel->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreated()),siTunnel->state(DapUiVpnStateIndicator::True));
-    siTunnel->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroyed()),siTunnel->state(DapUiVpnStateIndicator::False));
-    siTunnel->state(DapUiVpnStateIndicator::TrueToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreating()),siTunnel->state(DapUiVpnStateIndicator::FalseToTrue));
+    siTunnel->state(IndicatorState::SwitchingToFalse)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreated()),siTunnel->state(IndicatorState::True));
+    siTunnel->state(IndicatorState::SwitchingToFalse)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroyed()),siTunnel->state(IndicatorState::False));
+    siTunnel->state(IndicatorState::SwitchingToFalse)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreating()),siTunnel->state(IndicatorState::SwitchingToTrue));
 
     // Tunnel ::True state
-    siTunnel->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreating()),siTunnel->state(DapUiVpnStateIndicator::FalseToTrue));
+    siTunnel->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreating()),siTunnel->state(IndicatorState::SwitchingToTrue));
 
-    siTunnel->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelError()),siTunnel->state(DapUiVpnStateIndicator::False));
-    siTunnel->state(DapUiVpnStateIndicator::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroyed()),siTunnel->state(DapUiVpnStateIndicator::False));
+    siTunnel->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelError()),siTunnel->state(IndicatorState::False));
+    siTunnel->state(IndicatorState::True)
+            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroyed()),siTunnel->state(IndicatorState::False));
 
 }
 

@@ -6,13 +6,13 @@
 #include <QSharedPointer>
 #include <QMap>
 #include <QTimer>
+#include "DapIndicatorState.h"
 
 class DapUiVpnStateIndicator: public QObject
 {
     Q_OBJECT
 public:
-    enum IndicatorState{True, False,TrueToFalse,FalseToTrue};
-    Q_ENUM(IndicatorState);
+    using IndicatorState = DapIndicatorState::IndicatorState;
 private:
     IndicatorState m_current;
 
@@ -31,7 +31,7 @@ public:
     ~DapUiVpnStateIndicator();
 
     IndicatorState current(){ return m_current; }
-    bool isTrue(){ return state(True)->active(); }
+    bool isTrue(){ return state(IndicatorState::True)->active(); }
     const QString& uiComboboxName() { return m_uiComboboxName; }
     const QString& uiLabelName() { return m_uiLabelName; }
 

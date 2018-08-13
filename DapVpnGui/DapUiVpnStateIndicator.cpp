@@ -14,14 +14,14 @@ DapUiVpnStateIndicator::DapUiVpnStateIndicator(QState * a_statesParent,  const Q
     :QObject()
 {
     tmrBlinkOn=false;
-    m_current = False;
+    m_current = IndicatorState::False;
     m_states = new QState(a_statesParent);
     m_uiComboboxName = a_uiComboboxName;
     m_uiLabelName = a_uiLabelName;
-    m_state[True] = new QState(states());
-    m_state[False] = new QState(states());
-    m_state[TrueToFalse] = new QState(states());
-    m_state[FalseToTrue] = new QState(states());
+    m_state[IndicatorState::True] = new QState(states());
+    m_state[IndicatorState::False] = new QState(states());
+    m_state[IndicatorState::SwitchingToFalse] = new QState(states());
+    m_state[IndicatorState::SwitchingToTrue] = new QState(states());
 
     for (auto const &i: m_state.keys() ) {
          connect( state(i), &QState::entered, [=]{
@@ -36,16 +36,16 @@ DapUiVpnStateIndicator::DapUiVpnStateIndicator(QState * a_statesParent,  const Q
     connect(&tmrBlink, &QTimer::timeout,[=]{
         DapUiMainWindow::getInstance()->setUiProp(uiComboboxName(),"checked", (tmrBlinkOn = (!tmrBlinkOn)) );
     });
-    m_states->setInitialState(m_state[False]);
+    m_states->setInitialState(m_state[IndicatorState::False]);
 }
 
 void DapUiVpnStateIndicator::update()
 {
     switch( current() ){
-        case True: tmrBlink.stop(); DapUiMainWindow::getInstance()->setUiProp(uiComboboxName(),"checked",true); break;
-        case False: tmrBlink.stop(); DapUiMainWindow::getInstance()->setUiProp(uiComboboxName(),"checked",false); break;
-        case TrueToFalse: tmrBlink.start(); break;
-        case FalseToTrue: tmrBlink.start(); break;
+        case IndicatorState::True: tmrBlink.stop(); DapUiMainWindow::getInstance()->setUiProp(uiComboboxName(),"checked",true); break;
+        case IndicatorState::False: tmrBlink.stop(); DapUiMainWindow::getInstance()->setUiProp(uiComboboxName(),"checked",false); break;
+        case IndicatorState::SwitchingToFalse: tmrBlink.start(); break;
+        case IndicatorState::SwitchingToTrue: tmrBlink.start(); break;
     }
 
 }
