@@ -1,5 +1,6 @@
 #include <QCoreApplication>
 #include "DapVPNService.h"
+#include "DapLogger.h"
 #include <QtDebug>
 
 #ifdef Q_OS_UNIX
@@ -30,73 +31,6 @@
     }
 #else
 #endif
-
-void myMessageHandler(QtMsgType type, const QMessageLogContext &ctx, const QString & msg)
-{
-    QString txt;
-    QString ctxStr;
-
-    QString mName= ctx.file;
-    mName=mName.split('/').last();
-    mName.remove(".cpp").remove(".h").remove(".");//cleaning up someshit
-
-
-    QString fName= ctx.function;
-    QStringList fNameSplitted = fName.split(' ');
-    if(fNameSplitted.length()>1){
-        if(fNameSplitted.first()=="auto")
-            fName=QString("lambda_%1").arg(ctx.line);
-        else{
-            fName = fNameSplitted.at(1);
-            fName=fName.split('(').first();
-            fName+="()";
-        }
-    }else
-        fName = "";
-
-    if((fName.size()==0)&&(mName.size()==0))
-        ctxStr="Qt";
-    else
-        ctxStr=QString("%1::%2").arg(mName).arg(fName);
-    const QString LOG_TIME_FORMAT="dd.MM.yy hh:mm:ss.zzz";
-
-    switch (type) {
-    case QtDebugMsg:
-        txt = QString("%2 [%3][Debug] %1").arg(msg).arg(QTime::currentTime().toString(LOG_TIME_FORMAT)).arg(ctxStr);
-        break;
-    case QtWarningMsg:
-        txt = QString("%2 [%3][Warning] %1").arg(msg).arg(QTime::currentTime().toString(LOG_TIME_FORMAT)).arg(ctxStr);
-    break;
-    case QtInfoMsg:
-        txt = QString("%2 [%3][Info] %1").arg(msg).arg(QTime::currentTime().toString(LOG_TIME_FORMAT)).arg(ctxStr);
-    break;
-    case QtCriticalMsg:
-        txt = QString("%2 [%3][Critical] %1").arg(msg).arg(QTime::currentTime().toString(LOG_TIME_FORMAT)).arg(ctxStr);
-    break;
-    case QtFatalMsg:
-        txt = QString("%2 [%3][Fatal] %1").arg(msg).arg(QTime::currentTime().toString(LOG_TIME_FORMAT)).arg(ctxStr);
-    break;
-    }
-#ifdef Q_OS_MACOS
-    QFile outFile(QString("/tmp/%1.log").arg(DAP_BRAND));
-#endif
-#ifdef Q_OS_WIN
-    QFile outFile(QString((getSystemPath()+QDir::separator()+"%DiveVPNService.log")));
-#endif
-#ifdef Q_OS_LINUX
-    ::system("test -d /opt/divevpn/log || mkdir -p /opt/divevpn/log ");
-    QFile outFile(QString("/opt/divevpn/log/%1-%2.log").arg("UnswService").arg(QTime::currentTime().toString("dd-MM-yy") ));
-#endif
-
-    outFile.open(QIODevice::WriteOnly | QIODevice::Append);
-    QTextStream ts(&outFile);
-    ts << txt << endl;
-#ifdef STANDART_EXECUTABLE
-    ::fprintf(stdout,"%s\n",txt.toLatin1().constData());
-    ::fflush(stdout);
-#endif
-}
-
 
 #ifdef Q_OS_ANDROID
 const char*const applicationName=DAP_BRAND;
@@ -143,8 +77,12 @@ void myMessageHandler(
 #ifdef STANDART_EXECUTABLE
 Q_DECL_EXPORT int main (int argc, char *argv[])
 {
-    qDebug() << "DapService Started!";
     qputenv("QT_LOGGING_RULES", "qt.network.ssl.warning=false");
+
+#ifdef Q_OS_UNIX
+    DapLogger d;
+#endif
+
     QCoreApplication a(argc, argv);
 #ifdef Q_OS_ANDROID
 //    qInstallMessageHandler(myMessageHandler);

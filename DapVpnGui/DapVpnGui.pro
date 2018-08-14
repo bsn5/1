@@ -74,6 +74,8 @@ FORMS    +=  \
     ui/dlg_about.ui
 
 
+include (../libdap-qt/libdap-qt.pri)
+INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap-qt/
 
 !defined(BRAND, var)
 {
