@@ -132,11 +132,11 @@ QString DapTunLinux::currentConnectionInterface() {
  */
 void DapTunLinux::onWorkerStarted()
 {
-    qDebug() << "[SapStreamChSF] tunnelCreate()";
+    qDebug() << "tunnelCreate()";
     QProcess process;
 
     if(m_tunSocket <=0){
-        qCritical()<< "[SapStreamChSF] Can't bring up network interface ";
+        qCritical()<< "Can't bring up network interface ";
         return;
     }
 
@@ -147,14 +147,14 @@ void DapTunLinux::onWorkerStarted()
     m_defaultGwOld=process.readAllStandardOutput();
     m_defaultGwOld.chop(1);
     if(m_defaultGwOld.isEmpty()){
-        qWarning() << "[SapStreamChSF] There is no default gateway, may be we've broken that last time? Trying to check that...";
+        qWarning() << "There is no default gateway, may be we've broken that last time? Trying to check that...";
         process.start("bash",QStringList() << "-c" << QString("netstat -rn|grep %1|awk '{print $2;}'").arg(upstreamAddress())  );
         process.waitForFinished(-1);
 
         m_defaultGwOld=process.readAllStandardOutput();
         m_defaultGwOld.chop(1);
         if(m_defaultGwOld.isEmpty()){
-            qWarning() << "[SapStreamChSF] Not found old gateway, looks like its better to restart the network";
+            qWarning() << "Not found old gateway, looks like its better to restart the network";
             return;
         }
 
@@ -170,28 +170,9 @@ void DapTunLinux::onWorkerStarted()
         // This route dont need if address is local
         QString run = QString("route add -host %2 gw %1 metric 10")
             .arg(m_defaultGwOld).arg(upstreamAddress()).toLatin1().constData();
-        qDebug() << "[SapStreamChSF] Execute "<<run;
+        qDebug() << "Execute "<<run;
         ::system(run.toLatin1().constData());
     }
-
-    QFile resolvConf;
-    resolvConf.setFileName("/etc/resolv.conf");
-    resolvConf.open(QFile::ReadOnly);
-    QString resolvConfStr = resolvConf.readAll();
-    resolvConf.close();
-
-    if (resolvConfStr.split("\n")[0] == "#Sap service resolver") {
-        qWarning() << "[SapStreamChSF] #Sap service resolver error";
-    } else {
-          QSettings resolvSettigs;
-          resolvSettigs.setValue("resolver", resolvConfStr);
-          resolvSettigs.sync();
-    }
-
-    resolvConf.open(QFile::WriteOnly);
-    QTextStream ts(&resolvConf);
-    ts << "#Sap service resolver\n" << "nameserver " + m_gw << endl;
-    resolvConf.close();
 
     ::system("nmcli c delete DiveVPN");
 
@@ -201,33 +182,29 @@ void DapTunLinux::onWorkerStarted()
                 .arg(tunDeviceName()).arg(addr()).arg(gw())
                 /*.arg(nmcliDnsPart)*/;
 
-    qDebug() << "[SapChSf] Cmd to created interface: " <<  cmdConnAdd.toLatin1().constData();
-
+    qDebug() << "[Cmd to created interface: " <<  cmdConnAdd.toLatin1().constData();
 
     ::system(cmdConnAdd.toLatin1().constData());
 
-    ::system((QString("nmcli connection modify DiveVPN"
-        " +ipv4.ignore-auto-routes true")
-        ).toLatin1().constData());
+    ::system("nmcli connection modify DiveVPN"
+        " +ipv4.ignore-auto-routes true");
 
-    ::system((QString("nmcli connection modify DiveVPN"
-        " +ipv4.ignore-auto-dns true")
-        ).toLatin1().constData());
+    ::system("nmcli connection modify DiveVPN"
+        " +ipv4.ignore-auto-dns true");
 
-    ::system((QString("nmcli connection modify DiveVPN"
-        " +ipv4.dns-search divevpn")
-        ).toLatin1().constData());
+//    ::system((QString("nmcli connection modify DiveVPN"
+//        " +ipv4.dns-search divevpn")
+//        ).toLatin1().constData());
 
-    ::system((QString("nmcli connection modify DiveVPN"
-        " +ipv4.method manual")
-        ).toLatin1().constData());
+    ::system("nmcli connection modify DiveVPN"
+        " +ipv4.method manual");
 
     ::system((QString("nmcli connection modify DiveVPN"
         " +ipv4.dns \"8.8.8.8 %1\"")
         .arg(gw())).toLatin1().constData());
-    ::system((QString("nmcli connection modify DiveVPN"
-        " +ipv4.route-metric 10")
-        ).toLatin1().constData());
+
+    ::system("nmcli connection modify DiveVPN"
+        " +ipv4.route-metric 10");
 
     ::system("nmcli connection up DiveVPN");
 }
