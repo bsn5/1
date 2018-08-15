@@ -17,6 +17,7 @@
 #include "DapChSockForw.h"
 #include "DapCmdConnHandler.h"
 #include "DapGuiCmdHandler.h"
+#include "DapClientDefinitions.h"
 
 /**
  * @brief DapVPNService::DapVPNService
@@ -441,7 +442,7 @@ int DapVPNService::init()
     srvLocal = new DapUiSocketServer();
 
     //#ifdef DAP_SERVICE_CONNECT_TCP
-    if(srvLocal->listen(QHostAddress("127.0.0.1"),22143)) {
+    if(srvLocal->listen(QHostAddress("127.0.0.1"),SERVICE_LOCAL_PORT)) {
         //#else
         //    srvLocal->setSocketOptions(QLocalServer::WorldAccessOption);
         //    if(srvLocal->listen(DAP_BRAND)){

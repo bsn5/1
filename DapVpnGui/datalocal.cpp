@@ -47,7 +47,6 @@ DataLocal::DataLocal()
 
 void DataLocal::parseXML(const QString& a_fname)
 {
-    qDebug() << "[DL] Constructor";
     QFile file(a_fname);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
         qWarning() << "[DL] Can't open data.xml from built in resource";

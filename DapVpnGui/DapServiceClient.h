@@ -2,6 +2,7 @@
 #define DAPSERVICECLIENT_H
 
 #include <QObject>
+#include <QTimer>
 
 #define DAP_UI_SOCKET_TCP
 
@@ -47,7 +48,6 @@ class DapServiceClient : public QObject, public DapServiceNative
 {
     Q_OBJECT
 public:
-    void connectToService();
     const QString& serviceName(){ return m_serviceName; }
 signals:
     void ctlConnected();
@@ -65,6 +65,8 @@ protected:
 protected slots:
     virtual void procCmdController(const QByteArray &a_cmd) = 0;
 private:
+    const int RECONNECT_TIMEOUT_MS = 500;
+    QTimer connectTimer;
     DapUiSocket * sockCtl;
     QString m_serviceName;
     QByteArray readBuffer;
@@ -72,10 +74,8 @@ private:
     bool isAuthRoot;
 
 private slots:
-    void onCtlReadReady();
+    void onCtlSocketConnected();
+    void connectToService();
     void onCtlSocketError(DapUiSocketError socketError);
-
-
-
 };
 #endif // DAPSERVICECLIENT_H

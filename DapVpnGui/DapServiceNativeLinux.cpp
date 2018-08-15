@@ -11,6 +11,5 @@ void DapServiceNativeLinux::checkInstallation(){}
  */
 void DapServiceNativeLinux::restartService()
 {
-        // TODO!!!!
-        ::system("service restart");
+    // TODO!!!!
 }

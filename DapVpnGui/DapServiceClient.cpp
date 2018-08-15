@@ -1,7 +1,7 @@
 #include <QtDebug>
-#include <QTimer>
 
 #include "DapServiceClient.h"
+#include "DapClientDefinitions.h"
 
 /**
  * @brief DapServiceClient::SapServiceClient
@@ -21,9 +21,22 @@ DapServiceClient::DapServiceClient(const QString& a_serviceName)
 
     connect(sockCtl,static_cast<void(DapUiSocket::*)(DapUiSocketError)> (&DapUiSocket::error) ,
             this, &DapServiceClient::onCtlSocketError);
-    connect(sockCtl,&DapUiSocket::connected, this, &DapServiceClient::ctlConnected);
+    connect(sockCtl,&DapUiSocket::connected, this, &DapServiceClient::onCtlSocketConnected);
 
     connect(sockCtl,&DapUiSocket::disconnected, this, &DapServiceClient::ctlDisconnected);
+
+    connect(&connectTimer, SIGNAL(timeout()), this, SLOT(connectToService()));
+}
+
+/**
+ * @brief DapServiceClient::onCtlSocketConnected
+ */
+void DapServiceClient::onCtlSocketConnected() {
+    emit ctlConnected();
+    if(this->connectTimer.isActive()) {
+        qInfo() << "Connect timer stopped";
+        connectTimer.stop();
+    }
 }
 
 /**
@@ -42,7 +55,7 @@ void DapServiceClient::init()
 void DapServiceClient::connectToService()
 {
 #ifdef DAP_UI_SOCKET_TCP
-            sockCtl->connectToHost(QHostAddress::LocalHost, 22143);
+            sockCtl->connectToHost(QHostAddress::LocalHost, SERVICE_LOCAL_PORT);
 #else
            // QTimer::singleShot(1000,[=]{
             //    qDebug() << "[connectToService]";
@@ -71,35 +84,12 @@ void DapServiceClient::sendCmd(const QString & a_cmd)
 void DapServiceClient::onCtlSocketError(DapUiSocketError socketError)
 {
     Q_UNUSED(socketError);
-    qDebug() << "[DapServiceClient] onCtlSocketError() sockCtl->errorString() == "<<sockCtl->errorString();
+    qDebug() << "onCtlSocketError() sockCtl->errorString() == "<<sockCtl->errorString();
     emit ctlError(sockCtl->errorString());
-    if (sockCtl->isOpen()){
-        return;
-    }else
-        connectToService();
-}
-
-/**
- * @brief DapServiceClient::onCtlReadReady
- */
-void DapServiceClient::onCtlReadReady()
-{
-    QByteArray readBytes = sockCtl->readAll();
-    int nInd;
-//    qDebug() << "[DapServiceClient] onCtlReadReady() readStr = "<<readStr;
-lb_read_str:
-
-    if((nInd=readBytes.indexOf("\n\n"))==-1 ){
-        qDebug() << "[DapServiceClient] No CR symbol";
-        readBuffer += readBytes;
-    }else{
-        nInd++; // move idx to second \n
-        readBuffer += readBytes.left(nInd);
-        procCmdController(readBuffer);
-        readBytes = readBytes.mid(nInd+1);
-        readBuffer.clear();
-        if(readBytes.length()>0){
-            goto lb_read_str;
+    if (sockCtl->state() != QAbstractSocket::ConnectedState) {
+        if(!connectTimer.isActive()) {
+            qInfo() << "Start trying reconnect to service";
+            connectTimer.start(RECONNECT_TIMEOUT_MS);
         }
     }
 }
