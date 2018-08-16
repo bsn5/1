@@ -452,7 +452,7 @@ int DapVPNService::init()
             while(DapUiSocket * s = srvLocal->nextPendingConnection()){
                 qDebug() << "New connect from UI";
                 DapCmdParser * dapCmdParser = new DapCmdParser(s);
-                connect(dapCmdParser, &DapCmdParser::cmdReady, this, &DapVPNService::procCmd);
+                connect(dapCmdParser, &DapCmdParser::cmdReady, this, &DapVPNService::procCmdController);
                 client.append(s);
                 connect(s, &DapUiSocket::disconnected,[=]{
                     qDebug() << "UI client disconnected";
@@ -469,13 +469,13 @@ int DapVPNService::init()
     }
 }
 
-void DapVPNService::procCmd(const QByteArray &a_cmd)
+void DapVPNService::procCmdController(const QByteArray &a_cmd)
 {
     //qDebug() << "command string: " << a_cmd;
 
     DapJsonCmdPtr cmdPtr = DapJsonCmd::load(a_cmd);
     if (cmdPtr == nullptr) {
-        qWarning() << "Error parse cmd!";
+        qWarning() << "Can't parse cmd!";
         return;
     }
 

@@ -14,7 +14,7 @@ DapGuiCmdHandler::DapGuiCmdHandler(QObject *parent)
 }
 
 void DapGuiCmdHandler::getStatesHandler(const QJsonObject* params) {
-
+    Q_UNUSED(params);
 }
 
 void DapGuiCmdHandler::handler(DapJsonCmdPtr ptr) {

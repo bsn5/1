@@ -19,6 +19,7 @@ DEFINES += DAP_SERVICE_CONNECT_TCP
     SOURCES += main.cpp
 }
 
+
 SOURCES +=  DapChSockForw.cpp \
     SigUnixHandler.cpp \
     DapTunAbstract.cpp\
@@ -30,7 +31,8 @@ SOURCES +=  DapChSockForw.cpp \
     DapSB.cpp \
     DapTunWorkerAndroid.cpp \
     DapGuiCmdHandler.cpp \
-    DapCmdConnHandler.cpp
+    DapCmdConnHandler.cpp \
+    LinuxSrc/DapResolvConfManager.cpp \
 
 
 
@@ -57,7 +59,8 @@ HEADERS +=     DapChSockForw.h \
     DapSB.h \
     DapTunWorkerAndroid.h \
     DapGuiCmdHandler.h \
-    DapCmdConnHandler.h
+    DapCmdConnHandler.h \
+    LinuxSrc/DapResolvConfManager.h
 
 unix: !win32 {
     HEADERS += DapTunWorkerUnix.h

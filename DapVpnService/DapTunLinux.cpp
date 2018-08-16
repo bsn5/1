@@ -47,6 +47,7 @@ DapTunLinux::DapTunLinux()
                    .arg(nmcliVersionMinor)
                    .arg(nmcliVersionBuild);
     }
+    m_rcm = new ResolvConfManager(QStringList() << "8.8.8.8" << "8.8.4.4");
 }
 
 /**
@@ -184,6 +185,8 @@ void DapTunLinux::onWorkerStarted()
 
     qDebug() << "[Cmd to created interface: " <<  cmdConnAdd.toLatin1().constData();
 
+    m_rcm->rewriteResolvConf();
+
     ::system(cmdConnAdd.toLatin1().constData());
 
     ::system("nmcli connection modify DiveVPN"
@@ -192,16 +195,12 @@ void DapTunLinux::onWorkerStarted()
     ::system("nmcli connection modify DiveVPN"
         " +ipv4.ignore-auto-dns true");
 
-//    ::system((QString("nmcli connection modify DiveVPN"
-//        " +ipv4.dns-search divevpn")
-//        ).toLatin1().constData());
+    ::system("nmcli connection modify DiveVPN ipv4.dns-priority 10");
 
     ::system("nmcli connection modify DiveVPN"
         " +ipv4.method manual");
 
-    ::system((QString("nmcli connection modify DiveVPN"
-        " +ipv4.dns \"8.8.8.8 %1\"")
-        .arg(gw())).toLatin1().constData());
+    ::system("nmcli connection modify DiveVPN ipv4.dns \"8.8.8.8, 8.8.4.4\"");
 
     ::system("nmcli connection modify DiveVPN"
         " +ipv4.route-metric 10");
@@ -215,16 +214,17 @@ void DapTunLinux::onWorkerStarted()
 void DapTunLinux::tunDeviceDestroy()
 {
     ::system(QString("ifconfig %1 down")
-           .arg(tunDeviceName() ).toLatin1().constData() );
+           .arg(tunDeviceName()).toLatin1().constData());
     ::system("nmcli connection down DiveVPN");
     ::system("nmcli connection delete DiveVPN");
-
     ::system(QString("nmcli connection up \"%1\"")
              .arg(m_lastUsedConnectionName).toLatin1().constData());
 
+    m_rcm->restoreResolvConf();
     DapTunUnixAbstract::tunDeviceDestroy();
 }
 
-
-
+DapTunLinux::~DapTunLinux() {
+    delete m_rcm;
+}
 

@@ -2,11 +2,13 @@
 #define DAPTUNLINUX_H
 
 #include "DapTunUnixAbstract.h"
+#include "LinuxSrc/DapResolvConfManager.h"
 
 class DapTunLinux : public DapTunUnixAbstract
 {
 public:
     DapTunLinux();
+    ~DapTunLinux();
 protected:
     void tunDeviceCreate();
     void tunDeviceDestroy();
@@ -15,6 +17,7 @@ protected:
     // Getting currently using connection interface name from nmcli command-line tool
     QString currentConnectionInterface();
 private:
+
     QString nmcliVersion;
     static int nmcliVersionMajor;
     static int nmcliVersionMinor;
@@ -22,6 +25,9 @@ private:
 
     // Connection witch used before creating DiveVPN Interface
     QString m_lastUsedConnectionName;
+
+    ResolvConfManager *m_rcm;
+
     void setLastUsedConnection();
 };
 

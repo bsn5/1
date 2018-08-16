@@ -128,7 +128,7 @@ public slots:
     void onIndicatorStateFalse();
 
 private slots:
-    void procCmd(const QByteArray & a_cmd);
+    void procCmdController(const QByteArray & a_cmd);
     void onEncInitialized();
 
     void onUsrMsg(const QString &a_msg);

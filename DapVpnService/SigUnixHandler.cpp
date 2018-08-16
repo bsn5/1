@@ -9,10 +9,11 @@ void SigUnixHandler::sig_handler_func(int sig_code)
 #ifdef Q_OS_LINUX
     ::system("nmcli connection down DiveVPN; nmcli c delete DiveVPN >>/dev/null &");
 #endif
+    emit SigUnixHandler::getInstance()->sigKill();
     QCoreApplication::quit();
 }
 
-SigUnixHandler::SigUnixHandler()
+SigUnixHandler::SigUnixHandler(QObject* obj) : QObject(obj)
 {
     qDebug() << "Create Sig Unix Handler object";
 #ifdef Q_OS_LINUX
