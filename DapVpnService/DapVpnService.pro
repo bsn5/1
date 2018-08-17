@@ -32,9 +32,6 @@ SOURCES +=  DapChSockForw.cpp \
     DapTunWorkerAndroid.cpp \
     DapGuiCmdHandler.cpp \
     DapCmdConnHandler.cpp \
-    LinuxSrc/DapResolvConfManager.cpp \
-
-
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -60,7 +57,6 @@ HEADERS +=     DapChSockForw.h \
     DapTunWorkerAndroid.h \
     DapGuiCmdHandler.h \
     DapCmdConnHandler.h \
-    LinuxSrc/DapResolvConfManager.h
 
 unix: !win32 {
     HEADERS += DapTunWorkerUnix.h
@@ -68,8 +64,8 @@ unix: !win32 {
 }
 
 linux-* {
-    HEADERS += DapTunLinux.h
-    SOURCES += DapTunLinux.cpp
+    include (./linux-src/linux-src.pri)
+    INCLUDEPATH += $$_PRO_FILE_PWD_/linux-src/
 }
 
 win32 {

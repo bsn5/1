@@ -2,7 +2,7 @@
 #define DAPTUNLINUX_H
 
 #include "DapTunUnixAbstract.h"
-#include "LinuxSrc/DapResolvConfManager.h"
+#include "DapResolvConfManager.h"
 
 class DapTunLinux : public DapTunUnixAbstract
 {
