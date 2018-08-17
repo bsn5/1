@@ -30,8 +30,7 @@ SOURCES +=  DapChSockForw.cpp \
     DapVpnService.cpp \
     DapSB.cpp \
     DapTunWorkerAndroid.cpp \
-    DapGuiCmdHandler.cpp \
-    DapCmdConnHandler.cpp \
+    DapGuiCmdController.cpp
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -55,8 +54,10 @@ HEADERS +=     DapChSockForw.h \
     DapTunUnixAbstract.h \
     DapSB.h \
     DapTunWorkerAndroid.h \
-    DapGuiCmdHandler.h \
-    DapCmdConnHandler.h \
+    DapGuiCmdController.h
+
+include (./DapCmdHandlers/dap-cmd-handlers.pri)
+INCLUDEPATH += $$_PRO_FILE_PWD_/DapCmdHandlers/
 
 unix: !win32 {
     HEADERS += DapTunWorkerUnix.h

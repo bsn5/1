@@ -42,10 +42,15 @@ DapUiVpnStateIndicator::DapUiVpnStateIndicator(QState * a_statesParent,  const Q
 void DapUiVpnStateIndicator::update()
 {
     switch( current() ){
-        case IndicatorState::True: tmrBlink.stop(); DapUiMainWindow::getInstance()->setUiProp(uiComboboxName(),"checked",true); break;
-        case IndicatorState::False: tmrBlink.stop(); DapUiMainWindow::getInstance()->setUiProp(uiComboboxName(),"checked",false); break;
-        case IndicatorState::SwitchingToFalse: tmrBlink.start(); break;
-        case IndicatorState::SwitchingToTrue: tmrBlink.start(); break;
+    case IndicatorState::True: tmrBlink.stop(); DapUiMainWindow::getInstance()->setUiProp(uiComboboxName(),"checked",true); break;
+    case IndicatorState::False: tmrBlink.stop(); DapUiMainWindow::getInstance()->setUiProp(uiComboboxName(),"checked",false); break;
+    case IndicatorState::SwitchingToFalse: tmrBlink.start(); break;
+    case IndicatorState::SwitchingToTrue: tmrBlink.start(); break;
+    case IndicatorState::Error:
+    case IndicatorState::ErrorAuth:
+    case IndicatorState::ErrorNetwork:
+        qWarning() << "No have handler for" << current() << "state";
+        break;
     }
 
 }

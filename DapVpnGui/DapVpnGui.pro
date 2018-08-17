@@ -71,7 +71,7 @@ FORMS    +=  \
 
 
 include (./DapCmdHandlers/dap-cmd-handlers.pri)
-INCLUDEPATH += $$_PRO_FILE_PWD_/libdap-qt/
+INCLUDEPATH += $$_PRO_FILE_PWD_/DapCmdHandlers/
 
 include (../libdap-qt/libdap-qt.pri)
 INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap-qt/

@@ -16,7 +16,7 @@ void DapCmdStatsHandler::trafficStatsHandler(
         qWarning() << "Something wrong can't parse traffic stats";
         return;
     }
-    emit DapCmdStatsHandler::me().sigReadWriteBytesStat(bRead, bWrite);
+    emit sigReadWriteBytesStat(bRead, bWrite);
 }
 
 void DapCmdStatsHandler::handler(const QJsonObject* params) {

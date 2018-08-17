@@ -1,4 +1,4 @@
-#include "DapCmdConnHandler.h"
+#include "ConnectHandler.h"
 #include <QMap>
 #include <QDebug>
 #include "DapSession.h"
@@ -7,6 +7,10 @@ const QString DapCmdConnHandler::disconnectParam = "disconnect";
 
 DapCmdConnHandler::DapCmdConnHandler(QObject *parent)
     : QObject(parent) {
+
+}
+
+DapCmdConnHandler::~DapCmdConnHandler() {
 
 }
 

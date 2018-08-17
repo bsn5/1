@@ -2,17 +2,16 @@
 #define DAPCMDSTATSHANDLER_H
 
 #include <QObject>
-
-class DapCmdStatsHandler : public QObject
+#include "DapCmdHandlerAbstract.h"
+class DapCmdStatsHandler : public QObject , public DapCmdHandlerAbstract
 {
     Q_OBJECT
 public:
-    static DapCmdStatsHandler& me() { static DapCmdStatsHandler _me; return _me; }
-    static void handler(const QJsonObject* params);
-private:
-    static void trafficStatsHandler(const QJsonValue& readBytes,
-                                    const QJsonValue& writeBytes);
+    void handler(const QJsonObject* params);
     explicit DapCmdStatsHandler(QObject *parent = nullptr);
+private:
+    void trafficStatsHandler(const QJsonValue& readBytes,
+                                    const QJsonValue& writeBytes);
     void readWriteBytesHandler();
 signals:
     void sigReadWriteBytesStat(int read,

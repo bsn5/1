@@ -209,139 +209,139 @@ void MainWindow::initIndicatorsTransitions()
 
     // Authorization ::False state
     siAuthorization->state(IndicatorState::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizing()),siAuthorization->state(IndicatorState::SwitchingToTrue));
+            ->addTransition(statesHandler,SIGNAL(sigAuthorizing()),siAuthorization->state(IndicatorState::SwitchingToTrue));
     siAuthorization->state(IndicatorState::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorized()),siAuthorization->state(IndicatorState::True));
+            ->addTransition(statesHandler,SIGNAL(sigAuthorized()),siAuthorization->state(IndicatorState::True));
 
     // Authorization ::FalseToTrue state
     siAuthorization->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizeError()),siAuthorization->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigAuthorizeError()),siAuthorization->state(IndicatorState::False));
     siAuthorization->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorized()),siAuthorization->state(IndicatorState::True));
+            ->addTransition(statesHandler,SIGNAL(sigAuthorized()),siAuthorization->state(IndicatorState::True));
     siAuthorization->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),siAuthorization->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigUnauthorized()),siAuthorization->state(IndicatorState::False));
 
     // Authorization ::TrueToFalse state
     siAuthorization->state(IndicatorState::SwitchingToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizing()),siAuthorization->state(IndicatorState::SwitchingToTrue));
+            ->addTransition(statesHandler,SIGNAL(sigAuthorizing()),siAuthorization->state(IndicatorState::SwitchingToTrue));
     siAuthorization->state(IndicatorState::SwitchingToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorized()),siAuthorization->state(IndicatorState::True));
+            ->addTransition(statesHandler,SIGNAL(sigAuthorized()),siAuthorization->state(IndicatorState::True));
     siAuthorization->state(IndicatorState::SwitchingToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),siAuthorization->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigUnauthorized()),siAuthorization->state(IndicatorState::False));
 
     // Authorization ::True state
     siAuthorization->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizing()),siAuthorization->state(IndicatorState::SwitchingToTrue));
+            ->addTransition(statesHandler,SIGNAL(sigAuthorizing()),siAuthorization->state(IndicatorState::SwitchingToTrue));
     siAuthorization->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),siAuthorization->state(IndicatorState::SwitchingToFalse));
+            ->addTransition(statesHandler,SIGNAL(sigUnauthorized()),siAuthorization->state(IndicatorState::SwitchingToFalse));
     siAuthorization->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizeError()),siAuthorization->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigAuthorizeError()),siAuthorization->state(IndicatorState::False));
     siAuthorization->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),siAuthorization->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigUnauthorized()),siAuthorization->state(IndicatorState::False));
 
     //----Stream Opened-----
 
     // Stream ::False state
     siStream->state(IndicatorState::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpening()),siStream->state(IndicatorState::SwitchingToTrue));
+            ->addTransition(statesHandler,SIGNAL(sigStreamOpening()),siStream->state(IndicatorState::SwitchingToTrue));
     siStream->state(IndicatorState::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpened()),siStream->state(IndicatorState::True));
+            ->addTransition(statesHandler,SIGNAL(sigStreamOpened()),siStream->state(IndicatorState::True));
     siStream->state(IndicatorState::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosing()),siStream->state(IndicatorState::SwitchingToFalse));
+            ->addTransition(statesHandler,SIGNAL(sigStreamClosing()),siStream->state(IndicatorState::SwitchingToFalse));
 
     // Stream ::FalseToTrue state
     siStream->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamError()),siStream->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigStreamError()),siStream->state(IndicatorState::False));
     siStream->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpened()),siStream->state(IndicatorState::True));
+            ->addTransition(statesHandler,SIGNAL(sigStreamOpened()),siStream->state(IndicatorState::True));
     siStream->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosed()),siStream->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigStreamClosed()),siStream->state(IndicatorState::False));
     siStream->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosing()),siStream->state(IndicatorState::SwitchingToFalse));
+            ->addTransition(statesHandler,SIGNAL(sigStreamClosing()),siStream->state(IndicatorState::SwitchingToFalse));
 
     // Stream ::TrueToFalse state
     siStream->state(IndicatorState::SwitchingToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpening()),siStream->state(IndicatorState::SwitchingToTrue));
+            ->addTransition(statesHandler,SIGNAL(sigStreamOpening()),siStream->state(IndicatorState::SwitchingToTrue));
     siStream->state(IndicatorState::SwitchingToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpened()),siStream->state(IndicatorState::True));
+            ->addTransition(statesHandler,SIGNAL(sigStreamOpened()),siStream->state(IndicatorState::True));
     siStream->state(IndicatorState::SwitchingToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosed()),siStream->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigStreamClosed()),siStream->state(IndicatorState::False));
 
     // Stream ::True state
     siStream->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpening()),siStream->state(IndicatorState::SwitchingToTrue));
+            ->addTransition(statesHandler,SIGNAL(sigStreamOpening()),siStream->state(IndicatorState::SwitchingToTrue));
     siStream->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosing()),siStream->state(IndicatorState::SwitchingToFalse));
+            ->addTransition(statesHandler,SIGNAL(sigStreamClosing()),siStream->state(IndicatorState::SwitchingToFalse));
     siStream->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamError()),siStream->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigStreamError()),siStream->state(IndicatorState::False));
     siStream->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosed()),siStream->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigStreamClosed()),siStream->state(IndicatorState::False));
 
     //----NetConf Received-----
 
     // NetConf ::False state
     siNetConf->state(IndicatorState::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigRequesting()),siNetConf->state(IndicatorState::SwitchingToTrue));
+            ->addTransition(statesHandler,SIGNAL(sigNetConfigRequesting()),siNetConf->state(IndicatorState::SwitchingToTrue));
     siNetConf->state(IndicatorState::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigTrue()),siNetConf->state(IndicatorState::True));
+            ->addTransition(statesHandler,SIGNAL(sigNetConfigTrue()),siNetConf->state(IndicatorState::True));
 
     // NetConf ::FalseToTrue state
     siNetConf->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigError()),siNetConf->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigNetConfigError()),siNetConf->state(IndicatorState::False));
     siNetConf->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigTrue()),siNetConf->state(IndicatorState::True));
+            ->addTransition(statesHandler,SIGNAL(sigNetConfigTrue()),siNetConf->state(IndicatorState::True));
     siNetConf->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigFalse()),siNetConf->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigNetConfigFalse()),siNetConf->state(IndicatorState::False));
 
     // NetConf ::TrueToFalse state
     siNetConf->state(IndicatorState::SwitchingToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigTrue()),siNetConf->state(IndicatorState::True));
+            ->addTransition(statesHandler,SIGNAL(sigNetConfigTrue()),siNetConf->state(IndicatorState::True));
     siNetConf->state(IndicatorState::SwitchingToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigFalse()),siNetConf->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigNetConfigFalse()),siNetConf->state(IndicatorState::False));
 
     // NetConf ::True state
     siNetConf->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpening()),siNetConf->state(IndicatorState::SwitchingToTrue));
+            ->addTransition(statesHandler,SIGNAL(sigStreamOpening()),siNetConf->state(IndicatorState::SwitchingToTrue));
 
     siNetConf->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigError()),siNetConf->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigNetConfigError()),siNetConf->state(IndicatorState::False));
     siNetConf->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigFalse()),siNetConf->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigNetConfigFalse()),siNetConf->state(IndicatorState::False));
 
     //----Tunnel -----
 
     // Tunnel ::False state
     siTunnel->state(IndicatorState::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreating()),siTunnel->state(IndicatorState::SwitchingToTrue));
+            ->addTransition(statesHandler,SIGNAL(sigTunnelCreating()),siTunnel->state(IndicatorState::SwitchingToTrue));
     siTunnel->state(IndicatorState::False)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreated()),siTunnel->state(IndicatorState::True));
+            ->addTransition(statesHandler,SIGNAL(sigTunnelCreated()),siTunnel->state(IndicatorState::True));
 
     // Tunnel ::FalseToTrue state
     siTunnel->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelError()),siTunnel->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigTunnelError()),siTunnel->state(IndicatorState::False));
     siTunnel->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreated()),siTunnel->state(IndicatorState::True));
+            ->addTransition(statesHandler,SIGNAL(sigTunnelCreated()),siTunnel->state(IndicatorState::True));
     siTunnel->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroyed()),siTunnel->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigTunnelDestroyed()),siTunnel->state(IndicatorState::False));
     siTunnel->state(IndicatorState::SwitchingToTrue)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroying()),siTunnel->state(IndicatorState::SwitchingToFalse));
+            ->addTransition(statesHandler,SIGNAL(sigTunnelDestroying()),siTunnel->state(IndicatorState::SwitchingToFalse));
 
     // Tunnel ::TrueToFalse state
     siTunnel->state(IndicatorState::SwitchingToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreated()),siTunnel->state(IndicatorState::True));
+            ->addTransition(statesHandler,SIGNAL(sigTunnelCreated()),siTunnel->state(IndicatorState::True));
     siTunnel->state(IndicatorState::SwitchingToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroyed()),siTunnel->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigTunnelDestroyed()),siTunnel->state(IndicatorState::False));
     siTunnel->state(IndicatorState::SwitchingToFalse)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreating()),siTunnel->state(IndicatorState::SwitchingToTrue));
+            ->addTransition(statesHandler,SIGNAL(sigTunnelCreating()),siTunnel->state(IndicatorState::SwitchingToTrue));
 
     // Tunnel ::True state
     siTunnel->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreating()),siTunnel->state(IndicatorState::SwitchingToTrue));
+            ->addTransition(statesHandler,SIGNAL(sigTunnelCreating()),siTunnel->state(IndicatorState::SwitchingToTrue));
 
     siTunnel->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelError()),siTunnel->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigTunnelError()),siTunnel->state(IndicatorState::False));
     siTunnel->state(IndicatorState::True)
-            ->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroyed()),siTunnel->state(IndicatorState::False));
+            ->addTransition(statesHandler,SIGNAL(sigTunnelDestroyed()),siTunnel->state(IndicatorState::False));
 
 }
 
@@ -351,6 +351,8 @@ MainWindow::MainWindow(QWidget *parent) :
 {
 
     qDebug() << "[MW] Initializing main window";
+    statesHandler = ServiceCtl::me().getStatesHandleObj();
+
     // QWidget::setLayout: Attempting to set QLayout "" on MainWindow "", which already has a layout
     // Layout уже есть
     // https://stackoverflow.com/questions/10519006/qwidgetsetlayout-attempting-to-set-qlayout-on-widget-which-already-has
@@ -554,26 +556,26 @@ MainWindow::MainWindow(QWidget *parent) :
     stateLoginBegin->addTransition(this,SIGNAL(sigBtConnect()),stateLoginConnecting);
 
     // LoginBegin ---> Dashboard
-    stateLoginBegin->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorized()),statesDashboard);
-    stateLoginBegin->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpened()),statesDashboard);
-    stateLoginBegin->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigTrue()),statesDashboard);
-    stateLoginBegin->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreated()),statesDashboard);
+    stateLoginBegin->addTransition(statesHandler,SIGNAL(sigAuthorized()),statesDashboard);
+    stateLoginBegin->addTransition(statesHandler,SIGNAL(sigStreamOpened()),statesDashboard);
+    stateLoginBegin->addTransition(statesHandler,SIGNAL(sigNetConfigTrue()),statesDashboard);
+    stateLoginBegin->addTransition(statesHandler,SIGNAL(sigTunnelCreated()),statesDashboard);
 
     // LoginConnecting ---> LoginBegin
     stateLoginConnecting->addTransition(this,SIGNAL(sigBtConnect()),stateLoginBegin);
-    stateLoginConnecting->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorizeError()),stateLoginBegin);
+    stateLoginConnecting->addTransition(statesHandler,SIGNAL(sigAuthorizeError()),stateLoginBegin);
 
     // LoginConnecting ---> Dashboard
-    stateLoginConnecting->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorized()),statesDashboard);
-    stateLoginConnecting->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpened()),statesDashboard);
-    stateLoginConnecting->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigTrue()),statesDashboard);
-    stateLoginConnecting->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreated()),statesDashboard);
+    stateLoginConnecting->addTransition(statesHandler,SIGNAL(sigAuthorized()),statesDashboard);
+    stateLoginConnecting->addTransition(statesHandler,SIGNAL(sigStreamOpened()),statesDashboard);
+    stateLoginConnecting->addTransition(statesHandler,SIGNAL(sigNetConfigTrue()),statesDashboard);
+    stateLoginConnecting->addTransition(statesHandler,SIGNAL(sigTunnelCreated()),statesDashboard);
 
     // Dashboard ---> DashboardDisconnecting
     // statesDashboard->addTransition(this,SIGNAL(sigBtDisconnect()),stateDashboardDisconnecting);
 
     // DashboardDisconnecting ---> Begin
-    stateDashboardDisconnecting->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),stateLoginBegin);
+    stateDashboardDisconnecting->addTransition(statesHandler,SIGNAL(sigUnauthorized()),stateLoginBegin);
 
     // Login Ctl Connecting ---> Login Begin
     stateLoginCtlConnecting->addTransition(&ServiceCtl::me(),SIGNAL(ctlConnected()),stateLoginBegin);
@@ -582,24 +584,24 @@ MainWindow::MainWindow(QWidget *parent) :
     stateLoginBegin->addTransition(this,SIGNAL(sigBtConnect()),stateLoginConnecting );
 
     // Begin ---> Dashboard
-    stateLoginBegin->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigAuthorized()),stateDashboardConnected);
-    stateLoginBegin->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamOpened()),stateDashboardConnected);
-    stateLoginBegin->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigTrue()),stateDashboardConnected);
-    stateLoginBegin->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelCreated()),stateDashboardConnected);
+    stateLoginBegin->addTransition(statesHandler,SIGNAL(sigAuthorized()),stateDashboardConnected);
+    stateLoginBegin->addTransition(statesHandler,SIGNAL(sigStreamOpened()),stateDashboardConnected);
+    stateLoginBegin->addTransition(statesHandler,SIGNAL(sigNetConfigTrue()),stateDashboardConnected);
+    stateLoginBegin->addTransition(statesHandler,SIGNAL(sigTunnelCreated()),stateDashboardConnected);
 
     // DashboardConnecting --> DashboardConnected
-    stateDashboardConnecting->addTransition(&DapCmdStatesHandler::me() ,SIGNAL(sigTunnelCreated()),stateDashboardConnected );
+    stateDashboardConnecting->addTransition(statesHandler ,SIGNAL(sigTunnelCreated()),stateDashboardConnected );
 
     // Dashboard ---> DashboardDisconnecting
     stateDashboardConnected->addTransition(this,SIGNAL(sigBtDisconnect()),stateDashboardDisconnecting);
-    stateDashboardConnected->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigStreamClosed()) ,stateDashboardConnecting);
-    stateDashboardConnected->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigTunnelDestroyed()) ,stateDashboardConnecting);
-    stateDashboardConnected->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigNetConfigFalse()) ,stateDashboardConnecting);
-    stateDashboardConnected->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()) , stateDashboardConnecting);
+    stateDashboardConnected->addTransition(statesHandler,SIGNAL(sigStreamClosed()) ,stateDashboardConnecting);
+    stateDashboardConnected->addTransition(statesHandler,SIGNAL(sigTunnelDestroyed()) ,stateDashboardConnecting);
+    stateDashboardConnected->addTransition(statesHandler,SIGNAL(sigNetConfigFalse()) ,stateDashboardConnecting);
+    stateDashboardConnected->addTransition(statesHandler,SIGNAL(sigUnauthorized()) , stateDashboardConnecting);
 
 
     // DashboardDisconnecting ---> Begin
-    stateDashboardDisconnecting->addTransition(&DapCmdStatesHandler::me(),SIGNAL(sigUnauthorized()),stateLoginBegin);
+    stateDashboardDisconnecting->addTransition(statesHandler,SIGNAL(sigUnauthorized()),stateLoginBegin);
 
     initIndicators();
     initIndicatorsTransitions();

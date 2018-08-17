@@ -3,10 +3,10 @@
 
 #include <QJsonObject>
 
-class DapCmdHandlerInterface {
+class DapCmdHandlerAbstract {
 public:
     virtual void handler(const QJsonObject* params) = 0;
-    virtual ~DapCmdHandlerInterface() = 0;
+    virtual ~DapCmdHandlerAbstract();
 };
 
 #endif // DAPCMDHANDLERINTERFACE_H

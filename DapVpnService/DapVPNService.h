@@ -17,7 +17,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include "DapJsonCmd.h"
-#include "DapGuiCmdHandler.h"
+#include "DapGuiCmdController.h"
 
 
 typedef class QTcpSocket DapUiSocket;
@@ -110,7 +110,7 @@ protected:
     QList<DapSI*> siList;
 
     QNetworkAccessManager * nam;
-    DapGuiCmdHandler guiHandler;
+    DapGuiCmdController * m_guiHandler;
 signals:
     void sigRequestDisconnected();
     void sigRequestConnected();
@@ -128,9 +128,6 @@ public slots:
 private slots:
     void procCmdController(const QByteArray & a_cmd);
     void onEncInitialized();
-
-    void onUsrMsg(const QString &a_msg);
-
     void onReadBytes(int arg);
     void onWriteBytes(int arg);
     void onSigPacketRead();

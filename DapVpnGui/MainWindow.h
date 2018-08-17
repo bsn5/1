@@ -18,6 +18,7 @@
 #include "DapUiMainWindow.h"
 #include "DapUiVpnStateIndicator.h"
 #include "DapJsonCmd.h"
+#include "StatesHandler.h"
 
 class QSystemTrayIcon;
 class QCloseEvent;
@@ -63,6 +64,8 @@ private:
     int m_socketUpstream;
     QString m_addrAssigned;
     QColor m_statusColor;
+
+    const DapCmdStatesHandler * statesHandler;
 
     QStateMachine sm;
         QState * statesUser;

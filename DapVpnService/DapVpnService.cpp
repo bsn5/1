@@ -15,7 +15,7 @@
 #include "DapVPNService.h"
 #include "DapStreamer.h"
 #include "DapChSockForw.h"
-#include "DapCmdConnHandler.h"
+#include "ConnectHandler.h"
 #include "DapClientDefinitions.h"
 
 /**
@@ -24,13 +24,12 @@
  */
 
 
-DapVPNService::DapVPNService(QObject *parent) : QObject(parent), guiHandler(this)
+DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
 {
     m_tunReadBytes=m_tunWriteBytes=m_tunReadPackets=m_tunWritePackets=0;
     isLogouting = false;
 
     m_restoreTriesLeft=0;
-    guiHandler.setIndicatorsStateList(&siList);
 
     nam = new QNetworkAccessManager(this);
     streamer = new DapStreamer(this);
@@ -38,7 +37,6 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent), guiHandler(this
 
     connect(streamer,static_cast<void(DapStreamer::*)(const QString&)>(&DapStreamer::error), [=](QString a_msg){
         qDebug() << "[Streamer Er]"<< a_msg;
-        onUsrMsg(a_msg);
         // sendCmdAll(QString("status stream error %1").arg( QString::fromLatin1(a_msg.toUtf8().toBase64())  ) );
     });
 
@@ -50,7 +48,6 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent), guiHandler(this
     connect(DapSession::getInstance(),&DapSession::encryptInitialized,this,&DapVPNService::onEncInitialized );
     connect(DapSession::getInstance(), static_cast<void(DapSession::*)(const QString&)>(&DapSession::errorAuthorization),[=](QString a_msg){
         qWarning() << "[DapVPNService] Authorization error: "<<a_msg;
-        onUsrMsg(a_msg);
         // sendCmdAll(  QString("status authorize error %1").arg(QString::fromLatin1(a_msg.toLatin1().toBase64())));
     });
 
@@ -65,8 +62,6 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent), guiHandler(this
     connect(&DapCmdConnHandler::me(), &DapCmdConnHandler::sigDisconnect, [=] {
         emit sigRequestDisconnected();
     });
-
-    connect(chSockForw,&DapChSockForw::usrMsg,this, &DapVPNService::onUsrMsg );
 
     connect(chSockForw,
             static_cast<void (DapChSockForw::*)
@@ -99,7 +94,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent), guiHandler(this
     connect(chSockForw,&DapChSockForw::bytesWrite, this, &DapVPNService::onWriteBytes   );
     connect(chSockForw,&DapChSockForw::sigPacketRead, this, &DapVPNService::onSigPacketRead   );
     connect(chSockForw,&DapChSockForw::sigPacketWrite, this, &DapVPNService::onSigPacketWrite   );
-    connect(&guiHandler, &DapGuiCmdHandler::sendDapCmd, this, &DapVPNService::sendDapCmdAll);
+    //connect(m_guiHandler, &DapGuiCmdParser::sendDapCmd, this, &DapVPNService::sendDapCmdAll);
 
     tmrStat= new QTimer(this);
     tmrStat->setInterval(500);
@@ -397,6 +392,10 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent), guiHandler(this
         }
     });
 
+    m_guiHandler =  new DapGuiCmdController(&siList, this);
+
+    connect(m_guiHandler->getStatesObject(), &DapCmdStatesHandler::sendDapCmd, this, &DapVPNService::sendDapCmdAll);
+
     sm.start();
 }
 
@@ -470,7 +469,7 @@ void DapVPNService::procCmdController(const QByteArray &a_cmd)
         return;
     }
 
-    guiHandler.handler(std::move(cmdPtr));
+    m_guiHandler->cmdParser(std::move(cmdPtr));
 
     //    QStringList cmdSub= QString(a_cmd).split(' ');
     //    qDebug() << "Process cmd "<<a_cmd;
@@ -580,15 +579,6 @@ void DapVPNService::onEncInitialized()
     DapSession::getInstance()->authorize(m_curUser, m_curPassword, "divevpn.com");
 }
 
-
-
-/**
- * @brief DapVPNService::onUsrMsg
- * @param a_msg
- */
-void DapVPNService::onUsrMsg(const QString &a_msg)
-{
-}
 
 /**
  * @brief DapVPNService::onReadBytes

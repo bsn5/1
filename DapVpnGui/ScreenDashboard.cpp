@@ -20,6 +20,7 @@
 #include "datalocal.h"
 #include <QCheckBox>
 #include <QListWidget>
+#include <ServiceCtl.h>
 
 /**
  * @brief DapUiScreenDashboard::initUiCommonAfter
@@ -133,7 +134,7 @@ void ScreenDashboard::drawShedules(int read, int write) {
 ScreenDashboard::ScreenDashboard(QObject * a_parent, QStackedWidget * a_sw)
     :ScreenVpnAbstract(a_parent,a_sw)
 {
-    connect(&DapCmdStatsHandler::me(), &DapCmdStatsHandler::sigReadWriteBytesStat,
+    connect(ServiceCtl::me().getStatsHandleObj(), &DapCmdStatsHandler::sigReadWriteBytesStat,
             this, &ScreenDashboard::drawShedules);
 
 #ifdef DAP_PLATFORM_MOBILE

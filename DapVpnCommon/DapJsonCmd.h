@@ -6,6 +6,7 @@
 #include <QDebug>
 #include <QMap>
 #include <memory>
+#include "DapCmdHandlerAbstract.h"
 
 // Key must be a string!
 #define DapJsonParam(key,value) \
@@ -20,22 +21,7 @@ enum class DapJsonCommands {
 
 class DapJsonCmd;
 using DapJsonCmdPtr = std::unique_ptr<DapJsonCmd>;
-
-template<class T>
-using DapJsonCmdHandler = void (T::*)(const QJsonObject*);
-
-template<class T>
-using DapJsonCmdHandlersMap = QMap<DapJsonCommands, DapJsonCmdHandler<T>>;
-
-
-/**
-template<class T>
-using DapJsonCmdHandler = void (T::*)(const QJsonObject*);
-
-template<class T>
-using DapJsonCmdHandlersMap = QMap<DapJsonCommands, DapJsonCmdHandler<T>>;
- */
-
+using DapJsonCmdHandlersMap = QMap<DapJsonCommands, DapCmdHandlerAbstract*>;
 
 const QString g_stateName = "state_name";
 const QString g_readKbytesParam = "read_kbytes";

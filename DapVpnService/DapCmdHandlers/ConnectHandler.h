@@ -3,19 +3,20 @@
 
 #include <QObject>
 #include <QJsonObject>
+#include "DapCmdHandlerAbstract.h"
 
-class DapCmdConnHandler : public QObject
+class DapCmdConnHandler : public QObject, public DapCmdHandlerAbstract
 {
     Q_OBJECT
 private:
     static const QString disconnectParam;
-    explicit DapCmdConnHandler(QObject *parent = nullptr);
-
 public:
+    explicit DapCmdConnHandler(QObject *parent = nullptr);
+    virtual ~DapCmdConnHandler() override;
     static DapCmdConnHandler& me() {
         static DapCmdConnHandler _me; return _me;
     }
-    static void handler(const QJsonObject* params);
+    void handler(const QJsonObject* params) override;
 signals:
     void sigConnect(const QString& user, const QString& password);
     void sigDisconnect();

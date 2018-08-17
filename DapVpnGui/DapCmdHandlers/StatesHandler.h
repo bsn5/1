@@ -5,21 +5,21 @@
 #include <QJsonObject>
 #include <QDebug>
 #include "DapIndicatorState.h"
+#include "DapCmdHandlerAbstract.h"
 
 using IndicatorState = DapIndicatorState::IndicatorState;
 
-class DapCmdStatesHandler : public QObject
+class DapCmdStatesHandler : public QObject, public DapCmdHandlerAbstract
 {
     Q_OBJECT
 public:
-    static DapCmdStatesHandler& me(){static DapCmdStatesHandler _me; return _me; }
-    static void handler(const QJsonObject * params);
-private:
-    static void authorizeHandler(IndicatorState state);
-    static void tunnelHandler(IndicatorState state);
-    static void streamHandler(IndicatorState state);
-    static void netconfigHandler(IndicatorState state);
+    void handler(const QJsonObject * params) override;
     explicit DapCmdStatesHandler(QObject *parent = nullptr);
+private:
+    void authorizeHandler(IndicatorState state);
+    void tunnelHandler(IndicatorState state);
+    void streamHandler(IndicatorState state);
+    void netconfigHandler(IndicatorState state);
 signals:
     /* Auth signals group*/
     void sigAuthorizing();

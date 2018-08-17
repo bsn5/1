@@ -10,15 +10,16 @@
 #include "StatesHandler.h"
 #include "StatsHandler.h"
 
-//DapJsonCmdHandlersMap ServiceCtl::m_commandHandlers = {
-//    {DapJsonCommands::STATE, DapCmdStatesHandler::handler},
-//    {DapJsonCommands::STATS, DapCmdStatsHandler::handler}
-//};
 
 ServiceCtl::ServiceCtl()
     : DapServiceClient("DAP_SERVICE_NAME")
 {
     tmRestart = new QTimer(this);
+
+    m_statsHandler = new DapCmdStatsHandler(this);
+    m_statesHandler = new DapCmdStatesHandler(this);
+    m_commandHandlers[DapJsonCommands::STATS] = m_statsHandler;
+    m_commandHandlers[DapJsonCommands::STATE] = m_statesHandler;
 
     connect(this,&ServiceCtl::ctlConnected, [=]{
         qInfo() << "[ServiceCtl] Connected to ctl socket,request for status";
@@ -40,14 +41,14 @@ void ServiceCtl::procCmdController(const QByteArray &a_cmd)
         return;
     }
 
-//    auto iter = m_commandHandlers.find(djc->getCommand());
-//    if (iter == m_commandHandlers.end()) {
-//        qWarning() << "Not found handler for command "
-//                   << djc->commandToString(djc->getCommand());
-//        return;
-//    }
-    // cal handler function
-    //(*iter)(djc->getParams());
+    auto iter = m_commandHandlers.find(djc->getCommand());
+    if (iter == m_commandHandlers.end()) {
+        qWarning() << "Not found handler for command "
+                   << djc->commandToString(djc->getCommand());
+        return;
+    }
+    // call handler function
+    (*iter)->handler(djc->getParams());
 
     // TODO part for android see code below (#ifdef Q_OS_ANDROID)
 

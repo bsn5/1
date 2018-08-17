@@ -9,11 +9,11 @@ DapCmdStatesHandler::DapCmdStatesHandler(QObject *parent)
 }
 
 void DapCmdStatesHandler::handler(const QJsonObject * params) {
-    static QMap<QString, void(*)(IndicatorState)> stateCallbacks = {
-    {"authorization", DapCmdStatesHandler::authorizeHandler},
-    {"tunnel", DapCmdStatesHandler::tunnelHandler},
-    {"stream", DapCmdStatesHandler::streamHandler},
-    {"netconfig", DapCmdStatesHandler::netconfigHandler}
+    static QMap<QString, void(DapCmdStatesHandler::*)(IndicatorState)> stateCallbacks = {
+    {"authorization", &DapCmdStatesHandler::authorizeHandler},
+    {"tunnel", &DapCmdStatesHandler::tunnelHandler},
+    {"stream", &DapCmdStatesHandler::streamHandler},
+    {"netconfig", &DapCmdStatesHandler::netconfigHandler}
 };
 
     qDebug() << "Call stateHandler" << *params;
@@ -25,36 +25,36 @@ void DapCmdStatesHandler::handler(const QJsonObject * params) {
     const QString stateName = params->value(g_stateName).toString();
     const IndicatorState state = DapIndicatorState::fromString(params->value("value").toString());
 
+
     if(!stateCallbacks.contains(stateName)) {
         qWarning() << "Not found handler for " << stateName;
         return;
     }
-
-    stateCallbacks[stateName](state);
+    (this->*stateCallbacks[stateName])(state);
 }
 
 void DapCmdStatesHandler::authorizeHandler(IndicatorState state) {
     switch (state) {
     case IndicatorState::False:
-        emit DapCmdStatesHandler::me().sigUnauthorized();
+        emit sigUnauthorized();
         return;
     case IndicatorState::SwitchingToTrue:
-        emit DapCmdStatesHandler::me().sigAuthorizing();
+        emit sigAuthorizing();
         return;
     case IndicatorState::True:
-        emit DapCmdStatesHandler::me().sigAuthorized();
+        emit sigAuthorized();
         return;
     case IndicatorState::SwitchingToFalse:
-        emit DapCmdStatesHandler::me().sigUnauthorizing();
+        emit sigUnauthorizing();
         return;
     case IndicatorState::Error:
-        emit DapCmdStatesHandler::me().sigAuthorizeError();
+        emit sigAuthorizeError();
         return;
     case IndicatorState::ErrorAuth:
-        emit DapCmdStatesHandler::me().sigAuthorizeErrorAuth();
+        emit sigAuthorizeErrorAuth();
         return;
     case IndicatorState::ErrorNetwork:
-        emit DapCmdStatesHandler::me().sigAuthorizeErrorNetwork();
+        emit sigAuthorizeErrorNetwork();
         return;
     }
     throw std::runtime_error("Can't handle Authorize state");
@@ -63,25 +63,25 @@ void DapCmdStatesHandler::authorizeHandler(IndicatorState state) {
 void DapCmdStatesHandler::tunnelHandler(IndicatorState state) {
     switch (state) {
     case IndicatorState::False:
-        emit DapCmdStatesHandler::me().sigTunnelDestroyed();
+        emit sigTunnelDestroyed();
         return;
     case IndicatorState::SwitchingToTrue:
-        emit DapCmdStatesHandler::me().sigTunnelCreating();
+        emit sigTunnelCreating();
         return;
     case IndicatorState::True:
-        emit DapCmdStatesHandler::me().sigTunnelCreated();
+        emit sigTunnelCreated();
         return;
     case IndicatorState::SwitchingToFalse:
-        emit DapCmdStatesHandler::me().sigTunnelDestroying();
+        emit sigTunnelDestroying();
         return;
     case IndicatorState::Error:
-        emit DapCmdStatesHandler::me().sigTunnelError();
+        emit sigTunnelError();
         return;
     case IndicatorState::ErrorAuth:
-        emit DapCmdStatesHandler::me().sigTunnelErrorAuth();
+        emit sigTunnelErrorAuth();
         return;
     case IndicatorState::ErrorNetwork:
-        emit DapCmdStatesHandler::me().sigTunnelErrorNetwork();
+        emit sigTunnelErrorNetwork();
         return;
     }
     throw std::runtime_error("Can't handle Tunnel state");
@@ -90,25 +90,25 @@ void DapCmdStatesHandler::tunnelHandler(IndicatorState state) {
 void DapCmdStatesHandler::streamHandler(IndicatorState state) {
     switch (state) {
     case IndicatorState::False:
-        emit DapCmdStatesHandler::me().sigStreamClosed();
+        emit sigStreamClosed();
         return;
     case IndicatorState::SwitchingToTrue:
-        emit DapCmdStatesHandler::me().sigStreamOpening();
+        emit sigStreamOpening();
         return;
     case IndicatorState::True:
-        emit DapCmdStatesHandler::me().sigStreamOpened();
+        emit sigStreamOpened();
         return;
     case IndicatorState::SwitchingToFalse:
-        emit DapCmdStatesHandler::me().sigStreamClosing();
+        emit sigStreamClosing();
         return;
     case IndicatorState::Error:
-        emit DapCmdStatesHandler::me().sigStreamError();
+        emit sigStreamError();
         return;
     case IndicatorState::ErrorAuth:
-        emit DapCmdStatesHandler::me().sigStreamErrorAuth();
+        emit sigStreamErrorAuth();
         return;
     case IndicatorState::ErrorNetwork:
-        emit DapCmdStatesHandler::me().sigStreamErrorNetwork();
+        emit sigStreamErrorNetwork();
         return;
     }
     throw std::runtime_error("Can't handle stream state");
@@ -117,25 +117,25 @@ void DapCmdStatesHandler::streamHandler(IndicatorState state) {
 void DapCmdStatesHandler::netconfigHandler(IndicatorState state) {
     switch (state) {
     case IndicatorState::False:
-        emit DapCmdStatesHandler::me().sigNetConfigFalse();
+        emit sigNetConfigFalse();
         return;
     case IndicatorState::SwitchingToTrue:
-        emit DapCmdStatesHandler::me().sigNetConfigRequesting();
+        emit sigNetConfigRequesting();
         return;
     case IndicatorState::True:
-        emit DapCmdStatesHandler::me().sigNetConfigTrue();
+        emit sigNetConfigTrue();
         return;
     case IndicatorState::SwitchingToFalse:
         qWarning() << "Netconfig no have handler and signal for SwitchingToFalse";
         return;
     case IndicatorState::Error:
-        emit DapCmdStatesHandler::me().sigNetConfigError();
+        emit sigNetConfigError();
         return;
     case IndicatorState::ErrorAuth:
-        emit DapCmdStatesHandler::me().sigNetConfigErrorAuth();
+        emit sigNetConfigErrorAuth();
         return;
     case IndicatorState::ErrorNetwork:
-        emit DapCmdStatesHandler::me().sigNetConfigErrorNetwork();
+        emit sigNetConfigErrorNetwork();
         return;
     }
     throw std::runtime_error("Can't handle netconfig state");
