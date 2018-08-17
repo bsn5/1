@@ -29,11 +29,9 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
 {
     m_tunReadBytes=m_tunWriteBytes=m_tunReadPackets=m_tunWritePackets=0;
     isLogouting = false;
-    tmStreamOpened.start();
 
     m_restoreTriesLeft=0;
-    srvLocalPort = 23434;
-
+    DapGuiCmdHandler::me().setIndicatorsStateList(&siList);
 
     nam = new QNetworkAccessManager(this);
     streamer = new DapStreamer(this);
@@ -42,7 +40,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     connect(streamer,static_cast<void(DapStreamer::*)(const QString&)>(&DapStreamer::error), [=](QString a_msg){
         qDebug() << "[Streamer Er]"<< a_msg;
         onUsrMsg(a_msg);
-        sendCmdAll(QString("status stream error %1").arg( QString::fromLatin1(a_msg.toUtf8().toBase64())  ) );
+        // sendCmdAll(QString("status stream error %1").arg( QString::fromLatin1(a_msg.toUtf8().toBase64())  ) );
     });
 
     connect(DapSession::getInstance(), &DapSession::errorConnection,this,[=] {
@@ -54,7 +52,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     connect(DapSession::getInstance(), static_cast<void(DapSession::*)(const QString&)>(&DapSession::errorAuthorization),[=](QString a_msg){
         qWarning() << "[DapVPNService] Authorization error: "<<a_msg;
         onUsrMsg(a_msg);
-        sendCmdAll(  QString("status authorize error %1").arg(QString::fromLatin1(a_msg.toLatin1().toBase64())));
+        // sendCmdAll(  QString("status authorize error %1").arg(QString::fromLatin1(a_msg.toLatin1().toBase64())));
     });
 
     connect(&DapCmdConnHandler::me(), &DapCmdConnHandler::sigConnect,
@@ -102,7 +100,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     connect(chSockForw,&DapChSockForw::bytesWrite, this, &DapVPNService::onWriteBytes   );
     connect(chSockForw,&DapChSockForw::sigPacketRead, this, &DapVPNService::onSigPacketRead   );
     connect(chSockForw,&DapChSockForw::sigPacketWrite, this, &DapVPNService::onSigPacketWrite   );
-    connect(chSockForw, &DapChSockForw::sendCmdAll, this, &DapVPNService::sendCmdAll);
+    connect(&DapGuiCmdHandler::me(), &DapGuiCmdHandler::sendDapCmd, this, &DapVPNService::sendDapCmdAll);
 
     tmrStat= new QTimer(this);
     tmrStat->setInterval(500);
@@ -148,8 +146,6 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
                                                            DapJsonParam("value", "true")
                                                        });
             sendDapCmdAll(baCmd);
-
-            sendCmdAll("status authorize true");
         } else if(stateRequestDisconnected->active()) {
             siAuthorization->doActionFor(DapSI::False);
         }
@@ -179,13 +175,12 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
 
     // --- enter in ::True state
     connect(siStream->state(DapSI::True), &QState::entered, [=]{
-        tmStreamOpened.restart();
         dtStreamOpened = QDateTime::currentDateTime();
         if(stateRequestDisconnected->active()) {
             siStream->doActionFor(DapSI::False);
         } else if (stateRequestConnected->active()){
             siNetConfig->doActionFor(DapSI::True);
-            sendCmdAll("status stream opened");
+            // sendCmdAll("status stream opened");
         }
     } );
 
@@ -234,7 +229,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
         if(stateRequestConnected->active()){
             if( (siTunnel->current()==DapSI::True )||(siTunnel->current()==DapSI::SwitchingToTrue) ){
                 qDebug() << "Destroy tunnel to recreate it after";
-                sendCmdAll("status net_config_received true");
+                // sendCmdAll("status net_config_received true");
                 siTunnel->doActionFor(DapSI::False);
             }else{
                 siTunnel->doActionFor(DapSI::True);
@@ -277,7 +272,6 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     siTunnel->addActionFor(DapSI::False,chSockForw ,"tunDestroy");
 
     connect(siTunnel->state(DapSI::True), &QState::entered, [=]{
-        sendCmdAll("status tunnel_created true");
         QByteArray baCmd = DapJsonCmd::generateCmd(DapJsonCommands::STATE, {
                                                        DapJsonParam(g_stateName, "tunnel"),
                                                        DapJsonParam("value", "true"),
@@ -288,7 +282,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     connect(siTunnel->state(DapSI::False), &QState::entered, [=]{
         if(stateRequestConnected->active()){
             siTunnel->doActionFor(DapSI::True);
-            sendCmdAll("status tunnel_created false");
+           // sendCmdAll("status tunnel_created false");
         }else if(stateRequestDisconnected->active())
             siStream->doActionFor(DapSI::False);
         //siNetConfig->doActionFor(DapSI::False);
@@ -398,7 +392,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
             if( si->current() == DapSI::False){ // we found nobody in FalseToTrue state and get to get you on this
                 qInfo() <<"Beginning the Connect chain";
                 si->doActionFor(DapSI::True);
-                sendCmdAll("request connecting");
+               // sendCmdAll("request connecting");
                 break;
             }
         }
@@ -464,15 +458,13 @@ int DapVPNService::init()
         qInfo() << "Initialization complete";
         return 0;
     }else{
-        qCritical() << QString("Can't listen on %1 port").arg(srvLocalPort);
+        qCritical() << QString("Can't listen on %1 port").arg(SERVICE_LOCAL_PORT);
         return -1;
     }
 }
 
 void DapVPNService::procCmdController(const QByteArray &a_cmd)
 {
-    //qDebug() << "command string: " << a_cmd;
-
     DapJsonCmdPtr cmdPtr = DapJsonCmd::load(a_cmd);
     if (cmdPtr == nullptr) {
         qWarning() << "Can't parse cmd!";
@@ -579,21 +571,6 @@ void DapVPNService::sendDapCmdAll(const QByteArray& cmd) {
 }
 
 /**
- * @brief DapVPNService::sendCmdAll
- * @param a_cmd
- */
-void DapVPNService::sendCmdAll(const QString& a_cmd) // Deprecated
-{
-
-    // qDebug() << "sendCmdAll() send command "<<a_cmd;
-    return; // DEPCRECATED
-    for(auto s: client) {
-        //        qDebug() << "sendCmdAll() client "<<s->socketDescriptor();
-        s->write(QString("%1%2").arg(a_cmd).arg("\n\n").toLatin1());
-        s->flush();
-    }
-}
-/**
  * @brief DapVPNService::onEncInitialized
  * @details Actions after encryption initialization - authorization (TODO: add authentification)
  */
@@ -612,7 +589,6 @@ void DapVPNService::onEncInitialized()
  */
 void DapVPNService::onUsrMsg(const QString &a_msg)
 {
-    sendCmdAll( QString("usr_msg %1").arg(QString::fromLatin1(a_msg.toUtf8().toBase64() )));
 }
 
 /**

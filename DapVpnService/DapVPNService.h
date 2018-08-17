@@ -58,7 +58,6 @@ private:
     QLocalServer * srvLocal;
     QList<QLocalSocket *> client;
 #endif
-    quint16 srvLocalPort;
     QTimer * tmrStat;
    // QVector<BadServers> m_nativeServersInfo;
 
@@ -88,11 +87,10 @@ private:
     std::map <QString, QString> server_list;
     std::map <QString, QString> bad_server_list;
     bool server_is_bad (QString addr_line);
-    QTime tmStreamOpened;
     QDateTime dtStreamOpened;
 
 public:
-    explicit DapVPNService(QObject *parent = 0);
+    explicit DapVPNService(QObject *parent = Q_NULLPTR);
     virtual ~DapVPNService();
 protected:
     QStateMachine sm;
@@ -119,7 +117,6 @@ public slots:
     int init();
     void destroy();
 
-    void sendCmdAll(const QString& a_cmd);
     void sendDapCmdAll(const QByteArray& cmd);
 
     void checkInstallation();

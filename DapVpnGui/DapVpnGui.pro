@@ -28,8 +28,6 @@ SOURCES += main.cpp\
     MainWindow.cpp \
     DapUiVpnStateIndicator.cpp \
     DapUiMainWindow.cpp \
-    DapCmdStatesHandler.cpp \
-    DapCmdStatsHandler.cpp
 
 HEADERS  += \
     datalocal.h \
@@ -48,31 +46,32 @@ HEADERS  += \
     MainWindow.h \
     DapUiVpnStateIndicator.h \
     DapUiMainWindow.h \
-    DapCmdStatesHandler.h \
-    DapCmdStatsHandler.h
 
 FORMS    +=  \
-             ui/dashboard_desktop_big.ui \
-             ui/dashboard_desktop_small.ui \
-             ui/dashboard_desktop.ui \
-             ui/dashboard_mobile_hor_big.ui \
-             ui/dashboard_mobile_hor_small.ui \
-             ui/dashboard_mobile_hor.ui \
-             ui/dashboard_mobile_ver_big.ui \
-             ui/dashboard_mobile_ver_small.ui \
-             ui/dashboard_mobile_ver.ui \
-             ui/login_desktop_big.ui \
-             ui/login_desktop_small.ui \
-             ui/login_desktop.ui \
-             ui/login_mobile_hor_big.ui \
-             ui/login_mobile_hor_small.ui \
-             ui/login_mobile_hor.ui \
-             ui/login_mobile_ver_big.ui \
-             ui/login_mobile_ver_small.ui \
-             ui/login_mobile_ver.ui \
+    ui/dashboard_desktop_big.ui \
+    ui/dashboard_desktop_small.ui \
+    ui/dashboard_desktop.ui \
+    ui/dashboard_mobile_hor_big.ui \
+    ui/dashboard_mobile_hor_small.ui \
+    ui/dashboard_mobile_hor.ui \
+    ui/dashboard_mobile_ver_big.ui \
+    ui/dashboard_mobile_ver_small.ui \
+    ui/dashboard_mobile_ver.ui \
+    ui/login_desktop_big.ui \
+    ui/login_desktop_small.ui \
+    ui/login_desktop.ui \
+    ui/login_mobile_hor_big.ui \
+    ui/login_mobile_hor_small.ui \
+    ui/login_mobile_hor.ui \
+    ui/login_mobile_ver_big.ui \
+    ui/login_mobile_ver_small.ui \
+    ui/login_mobile_ver.ui \
     ui/dlg_settings.ui \
     ui/dlg_about.ui
 
+
+include (./DapCmdHandlers/dap-cmd-handlers.pri)
+INCLUDEPATH += $$_PRO_FILE_PWD_/libdap-qt/
 
 include (../libdap-qt/libdap-qt.pri)
 INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap-qt/

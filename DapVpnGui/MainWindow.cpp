@@ -38,8 +38,8 @@
 #include "MainWindow.h"
 
 #include "ServiceCtl.h"
-#include "DapCmdStatesHandler.h"
-#include "DapCmdStatsHandler.h"
+#include "StatesHandler.h"
+#include "StatsHandler.h"
 #include "datalocal.h"
 #include "schedule.h"
 

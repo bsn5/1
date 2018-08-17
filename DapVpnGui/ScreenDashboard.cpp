@@ -15,7 +15,7 @@
 #include "ui_dashboard_mobile_ver_small.h"
 #endif
 
-#include "DapCmdStatsHandler.h"
+#include "StatsHandler.h"
 #include "ScreenDashboard.h"
 #include "datalocal.h"
 #include <QCheckBox>

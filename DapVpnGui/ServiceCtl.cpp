@@ -7,8 +7,8 @@
 #endif
 #include "datalocal.h"
 #include "ServiceCtl.h"
-#include "DapCmdStatesHandler.h"
-#include "DapCmdStatsHandler.h"
+#include "StatesHandler.h"
+#include "StatsHandler.h"
 
 DapJsonCmdHandlersMap ServiceCtl::m_commandHandlers = {
     {DapJsonCommands::STATE, DapCmdStatesHandler::handler},
