@@ -13,13 +13,13 @@ class DapGuiCmdHandler : public QObject
     Q_OBJECT
 private:
     QList<DapSI*> *m_indicatorsStateList = Q_NULLPTR;
-    explicit DapGuiCmdHandler(QObject *parent = nullptr);
-    static DapJsonCmdHandlersMap m_commandHandlers;
-    static void getStatesHandler(const QJsonObject* params);
+    DapJsonCmdHandlersMap<DapGuiCmdHandler> m_commandHandlers;
+    void statesHandler(const QJsonObject* params);
 public:
-    static DapGuiCmdHandler& me() {static DapGuiCmdHandler _me; return _me;}
+    explicit DapGuiCmdHandler(QObject *parent = nullptr);
+    //static DapGuiCmdHandler& me() {static DapGuiCmdHandler _me; return _me;}
     void setIndicatorsStateList(QList<DapSI*>* siList);
-    static void handler(DapJsonCmdPtr ptr);
+    void handler(DapJsonCmdPtr ptr);
 signals:
     void sendDapCmd(const QByteArray& ba);
 public slots:

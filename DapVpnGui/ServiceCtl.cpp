@@ -10,10 +10,10 @@
 #include "StatesHandler.h"
 #include "StatsHandler.h"
 
-DapJsonCmdHandlersMap ServiceCtl::m_commandHandlers = {
-    {DapJsonCommands::STATE, DapCmdStatesHandler::handler},
-    {DapJsonCommands::STATS, DapCmdStatsHandler::handler}
-};
+//DapJsonCmdHandlersMap ServiceCtl::m_commandHandlers = {
+//    {DapJsonCommands::STATE, DapCmdStatesHandler::handler},
+//    {DapJsonCommands::STATS, DapCmdStatsHandler::handler}
+//};
 
 ServiceCtl::ServiceCtl()
     : DapServiceClient("DAP_SERVICE_NAME")
@@ -40,14 +40,14 @@ void ServiceCtl::procCmdController(const QByteArray &a_cmd)
         return;
     }
 
-    auto iter = m_commandHandlers.find(djc->getCommand());
-    if (iter == m_commandHandlers.end()) {
-        qWarning() << "Not found handler for command "
-                   << djc->commandToString(djc->getCommand());
-        return;
-    }
+//    auto iter = m_commandHandlers.find(djc->getCommand());
+//    if (iter == m_commandHandlers.end()) {
+//        qWarning() << "Not found handler for command "
+//                   << djc->commandToString(djc->getCommand());
+//        return;
+//    }
     // cal handler function
-    (*iter)(djc->getParams());
+    //(*iter)(djc->getParams());
 
     // TODO part for android see code below (#ifdef Q_OS_ANDROID)
 

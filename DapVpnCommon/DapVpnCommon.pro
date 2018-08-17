@@ -33,7 +33,8 @@ HEADERS += \
     DapJsonCmd.h \
     DapCmdParser.h \
     DapIndicatorState.h \
-    DapClientDefinitions.h
+    DapClientDefinitions.h \
+    DapCmdHandlerInterface.h
 unix {
     target.path = /usr/lib
     INSTALLS += target

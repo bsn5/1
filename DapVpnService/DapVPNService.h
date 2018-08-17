@@ -17,6 +17,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include "DapJsonCmd.h"
+#include "DapGuiCmdHandler.h"
 
 
 typedef class QTcpSocket DapUiSocket;
@@ -106,10 +107,10 @@ protected:
     DapSI *siNetConfig;
     DapSI *siTunnel;
 
-
     QList<DapSI*> siList;
 
     QNetworkAccessManager * nam;
+    DapGuiCmdHandler guiHandler;
 signals:
     void sigRequestDisconnected();
     void sigRequestConnected();

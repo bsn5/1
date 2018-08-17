@@ -16,7 +16,6 @@
 #include "DapStreamer.h"
 #include "DapChSockForw.h"
 #include "DapCmdConnHandler.h"
-#include "DapGuiCmdHandler.h"
 #include "DapClientDefinitions.h"
 
 /**
@@ -25,13 +24,13 @@
  */
 
 
-DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
+DapVPNService::DapVPNService(QObject *parent) : QObject(parent), guiHandler(this)
 {
     m_tunReadBytes=m_tunWriteBytes=m_tunReadPackets=m_tunWritePackets=0;
     isLogouting = false;
 
     m_restoreTriesLeft=0;
-    DapGuiCmdHandler::me().setIndicatorsStateList(&siList);
+    guiHandler.setIndicatorsStateList(&siList);
 
     nam = new QNetworkAccessManager(this);
     streamer = new DapStreamer(this);
@@ -100,7 +99,7 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     connect(chSockForw,&DapChSockForw::bytesWrite, this, &DapVPNService::onWriteBytes   );
     connect(chSockForw,&DapChSockForw::sigPacketRead, this, &DapVPNService::onSigPacketRead   );
     connect(chSockForw,&DapChSockForw::sigPacketWrite, this, &DapVPNService::onSigPacketWrite   );
-    connect(&DapGuiCmdHandler::me(), &DapGuiCmdHandler::sendDapCmd, this, &DapVPNService::sendDapCmdAll);
+    connect(&guiHandler, &DapGuiCmdHandler::sendDapCmd, this, &DapVPNService::sendDapCmdAll);
 
     tmrStat= new QTimer(this);
     tmrStat->setInterval(500);
@@ -471,7 +470,7 @@ void DapVPNService::procCmdController(const QByteArray &a_cmd)
         return;
     }
 
-    DapGuiCmdHandler::handler(std::move(cmdPtr));
+    guiHandler.handler(std::move(cmdPtr));
 
     //    QStringList cmdSub= QString(a_cmd).split(' ');
     //    qDebug() << "Process cmd "<<a_cmd;

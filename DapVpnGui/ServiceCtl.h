@@ -19,7 +19,7 @@ protected:
 
     ServiceCtl();
 private:
-    static DapJsonCmdHandlersMap m_commandHandlers;
+    static DapJsonCmdHandlersMap<ServiceCtl> m_commandHandlers;
 
     QString m_username, m_password;
     QString m_addrAssigned;
