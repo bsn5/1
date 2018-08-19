@@ -6,7 +6,7 @@
 
 QT       -= gui
 QT       += network
-
+CONFIG += c++14
 TARGET = DapVpnCommon
 TEMPLATE = lib
 CONFIG += staticlib

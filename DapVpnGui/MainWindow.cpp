@@ -140,11 +140,13 @@ void MainWindow::initTray()
                 QIcon(":/pics/off_icon_active@3x.png"),
                 "Disconnect", this, SLOT(onLogout()));
     trayMenu->addSeparator();
-    actionSettings = trayMenu->addAction(
-                QIcon(":/pics/settings_icon_active@3x.png"),"Settings",[=]{});
+
+//    actionSettings = trayMenu->addAction(
+//                QIcon(":/pics/settings_icon_active@3x.png"),"Settings",[=]{});
+
     trayMenu->addSeparator();
-    actionExit = trayMenu->addAction(QIcon(":/pics/close_icon@3x.png"),"Exit",
-                                     [=]{this->onExit();} );
+//    actionExit = trayMenu->addAction(QIcon(":/pics/close_icon@3x.png"),"Exit",
+//                                     [=]{this->onExit();} );
 
     trayIcon = new QSystemTrayIcon();
     trayIcon->setIcon(QIcon(":/pics/logo-main@2x.png"));

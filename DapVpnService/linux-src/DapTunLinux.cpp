@@ -34,7 +34,7 @@ DapTunLinux::DapTunLinux()
         cmdProcess.start("nmcli -v");
         cmdProcess.waitForFinished(-1);
         QByteArray cmdOutput = cmdProcess.readAllStandardOutput();
-        nmcliVersion= QString::fromUtf8(cmdOutput).split(' ').constLast();
+        nmcliVersion= QString::fromUtf8(cmdOutput).split(' ').takeLast();
         nmcliVersion=nmcliVersion.replace("\n","");
         QStringList nmcliVersionNumbers= nmcliVersion.split('.');
         if(nmcliVersionNumbers.size()==3){

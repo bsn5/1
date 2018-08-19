@@ -1,5 +1,4 @@
 TEMPLATE = subdirs
-
 SUBDIRS = DapVpnGui DapVpnService \
     DapVpnCommon
 
@@ -15,6 +14,9 @@ ios{
 DapVpnService.subdir = DapVpnService
 DapVpnGui.subdir = DapVpnGui
 DapVpnGui.depends = DapVpnService
+
+DapVpnService.depends = DapVpnCommon
+DapVpnGui.depends = DapVpnCommon
 
 TARGET = DiveVPN
 
