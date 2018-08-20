@@ -129,6 +129,8 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     siAuthorization->addStateSignal(DapSI::Error,       DapSession::getInstance(), SIGNAL(error(QString)));
 
     siAuthorization->addActionFor(DapSI::True,DapSession::getInstance(),"encryptInit");
+    siAuthorization->addActionFor(DapSI::False,DapSession::getInstance(),"restoreNetworkConf");
+    siAuthorization->addActionFor(DapSI::True,DapSession::getInstance(),"saveNetworkConf");
     siAuthorization->addActionFor(DapSI::False,DapSession::getInstance(),"logout");
 
     connect(siAuthorization->state(DapSI::True), &QState::entered, [=]{

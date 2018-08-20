@@ -10,6 +10,7 @@ CONFIG += c++14
 
 TEMPLATE = app
 
+TARGET = DiveVpnGui
 
 SOURCES += main.cpp\
     datalocal.cpp \
@@ -90,13 +91,13 @@ RESOURCES += resources/common/common.qrc
 
 defined(BRAND, var)
 {
-#    message("Defined brand $$BRAND")
+    message("Defined brand $$BRAND")
     RESOURCES += resources/$$BRAND/main.qrc
 }
 
 defined(BRAND_TARGET,var){
     TARGET = $$BRAND_TARGET
-#    message("Defined brand target $$BRAND_TARGET")
+    message("Defined brand target $$BRAND_TARGET")
 }
 win32{
     QMAKE_CXXFLAGS +=  -mno-ms-bitfields
