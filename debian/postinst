@@ -21,6 +21,7 @@ set -e
 case "$1" in
     configure)
 	cp -f /opt/divevpn/share/init.d /etc/init.d/dapvpnservice
+    chmod +x /etc/init.d/dapvpnservice
 	cp -f /opt/divevpn/share/divevpn.desktop /usr/share/applications/divevpn.desktop
 	cp -f /opt/divevpn/share/divevpn.png	/usr/share/pixmaps/divevpn.png
 	update-menus
