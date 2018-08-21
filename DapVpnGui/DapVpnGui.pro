@@ -10,7 +10,6 @@ CONFIG += c++14
 
 TEMPLATE = app
 
-TARGET = DiveVpnGui
 
 SOURCES += main.cpp\
     datalocal.cpp \
@@ -88,6 +87,8 @@ DEFINES += DAP_VERSION=\\\"111\\\"
 
 
 RESOURCES += resources/common/common.qrc
+
+TARGET = DiveVPN
 
 defined(BRAND, var)
 {
