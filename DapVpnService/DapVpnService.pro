@@ -7,9 +7,10 @@ QMAKE_CFLAGS_DEBUG = \
 QMAKE_CFLAGS_RELEASE = \
     -std=gnu99
 
-TARGET = DapVpnService
+include(../config.pri)
+
 CONFIG += console
-DEFINES += DAP_BRAND=\\\"DiveVPN\\\"
+DEFINES += DAP_BRAND=\\\"$${BRAND}\\\"
 DEFINES += DAP_VERSION=\\\"111\\\"
 
 DEFINES += DAP_SERVICE_CONNECT_TCP
@@ -121,27 +122,25 @@ win32{
 
 }
 
-
 android{
     TEMPLATE = lib
     CONFIG += shared
     CONFIG -= console
-
     DEFINES += DAP_SERVICE_BUILD_LIB DAP_SERVICE_CONNECT_TCP
     QT += androidextras
-
     DEFINES += DAP_PLATFORM_MOBILE
-
 }
+
 ios{
     DEFINES += DAP_PLATFORM_MOBILE
 }
 
 
+
 unix: !mac : !android {
 #    target.files = DapVpnService qt.conf
-    target.path = /opt/divevpn/bin/
-    data_static.path = /opt/divevpn/share
+    target.path = /opt/$$lower($$BRAND)/bin/
+    data_static.path = /opt/$$lower($$BRAND)/share
     data_static.files = dists/share/*
     INSTALLS += target data_static
 }
