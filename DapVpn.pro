@@ -18,8 +18,6 @@ DapVpnGui.depends = DapVpnService
 DapVpnService.depends = DapVpnCommon
 DapVpnGui.depends = DapVpnCommon
 
-TARGET = DiveVPN
-
 RESOURCES += \
     DapVpnGui/ui/resources/DiveVPN/main.qrc \
     DapVpnGui/ui/resources/common/common.qrc \

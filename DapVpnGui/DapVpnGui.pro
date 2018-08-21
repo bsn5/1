@@ -10,6 +10,8 @@ CONFIG += c++14
 
 TEMPLATE = app
 
+include(../config.pri)
+TARGET = $${BRAND}Gui
 
 SOURCES += main.cpp\
     datalocal.cpp \
