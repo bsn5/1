@@ -78,11 +78,11 @@ INCLUDEPATH += $$_PRO_FILE_PWD_/DapCmdHandlers/
 include (../libdap-qt/libdap-qt.pri)
 INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap-qt/
 
-!defined(BRAND, var)
-{
-    BRAND = DiveVPN
-    #BRAND = KelvinVPN
-}
+#!defined(BRAND, var)
+#{
+#    BRAND = DiveVPN
+#    #BRAND = KelvinVPN
+#}
 
 DEFINES += DAP_BRAND=\\\"$$BRAND\\\"
 DEFINES += DAP_VERSION=\\\"111\\\"
@@ -92,16 +92,12 @@ RESOURCES += resources/common/common.qrc
 
 TARGET = DiveVPN
 
-defined(BRAND, var)
-{
-    message("Defined brand $$BRAND")
+#defined(BRAND, var)
+#{
+#    message("Defined brand $$BRAND")
     RESOURCES += resources/$$BRAND/main.qrc
-}
+#}
 
-defined(BRAND_TARGET,var){
-    TARGET = $$BRAND_TARGET
-    message("Defined brand target $$BRAND_TARGET")
-}
 win32{
     QMAKE_CXXFLAGS +=  -mno-ms-bitfields
 }
@@ -168,11 +164,10 @@ macos {
 
 
 unix: !mac : !android {
-    gui_target.files = DiveVPN
-    gui_target.path = /opt/divevpn/bin/
-    gui_data_static.path = /opt/divevpn/share
-    gui_data_static.files = dists/share/*
-
+    gui_target.files = $$BRAND
+    gui_target.path = /opt/$$lower($$BRAND)/bin/
+    gui_data_static.path = /opt/$$lower($$BRAND)/share
+    gui_data_static.files = resources/$$BRAND/dists/share/*
 
     INSTALLS += gui_target gui_data_static
 }

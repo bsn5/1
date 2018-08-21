@@ -1,3 +1,3 @@
 # choose build
-BRAND = DiveVpn
-#BRAND = KelvinVpn
+BRAND = DiveVPN
+#BRAND = KelvinVPN
