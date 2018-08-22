@@ -8,8 +8,7 @@ fi
 BRAND=$1
 DEBIAN_FOLDER=$(echo './debian-'$1'/' | tr "[:upper:]" "[:lower:]")
 
-echo $DEBIAN_FOLDER
-rm -r ./debian
+rm debian 2> /dev/null
 ln -s $DEBIAN_FOLDER ./debian
 
 update_config_brand() {
