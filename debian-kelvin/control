@@ -1,0 +1,17 @@
+Source: kelvinvpn-full
+Section: unknown
+Priority: optional
+Maintainer: naeper <naeper@demlabs.net>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.8
+Homepage: https://klvn.io/
+
+Package: kelvinvpn-full
+Architecture: any
+Depends: psmisc, ${shlibs:Depends}, ${misc:Depends}, menu
+Replaces: dap-service, kelvinvpn-gui
+Description: KelvinVpn backend service
+ KelvinVpn full package: Dap service + KelvinVpn GUI
+
+
+

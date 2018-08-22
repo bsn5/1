@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if [ $# -ne 1 ] || [ $1 != "Kelvin" -a $1 != "Dive" ]; then
+	echo "Input a brand type: Kelvin or Dive"
+	exit 1
+fi
+
+BRAND=$1
+DEBIAN_FOLDER=$(echo './debian-'$1'/' | tr "[:upper:]" "[:lower:]")
+
+echo $DEBIAN_FOLDER
+rm -r ./debian
+ln -s $DEBIAN_FOLDER ./debian
+
+update_config_brand() {
+    sed -i -- 's/^BRAND/#BRAND/g' config.pri
+    sed -i -- 's/^#BRAND = '$BRAND'/BRAND = '$BRAND'/Ig' config.pri
+}
+update_config_brand $BRAND
+dpkg-buildpackage
