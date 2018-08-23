@@ -97,6 +97,7 @@ void MainWindow::onLogout(){
 void MainWindow::onReqConnect(const DapServerInfo& dsi, QString a_user, QString a_ps)
 {
     qDebug() << "[MW] btLogin()";
+    setStatusText(""); // clear status text
     if (stateLoginConnecting->active() ) { //
         sendDisconnectionReq();
     } else {
@@ -609,4 +610,10 @@ MainWindow::MainWindow(QWidget *parent) :
     initIndicatorsTransitions();
 
     sm.start();
+
+    connect(ServiceCtl::me().getAuthErrorHandleObj(), &DapCmdAuthErrorHandler::errorMessage,
+            [=](const QString&msg) { // connect error authorize message from service to status text
+        setStatusText(msg);
+    });
+
 }

@@ -25,7 +25,6 @@ void DapCmdStatesHandler::handler(const QJsonObject * params) {
     const QString stateName = params->value(g_stateName).toString();
     const IndicatorState state = DapIndicatorState::fromString(params->value("value").toString());
 
-
     if(!stateCallbacks.contains(stateName)) {
         qWarning() << "Not found handler for " << stateName;
         return;

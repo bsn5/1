@@ -19,6 +19,7 @@
 #include "DapUiVpnStateIndicator.h"
 #include "DapJsonCmd.h"
 #include "StatesHandler.h"
+#include "AuthErrorHandler.h"
 
 class QSystemTrayIcon;
 class QCloseEvent;

@@ -16,7 +16,8 @@ enum class DapJsonCommands {
     STATE,
     CONNECTION,
     STATS,
-    GET_STATES
+    GET_STATES,
+    AUTHORIZE_ERORR
 };
 
 class DapJsonCmd;

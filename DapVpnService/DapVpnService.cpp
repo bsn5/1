@@ -46,9 +46,12 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
 
 
     connect(DapSession::getInstance(),&DapSession::encryptInitialized,this,&DapVPNService::onEncInitialized );
-    connect(DapSession::getInstance(), static_cast<void(DapSession::*)(const QString&)>(&DapSession::errorAuthorization),[=](QString a_msg){
+    connect(DapSession::getInstance(), static_cast<void(DapSession::*)(const QString&)>(&DapSession::errorAuthorization),[=](QString a_msg) {
         qWarning() << "[DapVPNService] Authorization error: "<<a_msg;
-        // sendCmdAll(  QString("status authorize error %1").arg(QString::fromLatin1(a_msg.toLatin1().toBase64())));
+        QByteArray baCmd = DapJsonCmd::generateCmd(DapJsonCommands::AUTHORIZE_ERORR, {
+                                                       DapJsonParam("message", a_msg),
+                                                   });
+        sendDapCmdAll(baCmd);
     });
 
     connect(&DapCmdConnHandler::me(), &DapCmdConnHandler::sigConnect,
@@ -148,6 +151,13 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     });
     connect(siAuthorization->state(DapSI::False), &QState::entered, [=] {
 
+    });
+
+    connect(siAuthorization->state(DapSI::ErrorNetwork), &QState::entered, [=] {
+        QByteArray baCmd = DapJsonCmd::generateCmd(DapJsonCommands::AUTHORIZE_ERORR, {
+                                                       DapJsonParam("message", "Network Error. Maybe server is not available."),
+                                                   });
+        sendDapCmdAll(baCmd);
     });
 
     // Stream indicator

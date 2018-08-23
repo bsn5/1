@@ -4,7 +4,8 @@ QMap<DapJsonCommands, QString> DapJsonCmd::cmdStrings = {
     {DapJsonCommands::STATE, "state"},
     {DapJsonCommands::CONNECTION, "connection"},
     {DapJsonCommands::STATS, "stats"},
-    {DapJsonCommands::GET_STATES, "get states"}
+    {DapJsonCommands::GET_STATES, "get states"},
+    {DapJsonCommands::AUTHORIZE_ERORR, "authorize error"}
 };
 
 DapJsonCommands DapJsonCmd::getCommand() const {

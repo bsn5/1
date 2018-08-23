@@ -21,8 +21,3 @@ DapVpnGui.depends = DapVpnCommon
 RESOURCES += \
     DapVpnGui/ui/resources/DiveVPN/main.qrc \
     DapVpnGui/ui/resources/common/common.qrc \
-QMAKE_CFLAGS_DEBUG = \
-    -std=gnu99
-
-QMAKE_CFLAGS_RELEASE = \
-    -std=gnu99

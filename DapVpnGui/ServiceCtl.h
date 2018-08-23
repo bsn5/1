@@ -5,7 +5,7 @@
 #include "DapJsonCmd.h"
 #include "StatesHandler.h"
 #include "StatsHandler.h"
-
+#include "AuthErrorHandler.h"
 #include <QMap>
 
 class ServiceCtl;
@@ -18,13 +18,15 @@ public:
     static ServiceCtl& me(){static ServiceCtl _me; return _me; }
     const DapCmdStatsHandler * getStatsHandleObj() { return m_statsHandler; }
     const DapCmdStatesHandler * getStatesHandleObj() { return m_statesHandler; }
+    const DapCmdAuthErrorHandler *getAuthErrorHandleObj() { return m_authErrorHandler; }
 protected:
     void procCmdController(const QByteArray &a_cmd) override;
     DapJsonCmdHandlersMap m_commandHandlers;
     ServiceCtl();
 private:
     DapCmdStatesHandler * m_statesHandler;
-    DapCmdStatsHandler * m_statsHandler = Q_NULLPTR;
+    DapCmdStatsHandler * m_statsHandler;
+    DapCmdAuthErrorHandler *m_authErrorHandler;
 
     QString m_username, m_password;
     QString m_addrAssigned;

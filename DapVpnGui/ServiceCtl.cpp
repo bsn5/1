@@ -9,6 +9,7 @@
 #include "ServiceCtl.h"
 #include "StatesHandler.h"
 #include "StatsHandler.h"
+#include "AuthErrorHandler.h"
 
 
 ServiceCtl::ServiceCtl()
@@ -18,8 +19,10 @@ ServiceCtl::ServiceCtl()
 
     m_statsHandler = new DapCmdStatsHandler(this);
     m_statesHandler = new DapCmdStatesHandler(this);
+    m_authErrorHandler = new DapCmdAuthErrorHandler(this);
     m_commandHandlers[DapJsonCommands::STATS] = m_statsHandler;
     m_commandHandlers[DapJsonCommands::STATE] = m_statesHandler;
+    m_commandHandlers[DapJsonCommands::AUTHORIZE_ERORR] = m_authErrorHandler;
 
     connect(this,&ServiceCtl::ctlConnected, [=]{
         qInfo() << "[ServiceCtl] Connected to ctl socket,request for status";
