@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=KelvinVPN
+Comment=KelvinVPN: Protected and Secure Internet
+Exec=/opt/kelvinvpn/bin/KelvinVPN
+Icon=/opt/kelvinvpn/share/kelvinvpn.png
+Terminal=false
+Type=Application
+Encoding=UTF-8
+Categories=Network;Application;

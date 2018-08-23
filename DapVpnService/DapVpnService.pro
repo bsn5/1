@@ -141,7 +141,7 @@ unix: !mac : !android {
 #    target.files = DapVpnService qt.conf
     target.path = /opt/$$lower($$BRAND)/bin/
     data_static.path = /opt/$$lower($$BRAND)/share
-    data_static.files = dists/share/*
+    data_static.files = $$BRAND/dists/share/*
     INSTALLS += target data_static
 }
 

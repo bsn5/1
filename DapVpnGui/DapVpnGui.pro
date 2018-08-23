@@ -11,7 +11,7 @@ CONFIG += c++14
 TEMPLATE = app
 
 include(../config.pri)
-TARGET = $${BRAND}Gui
+TARGET = $${BRAND}
 
 SOURCES += main.cpp\
     datalocal.cpp \
@@ -78,25 +78,12 @@ INCLUDEPATH += $$_PRO_FILE_PWD_/DapCmdHandlers/
 include (../libdap-qt/libdap-qt.pri)
 INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap-qt/
 
-#!defined(BRAND, var)
-#{
-#    BRAND = DiveVPN
-#    #BRAND = KelvinVPN
-#}
-
 DEFINES += DAP_BRAND=\\\"$$BRAND\\\"
 DEFINES += DAP_VERSION=\\\"111\\\"
 
 
 RESOURCES += resources/common/common.qrc
-
-TARGET = DiveVPN
-
-#defined(BRAND, var)
-#{
-#    message("Defined brand $$BRAND")
-    RESOURCES += resources/$$BRAND/main.qrc
-#}
+RESOURCES += resources/$$BRAND/main.qrc
 
 win32{
     QMAKE_CXXFLAGS +=  -mno-ms-bitfields
@@ -109,7 +96,7 @@ DISTFILES += \
     $$PWD/android/gradlew \
     $$PWD/android/res/values/libs.xml \
     $$PWD/android/res/drawable-hdpi/divevpn.png \
-    $$PWD/android/res/drawable-ldpi/divevpn.png \
+    $$PWD/android/res/drawable-ldpi/divevpn.png \ # ATTENTION! Need change to dynamically linking for different brands
     $$PWD/android/res/drawable-mdpi/divevpn.png \
     $$PWD/android/build.gradle \
     $$PWD/android/gradle/wrapper/gradle-wrapper.properties \
@@ -168,7 +155,6 @@ unix: !mac : !android {
     gui_target.path = /opt/$$lower($$BRAND)/bin/
     gui_data_static.path = /opt/$$lower($$BRAND)/share
     gui_data_static.files = resources/$$BRAND/dists/share/*
-
     INSTALLS += gui_target gui_data_static
 }
 

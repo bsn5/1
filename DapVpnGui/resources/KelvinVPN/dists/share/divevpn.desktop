@@ -1,9 +1,0 @@
-[Desktop Entry]
-Name=DiveVPN
-Comment=DiveVPN: Protected and Secure Internet
-Exec=/opt/divevpn/bin/DiveVPN
-Icon=/opt/divevpn/share/divevpn.png
-Terminal=false
-Type=Application
-Encoding=UTF-8
-Categories=Network;Application;

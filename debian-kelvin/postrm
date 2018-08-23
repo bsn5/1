@@ -25,8 +25,8 @@ case "$1" in
 	update-rc.d dapvpnservice disable  || true
 	rm /etc/init.d/dapvpnservice || true
     rm -r /opt/divevpn/ || true
-    rm /usr/share/applications/divevpn.desktop || true
-    rm /usr/share/pixmaps/divevpn.png || true
+    rm /usr/share/applications/kelvinvpn.desktop || true
+    rm /usr/share/pixmaps/kelvinvpn.png || true
     ;;
     *)
         echo "postrm called with unknown argument \`$1'" >&2
