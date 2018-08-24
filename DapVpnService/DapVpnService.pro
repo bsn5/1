@@ -149,7 +149,7 @@ unix: !mac : !android {
 include (../libdap-qt/libdap-qt.pri)
 INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap-qt/
 
-include (../libdap-qt-stream/libdapstreamclient.pri)
+include (../libdap-qt-stream/libdap-qt-stream.pri)
 INCLUDEPATH += $$_PRO_FILE_PWD_/../libdap-qt-stream/
 
 
