@@ -394,6 +394,9 @@ background-color: rgb(255, 255, 255);</string>
                 </item>
                 <item>
                  <widget class="QCheckBox" name="cbServersListVisible">
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
                   <property name="text">
                    <string/>
                   </property>
@@ -403,6 +406,9 @@ background-color: rgb(255, 255, 255);</string>
               </item>
               <item>
                <widget class="QListWidget" name="cbUpstream">
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">color: rgb(4, 167, 198);
 border: none;</string>
@@ -456,6 +462,9 @@ border: none;</string>
                  <width>274</width>
                  <height>60</height>
                 </size>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
                </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton {

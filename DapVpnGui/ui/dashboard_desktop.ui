@@ -405,6 +405,9 @@ font:20px;</string>
                 </item>
                 <item>
                  <widget class="QCheckBox" name="cbServersListVisible">
+                  <property name="focusPolicy">
+                   <enum>Qt::NoFocus</enum>
+                  </property>
                   <property name="styleSheet">
                    <string notr="true">QCheckBox::indicator:checked {
     image: url(:/pics/drop-down_icon_mainscreen\@3x.png);
@@ -423,6 +426,9 @@ QCheckBox::indicator:unchecked {
               </item>
               <item>
                <widget class="QListWidget" name="cbUpstream">
+                <property name="focusPolicy">
+                 <enum>Qt::NoFocus</enum>
+                </property>
                 <property name="styleSheet">
                  <string notr="true">#cbUpstream  {
 	color: rgb(4, 167, 198);
@@ -493,6 +499,9 @@ QCheckBox::indicator:unchecked {
                  <width>274</width>
                  <height>60</height>
                 </size>
+               </property>
+               <property name="focusPolicy">
+                <enum>Qt::NoFocus</enum>
                </property>
                <property name="styleSheet">
                 <string notr="true">QPushButton {
