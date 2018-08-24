@@ -9,8 +9,8 @@ void DapCmdStatesHandler::handler(const QJsonObject* params) {
 
     for (const auto si: *m_indicatorsStateList) {
             QByteArray baCmd = DapJsonCmd::generateCmd(DapJsonCommands::STATE, {
-                                                           DapJsonParam(g_stateName, si->name()),
-                                                           DapJsonParam("value", DapIndicatorState::toString(
+                                                           DapJsonParam(DapJsonParams::STATE_NAME, si->name()),
+                                                           DapJsonParam(DapJsonParams::VALUE, DapIndicatorState::toString(
                                                            si->current())),
                                                        });
         emit sendDapCmd(baCmd);

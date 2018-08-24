@@ -16,6 +16,7 @@ public:
     void handler(const QJsonObject * params) override;
     explicit DapCmdStatesHandler(QObject *parent = nullptr);
 private:
+    static const QString stateNameParam;
     void authorizeHandler(IndicatorState state);
     void tunnelHandler(IndicatorState state);
     void streamHandler(IndicatorState state);

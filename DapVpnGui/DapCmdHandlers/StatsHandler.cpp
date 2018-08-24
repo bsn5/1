@@ -2,6 +2,12 @@
 #include "DapJsonCmd.h"
 #include <utility>
 
+const QString DapCmdStatsHandler::readBytesParam =
+        DapJsonParams::toString(DapJsonParams::READ_BYTES);
+
+const QString DapCmdStatsHandler::writeBytesParam =
+        DapJsonParams::toString(DapJsonParams::WRITE_BYTES);
+
 DapCmdStatsHandler::DapCmdStatsHandler(QObject *parent)
     : QObject(parent)
 {
@@ -20,11 +26,10 @@ void DapCmdStatsHandler::trafficStatsHandler(
 }
 
 void DapCmdStatsHandler::handler(const QJsonObject* params) {
-    if (params->value(g_readKbytesParam) != QJsonValue::Undefined &&
-            params->value(g_writeKbytesParam) != QJsonValue::Undefined) {
-        DapCmdStatsHandler::trafficStatsHandler(params->value(g_readKbytesParam),
-                                                params->value(g_writeKbytesParam));
+    if (params->value(readBytesParam) != QJsonValue::Undefined &&
+            params->value(writeBytesParam) != QJsonValue::Undefined) {
+        DapCmdStatsHandler::trafficStatsHandler(params->value(readBytesParam),
+                                                params->value(writeBytesParam));
     }
-
 }
 

@@ -104,10 +104,10 @@ void MainWindow::onReqConnect(const DapServerInfo& dsi, QString a_user, QString 
         m_user = a_user;
         ServiceCtl::me().sendCmd(DapJsonCmd::generateCmd(
                                      DapJsonCommands::CONNECTION, {
-                                         DapJsonParam("address", dsi.address),
-                                         DapJsonParam("port", dsi.port),
-                                         DapJsonParam("user", m_user),
-                                         DapJsonParam("password", a_ps)
+                                         DapJsonParam(DapJsonParams::ADDRESS, dsi.address),
+                                         DapJsonParam(DapJsonParams::PORT, dsi.port),
+                                         DapJsonParam(DapJsonParams::USER, m_user),
+                                         DapJsonParam(DapJsonParams::PASSWORD, a_ps)
                                      }));
     }
     emit sigBtConnect();
@@ -116,7 +116,7 @@ void MainWindow::onReqConnect(const DapServerInfo& dsi, QString a_user, QString 
 void MainWindow::sendDisconnectionReq() {
     auto cmd = DapJsonCmd::generateCmd(
                 DapJsonCommands::CONNECTION,
-    {DapJsonParam("disconnect", true)});
+    {DapJsonParam(DapJsonParams::DISCONNECT, true)});
 
     ServiceCtl::me().sendCmd(cmd);
 }

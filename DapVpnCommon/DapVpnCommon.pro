@@ -27,7 +27,8 @@ SOURCES += \
     DapJsonCmd.cpp \
     DapCmdParser.cpp \
     DapIndicatorState.cpp \
-    DapCmdHandlerAbstract.cpp
+    DapCmdHandlerAbstract.cpp \
+    DapJsonParams.cpp
 
 HEADERS += \
     DapServerInfo.h \
@@ -35,7 +36,9 @@ HEADERS += \
     DapCmdParser.h \
     DapIndicatorState.h \
     DapClientDefinitions.h \
-    DapCmdHandlerAbstract.h
+    DapCmdHandlerAbstract.h \
+    DapJsonParams.h
+
 unix {
     target.path = /usr/lib
     INSTALLS += target

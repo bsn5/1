@@ -10,6 +10,8 @@ public:
     void handler(const QJsonObject* params);
     explicit DapCmdStatsHandler(QObject *parent = nullptr);
 private:
+    static const QString readBytesParam;
+    static const QString writeBytesParam;
     void trafficStatsHandler(const QJsonValue& readBytes,
                                     const QJsonValue& writeBytes);
     void readWriteBytesHandler();

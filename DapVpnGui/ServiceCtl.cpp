@@ -22,7 +22,7 @@ ServiceCtl::ServiceCtl()
     m_authErrorHandler = new DapCmdAuthErrorHandler(this);
     m_commandHandlers[DapJsonCommands::STATS] = m_statsHandler;
     m_commandHandlers[DapJsonCommands::STATE] = m_statesHandler;
-    m_commandHandlers[DapJsonCommands::AUTHORIZE_ERORR] = m_authErrorHandler;
+    m_commandHandlers[DapJsonCommands::AUTHORIZE_ERROR] = m_authErrorHandler;
 
     connect(this,&ServiceCtl::ctlConnected, [=]{
         qInfo() << "[ServiceCtl] Connected to ctl socket,request for status";

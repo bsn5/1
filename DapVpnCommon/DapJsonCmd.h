@@ -7,30 +7,15 @@
 #include <QMap>
 #include <memory>
 #include "DapCmdHandlerAbstract.h"
+#include "DapJsonParams.h"
 
 // Key must be a string!
 #define DapJsonParam(key,value) \
-    QPair<QString, QJsonValue>(key, QJsonValue(value))
-
-enum class DapJsonCommands {
-    STATE,
-    CONNECTION,
-    STATS,
-    GET_STATES,
-    AUTHORIZE_ERORR
-};
+    QPair<DapJsonParams::Params, QJsonValue>(key, QJsonValue(value))
 
 class DapJsonCmd;
 using DapJsonCmdPtr = std::unique_ptr<DapJsonCmd>;
 using DapJsonCmdHandlersMap = QMap<DapJsonCommands, DapCmdHandlerAbstract*>;
-
-const QString g_stateName = "state_name";
-const QString g_readKbytesParam = "read_kbytes";
-const QString g_writeKbytesParam = "write_kbytes";
-
-enum class DapJsonParams {
-    // TODO
-};
 
 /* In future can create base class DapJson and create
 inheritor DapJsonCmd */
@@ -57,7 +42,7 @@ public:
     static QByteArray generateCmd(DapJsonCommands command);
 
     static QByteArray generateCmd(DapJsonCommands command,
-                                   std::initializer_list<QPair<QString, QJsonValue>>params);
+                                   std::initializer_list<QPair<DapJsonParams::Params, QJsonValue>>params);
 
     static QString commandToString(DapJsonCommands cmd);
     static DapJsonCommands stringToCommand(const QString& cmd);

@@ -5,7 +5,7 @@ QMap<DapJsonCommands, QString> DapJsonCmd::cmdStrings = {
     {DapJsonCommands::CONNECTION, "connection"},
     {DapJsonCommands::STATS, "stats"},
     {DapJsonCommands::GET_STATES, "get states"},
-    {DapJsonCommands::AUTHORIZE_ERORR, "authorize error"}
+    {DapJsonCommands::AUTHORIZE_ERROR, "authorize error"}
 };
 
 DapJsonCommands DapJsonCmd::getCommand() const {
@@ -85,11 +85,18 @@ QByteArray DapJsonCmd::generateCmd(DapJsonCommands command) {
 }
 
 QByteArray DapJsonCmd::generateCmd(DapJsonCommands command,
-                                    std::initializer_list<QPair<QString, QJsonValue>>params) {
+                                    std::initializer_list<QPair<DapJsonParams::Params, QJsonValue>>params) {
     QJsonObject cmdObj = DapJsonCmd::getCommandJson(command);
     QJsonObject paramsObj;
-    for(auto& s : params) {
-        paramsObj[s.first] = s.second;
+    QString sParam;
+    for(auto& p : params) {
+        if(!DapJsonParams::isParamsAvailable(command, p.first)) {
+            qWarning() << "Commad can't be generated" <<
+                          "param " << DapJsonParams::toString(p.first)
+                       << "not available for command" << DapJsonCmd::commandToString(command);
+            return Q_NULLPTR;
+        }
+        paramsObj[DapJsonParams::toString(p.first)] = p.second;
     }
     cmdObj.insert("params", paramsObj);
 

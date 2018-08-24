@@ -2,9 +2,10 @@
 #include "DapJsonCmd.h"
 #include <QDebug>
 
+const QString DapCmdStatesHandler::stateNameParam = DapJsonParams::toString(DapJsonParams::STATE_NAME);
+
 DapCmdStatesHandler::DapCmdStatesHandler(QObject *parent)
-    : QObject(parent)
-{
+    : QObject(parent) {
 
 }
 
@@ -17,12 +18,12 @@ void DapCmdStatesHandler::handler(const QJsonObject * params) {
 };
 
     qDebug() << "Call stateHandler" << *params;
-    if (!params->contains(g_stateName) ||
+    if (!params->contains(stateNameParam) ||
             !params->contains("value")) {
         qWarning() << "Not found mandatory parameter!";
         return;
     }
-    const QString stateName = params->value(g_stateName).toString();
+    const QString stateName = params->value(stateNameParam).toString();
     const IndicatorState state = DapIndicatorState::fromString(params->value("value").toString());
 
     if(!stateCallbacks.contains(stateName)) {
