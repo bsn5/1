@@ -14,6 +14,8 @@ HEADERS += \
     DapJsonCmd_test.hpp
 
 # tested classes
-SOURCES +=  ../DapJsonCmd.cpp
+SOURCES +=  ../DapJsonCmd.cpp \
+            ../DapJsonParams.cpp
 
-HEADERS += ../DapJsonCmd.h
+HEADERS += ../DapJsonCmd.h \
+           ../DapJsonParams.h

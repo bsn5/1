@@ -43,26 +43,17 @@ private slots:
     void generateCmd() {
         QByteArray bResult = DapJsonCmd::generateCmd(DapJsonCommands::STATE,
         {
-            DapJsonParam("int_one", 1), DapJsonParam("auth_bool", true),
-            DapJsonParam("two_double", 2.2), DapJsonParam("some_str", "some")
+            DapJsonParam(DapJsonParams::STATE_NAME, "stateName"), DapJsonParam(DapJsonParams::VALUE, true)
         });
 
         auto result = QJsonDocument::fromJson(bResult);
         QVERIFY(result["command"].isString());
-        QCOMPARE(result["command"], "state");
+        QCOMPARE(result["command"], DapJsonCmd::commandToString(DapJsonCommands::STATE));
 
         QJsonObject resultParams = result["params"].toObject();
 
-        QCOMPARE(resultParams["int_one"].toInt(), 1);
-
-        QVERIFY(resultParams["auth_bool"].isBool());
-        QCOMPARE(resultParams["auth_bool"].toBool(), true);
-
-        QVERIFY(resultParams["two_double"].isDouble());
-        QVERIFY(qFuzzyCompare(resultParams["two_double"].toDouble(), 2.2));
-
-        QVERIFY(resultParams["some_str"].isString());
-        QVERIFY(resultParams["some_str"].toString() == "some");
+        QVERIFY(resultParams["value"].isBool());
+        QCOMPARE(resultParams["value"].toBool(), true);
     }
 
     void generateCmdWithoutParams() {
