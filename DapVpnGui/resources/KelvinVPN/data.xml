@@ -18,9 +18,8 @@
         <server>
             <location>Netherlands</location>
             <name>NL1(Netherlands)</name>
-            <address>nl1.divevpn.com</address>
-            <port>80</port>
-            <ip>163.172.209.122</ip>
+            <address>ap-nl-0.divevpn.demlabs.net</address>
+            <port>8002</port>
         </server>
     </servers>
 </data>

@@ -1,3 +1,9 @@
+divevpn-full (2.0.1-beta) UNRELEASED; urgency=medium
+
+  * Fixed GUI problems on disconnect button.
+
+ -- armatus <akurotych@gmail.com>  Mon, 03 Sep 2018 13:01:57 +0300
+
 divevpn-full (2.0-beta) testing; urgency=medium
 
   * Fixed problems with disconnecting and change network interfaces.

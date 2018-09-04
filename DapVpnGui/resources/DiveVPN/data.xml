@@ -11,9 +11,9 @@
         <server>
             <location>Netherlands</location>
             <name>KelvinVPN NL-0 (Netherland)</name>
-            <address>ap-nl-0.kelvinvpn.demlabs.net</address>
+            <address>ap-nl-0.divevpn.demlabs.net</address>
             <port>8002</port>
-            <ip>163.172.209.90</ip>
+            <ip>ap-nl-0.divevpn.demlabs.net</ip>
         </server>
         <server>
             <location>Germany</location>
