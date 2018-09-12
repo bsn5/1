@@ -1,3 +1,3 @@
 # Choose build. Can be changed by script build-deb
-#BRAND = DiveVPN
-BRAND = KelvinVPN
+BRAND = DiveVPN
+#BRAND = KelvinVPN

@@ -2,24 +2,16 @@
 <data>
     <servers>
         <server>
-            <location>France</location>
-            <name>fr1 (France)</name>
-            <address>fr1.divevpn.com</address>
-            <port>80</port>
-            <ip>163.172.48.80</ip>
+            <location>Germany</location>
+            <name>DE-0</name>
+            <address>ap-de-0.demlabs.net</address>
+            <port>8001</port>
         </server>
         <server>
             <location>Germany</location>
-            <name>de1 (Germany)</name>
-            <address>de1.divevpn.com</address>
-            <port>80</port>
-            <ip>89.163.225.17</ip>
-        </server>
-        <server>
-            <location>Netherlands</location>
-            <name>NL1(Netherlands)</name>
-            <address>ap-nl-0.divevpn.demlabs.net</address>
-            <port>8002</port>
+            <name>DE-1</name>
+            <address>ap-de-1.demlabs.net</address>
+            <port>8001</port>
         </server>
     </servers>
 </data>

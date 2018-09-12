@@ -2,25 +2,16 @@
 <data>
     <servers>
         <server>
-            <location>France</location>
-            <name>KelvinVPN NL-0 (France)</name>
-            <address>ap-fr-0.kelvinvpn.demlabs.net</address>
-            <port>8002</port>
-            <ip>163.172.209.90</ip>
-        </server>
-        <server>
-            <location>Netherlands</location>
-            <name>KelvinVPN NL-0 (Netherland)</name>
-            <address>ap-nl-0.divevpn.demlabs.net</address>
-            <port>8002</port>
-            <ip>ap-nl-0.divevpn.demlabs.net</ip>
+            <location>Germany</location>
+            <name>DE-0</name>
+            <address>ap-de-0.demlabs.net</address>
+            <port>8001</port>
         </server>
         <server>
             <location>Germany</location>
-            <name>KelvinVPN DE-0 (Germany)</name>
-            <address>ap-nl-0.divevpn.demlabs.net</address>
-            <port>8002</port>
-            <ip>163.172.209.90</ip>
+            <name>DE-1</name>
+            <address>ap-de-1.demlabs.net</address>
+            <port>8001</port>
         </server>
     </servers>
 </data>

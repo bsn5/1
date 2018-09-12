@@ -1,8 +1,9 @@
-kelvinvpn-full (2.0.1-beta) UNRELEASED; urgency=medium
+kelvinvpn-full (2.0.2-betaubuntu1) UNRELEASED; urgency=medium
 
   * Fixed GUI problems on disconnect button. 
+  * Added release servers  
 
- -- armatus <akurotych@gmail.com>  Mon, 03 Sep 2018 13:07:43 +0300
+ -- Anatolii Kurotych <akurotych@gmail.com>  Tue, 11 Sep 2018 23:27:46 +0300
 
 kelvinvpn-full (2.0-beta) testing; urgency=medium
 
