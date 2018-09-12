@@ -17,10 +17,6 @@
 #include "DapTunLinux.h"
 #include "DapTunWorkerUnix.h"
 
-int DapTunLinux::nmcliVersionMajor=1;
-int DapTunLinux::nmcliVersionMinor=6;
-int DapTunLinux::nmcliVersionBuild=0;
-
 
 /**
  * @brief DapTunLinux::DapTunLinux
@@ -37,15 +33,14 @@ DapTunLinux::DapTunLinux()
         nmcliVersion= QString::fromUtf8(cmdOutput).split(' ').takeLast();
         nmcliVersion=nmcliVersion.replace("\n","");
         QStringList nmcliVersionNumbers= nmcliVersion.split('.');
-        if(nmcliVersionNumbers.size()==3){
-            nmcliVersionMajor=nmcliVersionNumbers.at(0).toInt();
-            nmcliVersionMinor=nmcliVersionNumbers.at(1).toInt();
-            nmcliVersionBuild=nmcliVersionNumbers.at(2).toInt();
+        if(nmcliVersionNumbers.size() ==3) {
+            qDebug()<< QString("nmcli version detected: %1.%2.%3")
+                       .arg(nmcliVersionNumbers.at(0).toInt())
+                       .arg(nmcliVersionNumbers.at(1).toInt())
+                       .arg(nmcliVersionNumbers.at(2).toInt());
+        } else {
+            qFatal("nmcli client not found");
         }
-        qDebug()<< QString("nmcli version detected: %1.%2.%3")
-                   .arg(nmcliVersionMajor)
-                   .arg(nmcliVersionMinor)
-                   .arg(nmcliVersionBuild);
     }
     m_rcm = new ResolvConfManager(QStringList() << "8.8.8.8" << "8.8.4.4");
 }
