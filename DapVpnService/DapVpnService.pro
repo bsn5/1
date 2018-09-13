@@ -90,6 +90,7 @@ darwin {
 
 macos {
     DEFINES += DAP_SERVICE_CONNECT_TCP
+    CONFIG -= app_bundle
 }
 
 win32{
