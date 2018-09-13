@@ -80,7 +80,6 @@ void DapTunAbstract::create(const QString &a_addr, const QString &a_gw, const QS
 
 void DapTunAbstract::workerStart()
 {
-    onWorkerStarted();
     qInfo() <<"Tun device created";
     if(m_tunSocket>0){
         tunWorker->setTunSocket(m_tunSocket);
@@ -89,6 +88,7 @@ void DapTunAbstract::workerStart()
     }else{
         emit error(tr("Can't open tun socket"));
     }
+    onWorkerStarted();
 }
 
 /**

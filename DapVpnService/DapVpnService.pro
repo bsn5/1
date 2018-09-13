@@ -89,7 +89,9 @@ darwin {
 }
 
 macos {
-    DEFINES += DAP_SERVICE_CONNECT_TCP
+    DEFINES += DAP_SERVICE_CONNECT_TCP VPN_TUNTAP
+    HEADERS += DapTunMac.h DapTunWorkerMac.h
+    SOURCES += DapTunMac.cpp DapTunWorkerMac.cpp
 }
 
 win32{

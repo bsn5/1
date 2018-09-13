@@ -21,13 +21,16 @@ public:
     void destroy();
 
     void setTunSocket(int a_tunSocket){ m_tunSocket = a_tunSocket; }
+    void setTunDeviceName(const QString& a_tunDeviceName){ m_tunDeviceName = a_tunDeviceName; }
 
     bool isCreated();
     const QString& addr() { return m_addr; }
-    const QString& gw() { return m_gw; }
+    const QString& gw() { return m_gw; } //m_tunDest
     int upstreamSocket() { return m_upstreamSocket; }
     const QString & upstreamAddress() { return m_upstreamAddress; }
     const QString& tunDeviceName(){ return m_tunDeviceName; }
+    int mtu() { return m_MTU; }
+
 
     void tunWriteData(DapSockForwPacket * a_pkt){
         addWriteData(a_pkt);
