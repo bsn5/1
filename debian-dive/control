@@ -8,7 +8,7 @@ Homepage: http://demlabs.net
 
 Package: divevpn-full
 Architecture: any
-Depends: psmisc, ${shlibs:Depends}, ${misc:Depends}, menu, network-manager
+Depends: psmisc, ${shlibs:Depends}, ${misc:Depends}, menu, network-manager, ifmetric
 Replaces: divevpn-service, divevpn-gui
 Description: DiveVPN backend service
  DiveVPN full package: DiveVPN service + DiveVPN GUI

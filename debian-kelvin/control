@@ -8,7 +8,7 @@ Homepage: https://klvn.io/
 
 Package: kelvinvpn-full
 Architecture: any
-Depends: psmisc, ${shlibs:Depends}, ${misc:Depends}, menu
+Depends: psmisc, ${shlibs:Depends}, ${misc:Depends}, menu, ifmetric
 Replaces: dap-service, kelvinvpn-gui
 Description: KelvinVpn backend service
  KelvinVpn full package: Dap service + KelvinVpn GUI

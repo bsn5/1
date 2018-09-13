@@ -16,6 +16,7 @@ protected:
 
     // Getting currently using connection interface name from nmcli command-line tool
     QString currentConnectionInterface();
+
 private:
 
     QString nmcliVersion;
@@ -29,6 +30,11 @@ private:
     ResolvConfManager *m_rcm;
 
     void setLastUsedConnection();
+
+    QString runBashCmd(const QString& cmd);
+
+    // if metric is 0 upping to 15
+    void checkDefaultGetaweyMetric();
 };
 
 #endif // DAPTUNLINUX_H
