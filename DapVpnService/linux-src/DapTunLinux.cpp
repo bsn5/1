@@ -144,10 +144,10 @@ void DapTunLinux::checkDefaultGetaweyMetric()
     } else if(result.length() != 8) {
         qWarning() << "Something wrong with result";
     } else if(result[METRIC] == "0") {
-         QProcess process;
-         process.start("bash", QStringList() << "-c" << QString("ifmetric %1 15").arg(result[IFACE]));
-         process.waitForFinished(-1);
-         qInfo() << "Metric " << result[IFACE] << "change to 15";
+        QProcess process;
+        process.start("bash", QStringList() << "-c" << QString("ifmetric %1 15").arg(result[IFACE]));
+        process.waitForFinished(-1);
+        qInfo() << "Metric " << result[IFACE] << "change to 15";
     }
 }
 

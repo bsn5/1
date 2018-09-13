@@ -1,3 +1,9 @@
+divevpn-full (2.0.4) UNRELEASED; urgency=medium
+
+  * Fix problem when default metric is 0
+
+ -- Anatolii Kurotych <akurotych@gmail.com>  Thu, 13 Sep 2018 23:38:42 +0300
+
 divevpn-full (2.0.3) UNRELEASED; urgency=medium
 
   * Fixed checking version nmcli
