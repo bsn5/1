@@ -43,6 +43,8 @@ DataLocal::DataLocal()
 
     parseXML(":/data.xml");
 
+    // temprorary for debuging in linux client
+    parseXML("./data.xml");
 }
 
 void DataLocal::parseXML(const QString& a_fname)
@@ -50,6 +52,7 @@ void DataLocal::parseXML(const QString& a_fname)
     QFile file(a_fname);
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
         qWarning() << "[DL] Can't open data.xml from built in resource";
+        return;
     }
 
     QXmlStreamReader *sr = new QXmlStreamReader(&file);
