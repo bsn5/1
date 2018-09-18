@@ -7,3 +7,7 @@
 	url = https://github.com/demlabsinc/libdap-qt-stream.git
     branch = master
 
+[submodule "libdap"]
+	path = libdap
+	url = https://github.com/kelvinblockchain/libdap
+	branch = master
