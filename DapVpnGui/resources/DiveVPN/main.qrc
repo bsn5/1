@@ -145,5 +145,6 @@
         <file>pics/user_icon@2x.png</file>
         <file>pics/user_icon@3x.png</file>
         <file>pics/logo_mobile@3x.png</file>
+        <file>pics/logo_main@2x.png</file>
     </qresource>
 </RCC>

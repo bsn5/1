@@ -150,7 +150,7 @@ void MainWindow::initTray()
 //                                     [=]{this->onExit();} );
 
     trayIcon = new QSystemTrayIcon();
-    trayIcon->setIcon(QIcon(":/pics/logo-main@2x.png"));
+    trayIcon->setIcon(QIcon(":/pics/logo_main@2x.png"));
     trayIcon->setContextMenu(trayMenu);
     trayIcon->show();
 
