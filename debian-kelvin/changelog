@@ -1,3 +1,9 @@
+kelvinvpn-full (2.0.6) UNRELEASED; urgency=medium
+
+  *  Update libs.
+
+ -- Anatolii Kurotych <akurotych@gmail.com>  Sat, 22 Sep 2018 13:56:12 +0300
+
 kelvinvpn-full (2.0.4) UNRELEASED; urgency=medium
 
   * Fix problem when default metric is 0

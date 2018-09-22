@@ -1,3 +1,9 @@
+divevpn-full (2.0.6) UNRELEASED; urgency=medium
+
+  *  Fix icon in tray.
+
+ -- Anatolii Kurotych <akurotych@gmail.com>  Sat, 22 Sep 2018 13:56:12 +0300
+
 divevpn-full (2.0.4) UNRELEASED; urgency=medium
 
   * Fix problem when default metric is 0
