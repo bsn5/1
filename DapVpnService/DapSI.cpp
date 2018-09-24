@@ -65,12 +65,6 @@ DapSI::DapSI(QState& a_parent, const QString& a_name)
             addState(j,m_state[j]=new QState(s) );
     }
 
-    sb_child_state[SwitchingToFalse] = new DapSB(m_state[SwitchingToFalse]);
-    sb_child_state[SwitchingToTrue] = new DapSB(m_state[SwitchingToTrue]);
-
-    m_state[SwitchingToTrue]->setInitialState(state(SwitchingToTrue, DapSB::PATTERN_NORMAL));
-    m_state[SwitchingToFalse]->setInitialState(state(SwitchingToFalse, DapSB::PATTERN_NORMAL));
-
     m_states->setInitialState(state(IS_DEFAULT_STATE));
 }
 
@@ -169,22 +163,4 @@ void DapSI::doActionFor(IndicatorState a_is)
         qWarning() <<"No action for "<<a_is<<" state";
     }else
         qWarning() <<"doActionFor " <<a_is <<" state but we're already in this state!";
-}
-
-void DapSI::emitResponseWaitingSig()
-{
-    qDebug() << "emitResponseWaitingSig";
-    if( sb_child_state.contains(m_current) )
-        sb_child_state[m_current]->start_waiting();
-    else
-        qWarning() << "[DapSI] Error. Emit Waiting Signal, but no have object"
-                      " Current state: " << toString(m_current);
-}
-
-QState * DapSI::state(DapSI::IndicatorState a_is, DapSB::SbState a_bs)
-{
-    if(a_is == SwitchingToFalse || a_is == SwitchingToTrue)
-        return sb_child_state[a_is]->state(a_bs);
-
-    return Q_NULLPTR;
 }

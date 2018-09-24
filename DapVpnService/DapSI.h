@@ -6,7 +6,6 @@
 #include <QSet>
 #include <QMap>
 #include <QPair>
-#include <DapSB.h>
 #include "DapIndicatorState.h"
 
 class DapSI : public DapIndicatorState
@@ -28,8 +27,6 @@ private:
     IndicatorState m_current;
     IndicatorState m_previous;
 
-    QMap<IndicatorState, DapSB*> sb_child_state;
-
     QMap<IndicatorState,QState*> m_state;
     QMap<IndicatorState, QList<SignalSender> > m_stateSignals;
     QMap<IndicatorState, QList<SignalSender> > m_stateActionFor;
@@ -44,7 +41,6 @@ public:
     void addActionFor(IndicatorState a_is,  QObject * a_sender, const char * a_methodName);
 
     QState * state(IndicatorState a_is){ return m_state[a_is]; }
-    QState * state(IndicatorState a_is, DapSB::SbState a_bs);
 
     const QString& name() { return m_name; }
     IndicatorState current() { return m_current; }
@@ -55,7 +51,6 @@ signals:
 public slots:
     void doActionFor(IndicatorState a_is);
     void addAllTransitions();
-    void emitResponseWaitingSig();
 };
 
 #endif // DAPSI_H

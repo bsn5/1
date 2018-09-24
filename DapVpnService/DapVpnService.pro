@@ -29,7 +29,6 @@ SOURCES +=  DapChSockForw.cpp \
     DapTunUnixAbstract.cpp \
     DapTunNative.cpp \
     DapVpnService.cpp \
-    DapSB.cpp \
     DapTunWorkerAndroid.cpp \
     DapGuiCmdController.cpp
 
@@ -53,7 +52,6 @@ HEADERS +=     DapChSockForw.h \
     DapTunNative.h \
     DapSockForwPacket.h \
     DapTunUnixAbstract.h \
-    DapSB.h \
     DapTunWorkerAndroid.h \
     DapGuiCmdController.h
 
