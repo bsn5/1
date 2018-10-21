@@ -6,6 +6,10 @@ import android.content.Intent;
 import android.app.Service;
 import android.content.res.Configuration;
 import android.os.IBinder;
+import android.app.ActivityManager;
+import java.util.List;
+import java.net.Socket;
+import java.net.InetSocketAddress;
 
 import android.util.Log;
 
@@ -54,6 +58,24 @@ public class DapVpnService extends QtService
            }
          }*/
 
+     public static boolean checkServiceRunning(Context ctx)
+     {
+         System.out.println("[DapVpnService.java] onCheckServiceRunning()");
+
+         final ActivityManager activityManager = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
+         final List<ActivityManager.RunningAppProcessInfo> procInfos = activityManager.getRunningAppProcesses();
+         if (procInfos != null)
+         {
+             for (final ActivityManager.RunningAppProcessInfo processInfo : procInfos) {
+                 if (processInfo.processName.equals("com.demlabs.DiveVPN:qt")) {
+                     System.out.println("[DapVpnService.java] onCheckServiceRunning() Match founded!");
+                     return true;
+                 }
+             }
+         }
+         System.out.println("[DapVpnService.java] onCheckServiceRunning() Match not founded!");
+         return false;
+     }
 
         public static void restartService(Context ctx)
 	{
@@ -63,6 +85,23 @@ public class DapVpnService extends QtService
                 Log.i("DapVpnService", "Restarted DapVPN core service");
 
 	}
+
+    public static boolean isServiceConnectable()
+    {
+        try {
+            Socket socket = new Socket();
+            socket.connect(new InetSocketAddress("127.0.0.1", 22143), 5000);
+            socket.close();
+            Log.i("DapVpnService", "Port is open");
+            return true;
+        }
+
+        catch (Exception ex) {
+            ex.printStackTrace();
+            Log.i("DapVpnService", "Port connection error: " + ex.getMessage());
+            return false;
+        }
+    }
 }
 
 

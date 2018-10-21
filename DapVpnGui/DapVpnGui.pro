@@ -10,6 +10,12 @@ CONFIG += c++14
 
 TEMPLATE = app
 
+QMAKE_CFLAGS_DEBUG = \
+    -std=gnu99
+
+QMAKE_CFLAGS_RELEASE = \
+    -std=gnu99
+
 include(../config.pri)
 TARGET = $${BRAND}
 
@@ -172,3 +178,8 @@ else:win32:!win32-g++:CONFIG(release, debug|release): PRE_TARGETDEPS += $$OUT_PW
 else:win32:!win32-g++:CONFIG(debug, debug|release): PRE_TARGETDEPS += $$OUT_PWD/../DapVpnCommon/debug/DapVpnCommon.lib
 else:unix: PRE_TARGETDEPS += $$OUT_PWD/../DapVpnCommon/libDapVpnCommon.a
 ### Link DapVpnCommon ###
+
+contains(ANDROID_TARGET_ARCH,armeabi-v7a) {
+    ANDROID_EXTRA_LIBS = \
+        $$PWD/../../build-DapVpn-Android_for_armeabi_v7a_GCC_4_9_Qt_5_9_1_android_armv7-Debug/DapVpnService/libDapVpnService.so
+}

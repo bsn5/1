@@ -35,10 +35,10 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     streamer = new DapStreamer(this);
     streamer->addChProc('s', chSockForw = new  DapChSockForw(streamer) );
 
-    connect(streamer,static_cast<void(DapStreamer::*)(const QString&)>(&DapStreamer::error), [=](QString a_msg){
-        qDebug() << "[Streamer Er]"<< a_msg;
-        // sendCmdAll(QString("status stream error %1").arg( QString::fromLatin1(a_msg.toUtf8().toBase64())  ) );
-    });
+//    connect(streamer,static_cast<void(DapStreamer::*)(const QString&)>(&DapStreamer::error), [=](QString a_msg){
+//        qDebug() << "[Streamer Er]"<< a_msg;
+//        // sendCmdAll(QString("status stream error %1").arg( QString::fromLatin1(a_msg.toUtf8().toBase64())  ) );
+//    });
 
     connect(DapSession::getInstance(), &DapSession::errorConnection,this,[=] {
         qWarning() << "[DapVPNService] DapSession connection error";
@@ -76,13 +76,13 @@ DapVPNService::DapVPNService(QObject *parent) : QObject(parent)
     });
 
     connect (chSockForw, &DapChSockForw::sigTunNativeCreate, [=]{
-#ifdef Q_OS_ANDROID
-        sendCmdAll(QString("android_tunnel_create %1 %2 %3")
-                   .arg(m_tunAddr)
-                   .arg(m_tunDest)
-                   .arg(streamer->upstreamSocket())
-                   );
-#endif
+//#ifdef Q_OS_ANDROID
+//        sendCmdAll(QString("android_tunnel_create %1 %2 %3")
+//                   .arg(m_tunAddr)
+//                   .arg(m_tunDest)
+//                   .arg(streamer->upstreamSocket())
+//                   );
+//#endif
     });
 
     connect(chSockForw , &DapChSockForw::tunDestroyed,[=]{

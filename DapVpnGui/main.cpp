@@ -9,6 +9,9 @@
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_ANDROID
+    QGuiApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+#endif
     QApplication a(argc, argv);
 #ifdef Q_OS_UNIX
     DapLogger d;

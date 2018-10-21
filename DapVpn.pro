@@ -13,10 +13,10 @@ ios{
 
 DapVpnService.subdir = DapVpnService
 DapVpnGui.subdir = DapVpnGui
-DapVpnGui.depends = DapVpnService
+DapVpnGui.depends += DapVpnService
 
-DapVpnService.depends = DapVpnCommon
-DapVpnGui.depends = DapVpnCommon
+DapVpnService.depends += DapVpnCommon
+DapVpnGui.depends += DapVpnCommon
 
 RESOURCES += \
     DapVpnGui/ui/resources/DiveVPN/main.qrc \

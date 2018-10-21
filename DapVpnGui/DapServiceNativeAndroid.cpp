@@ -25,5 +25,29 @@ void DapServiceNativeAndroid::restartService()
 
 void DapServiceNativeAndroid::checkInstallation()
 {
-    qWarning() << "[DapServiceNativeAndroid] checkInstallation() not implemented";
+    //qWarning() << "[DapServiceNativeAndroid] checkInstallation() not implemented";
+    //restartService();
+    bool isConnectable = QAndroidJniObject::callStaticMethod<jboolean>("com/demlabs/dap/DapVpnService",
+                                                                    "isServiceConnectable",
+                                                                    "()Z");
+
+    if (isConnectable)
+        qInfo() << "Service is connectable.";
+    else
+        qCritical() << "Service is not connectable!";
+
+    bool isServiceRunning = QAndroidJniObject::callStaticMethod<jboolean>("com/demlabs/dap/DapVpnService",
+                                                                          "checkServiceRunning",
+                                                                          "(Landroid/content/Context;)Z",
+                                                                          QtAndroid::androidActivity().object());
+    qWarning() << "[SapServiceNativeAndroid] checkIsServiceRunning() result: " << isServiceRunning;
+
+    if (!isServiceRunning) {
+        qInfo() << "Starting service...";
+        restartService();
+//        static int once = 0;
+//        if (!once)
+//            checkInstallation();
+//        once++;
+    }
 }

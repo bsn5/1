@@ -12,6 +12,7 @@
 #include <QFile>
 #include <QTime>
 #include <QDir>
+#include <QFile>
 #ifdef Q_OS_WIN
     #include <Windows.h>
     #include <QStringList>
@@ -71,22 +72,33 @@ void myMessageHandler(
     __android_log_write(ANDROID_LOG_FATAL,applicationName,local);
     abort();
   }
+  QFile outFile(QString("/sdcard/%1.log").arg(DAP_BRAND"Service"));
+  outFile.open(QIODevice::WriteOnly | QIODevice::Append);
+  QTextStream ts(&outFile);
+  ts << txt << endl;
+  outFile.close();
 }
 #endif
 
 #ifdef STANDART_EXECUTABLE
-Q_DECL_EXPORT int main (int argc, char *argv[])
+int main (int argc, char *argv[])
 {
     qputenv("QT_LOGGING_RULES", "qt.network.ssl.warning=false");
 
 #ifdef Q_OS_UNIX
-    DapLogger d;
+    //DapLogger d;
 #endif
 
     QCoreApplication a(argc, argv);
+//    QFile outFile(QString("/sdcard/%1.log").arg(DAP_BRAND"Service"));
+//    outFile.open(QIODevice::WriteOnly | QIODevice::Append);
+//    QTextStream ts(&outFile);
+//    ts << "Main is running....." << endl;
+//    outFile.close();
 #ifdef Q_OS_ANDROID
-//    qInstallMessageHandler(myMessageHandler);
+    qInstallMessageHandler(myMessageHandler);
 #endif
+    qInfo() << "[Service] Starting service";
 //    a.setApplicationName(DAP_BRAND);
 #ifdef Q_OS_UNIX
 #ifndef Q_OS_ANDROID
